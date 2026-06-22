@@ -1,0 +1,5 @@
+strategy,matches_evaluated,exact_accuracy,toto_accuracy,scorito_points,points_per_match,market_coverage_rate,notes
+model_all,115,0.0782608695652174,0.41739130434782606,5580.0,48.52173913043478,0.0,Current historical knockout score heuristic on all backtested matches.
+common_home_1_0_all,115,0.09565217391304348,0.5043478260869565,7125.0,61.95652173913044,0.0,Naive common-score baseline: every listed home team wins 1-0.
+random_historical_scoreline,115,0.07671304347826087,0.3650260869565217,5339.805,46.433086956521734,,"Mean over random trials. Points p05=4215, p95=6450."
+market_favorite_common_score,0,,,0.0,,0.0,No bookmaker odds loaded. Use --fetch-oddsportal or --odds-csv.

@@ -1,0 +1,441 @@
+match_key,tournament,competition,year,round,stage_type,date,home_team,away_team,home_score,away_score
+FIFA World Cup 2010-main-1,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-26,Uruguay,South Korea,2.0,1.0
+FIFA World Cup 2010-main-2,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-26,United States,Ghana,1.0,2.0
+FIFA World Cup 2010-main-3,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-27,Germany,England,4.0,1.0
+FIFA World Cup 2010-main-4,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-27,Argentina,Mexico,3.0,1.0
+FIFA World Cup 2010-main-5,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-28,Netherlands,Slovakia,2.0,1.0
+FIFA World Cup 2010-main-6,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-28,Brazil,Chile,3.0,0.0
+FIFA World Cup 2010-main-7,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-29,Paraguay,Japan,0.0,0.0
+FIFA World Cup 2010-main-8,FIFA World Cup 2010,FIFA World Cup,2010,Round of 16,knockout,2010-06-29,Spain,Portugal,1.0,0.0
+FIFA World Cup 2010-main-9,FIFA World Cup 2010,FIFA World Cup,2010,Quarter-finals,knockout,2010-07-02,Netherlands,Brazil,2.0,1.0
+FIFA World Cup 2010-main-10,FIFA World Cup 2010,FIFA World Cup,2010,Quarter-finals,knockout,2010-07-02,Uruguay,Ghana,1.0,1.0
+FIFA World Cup 2010-main-11,FIFA World Cup 2010,FIFA World Cup,2010,Quarter-finals,knockout,2010-07-03,Argentina,Germany,0.0,4.0
+FIFA World Cup 2010-main-12,FIFA World Cup 2010,FIFA World Cup,2010,Quarter-finals,knockout,2010-07-03,Paraguay,Spain,0.0,1.0
+FIFA World Cup 2010-main-13,FIFA World Cup 2010,FIFA World Cup,2010,Semi-finals,knockout,2010-07-06,Uruguay,Netherlands,2.0,3.0
+FIFA World Cup 2010-main-14,FIFA World Cup 2010,FIFA World Cup,2010,Semi-finals,knockout,2010-07-07,Germany,Spain,0.0,1.0
+FIFA World Cup 2010-main-15,FIFA World Cup 2010,FIFA World Cup,2010,Match for third place,knockout,2010-07-10,Uruguay,Germany,2.0,3.0
+FIFA World Cup 2010-main-16,FIFA World Cup 2010,FIFA World Cup,2010,Final,knockout,2010-07-11,Netherlands,Spain,0.0,1.0
+FIFA World Cup 2010-group_A-1,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-11,South Africa,Mexico,1.0,1.0
+FIFA World Cup 2010-group_A-2,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-11,Uruguay,France,0.0,0.0
+FIFA World Cup 2010-group_A-3,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-16,South Africa,Uruguay,0.0,3.0
+FIFA World Cup 2010-group_A-4,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-17,France,Mexico,0.0,2.0
+FIFA World Cup 2010-group_A-5,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-22,Mexico,Uruguay,0.0,1.0
+FIFA World Cup 2010-group_A-6,FIFA World Cup 2010,FIFA World Cup,2010,Group A,group,2010-06-22,France,South Africa,1.0,2.0
+FIFA World Cup 2010-group_B-1,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-12,South Korea,Greece,2.0,0.0
+FIFA World Cup 2010-group_B-2,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-12,Argentina,Nigeria,1.0,0.0
+FIFA World Cup 2010-group_B-3,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-17,Argentina,South Korea,4.0,1.0
+FIFA World Cup 2010-group_B-4,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-17,Greece,Nigeria,2.0,1.0
+FIFA World Cup 2010-group_B-5,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-22,Nigeria,South Korea,2.0,2.0
+FIFA World Cup 2010-group_B-6,FIFA World Cup 2010,FIFA World Cup,2010,Group B,group,2010-06-22,Greece,Argentina,0.0,2.0
+FIFA World Cup 2010-group_C-1,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-12,England,United States,1.0,1.0
+FIFA World Cup 2010-group_C-2,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-13,Algeria,Slovenia,0.0,1.0
+FIFA World Cup 2010-group_C-3,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-18,Slovenia,United States,2.0,2.0
+FIFA World Cup 2010-group_C-4,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-18,England,Algeria,0.0,0.0
+FIFA World Cup 2010-group_C-5,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-23,Slovenia,England,0.0,1.0
+FIFA World Cup 2010-group_C-6,FIFA World Cup 2010,FIFA World Cup,2010,Group C,group,2010-06-23,United States,Algeria,1.0,0.0
+FIFA World Cup 2010-group_D-1,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-13,Serbia,Ghana,0.0,1.0
+FIFA World Cup 2010-group_D-2,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-13,Germany,Australia,4.0,0.0
+FIFA World Cup 2010-group_D-3,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-18,Germany,Serbia,0.0,1.0
+FIFA World Cup 2010-group_D-4,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-19,Ghana,Australia,1.0,1.0
+FIFA World Cup 2010-group_D-5,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-23,Ghana,Germany,0.0,1.0
+FIFA World Cup 2010-group_D-6,FIFA World Cup 2010,FIFA World Cup,2010,Group D,group,2010-06-23,Australia,Serbia,2.0,1.0
+FIFA World Cup 2010-group_E-1,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-14,Netherlands,Denmark,2.0,0.0
+FIFA World Cup 2010-group_E-2,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-14,Japan,Cameroon,1.0,0.0
+FIFA World Cup 2010-group_E-3,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-19,Netherlands,Japan,1.0,0.0
+FIFA World Cup 2010-group_E-4,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-19,Cameroon,Denmark,1.0,2.0
+FIFA World Cup 2010-group_E-5,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-24,Denmark,Japan,1.0,3.0
+FIFA World Cup 2010-group_E-6,FIFA World Cup 2010,FIFA World Cup,2010,Group E,group,2010-06-24,Cameroon,Netherlands,1.0,2.0
+FIFA World Cup 2010-group_F-1,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-14,Italy,Paraguay,1.0,1.0
+FIFA World Cup 2010-group_F-2,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-15,New Zealand,Slovakia,1.0,1.0
+FIFA World Cup 2010-group_F-3,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-20,Slovakia,Paraguay,0.0,2.0
+FIFA World Cup 2010-group_F-4,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-20,Italy,New Zealand,1.0,1.0
+FIFA World Cup 2010-group_F-5,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-24,Slovakia,Italy,3.0,2.0
+FIFA World Cup 2010-group_F-6,FIFA World Cup 2010,FIFA World Cup,2010,Group F,group,2010-06-24,Paraguay,New Zealand,0.0,0.0
+FIFA World Cup 2010-group_G-1,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-15,Ivory Coast,Portugal,0.0,0.0
+FIFA World Cup 2010-group_G-2,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-15,Brazil,North Korea,2.0,1.0
+FIFA World Cup 2010-group_G-3,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-20,Brazil,Ivory Coast,3.0,1.0
+FIFA World Cup 2010-group_G-4,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-21,Portugal,North Korea,7.0,0.0
+FIFA World Cup 2010-group_G-5,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-25,Portugal,Brazil,0.0,0.0
+FIFA World Cup 2010-group_G-6,FIFA World Cup 2010,FIFA World Cup,2010,Group G,group,2010-06-25,North Korea,Ivory Coast,0.0,3.0
+FIFA World Cup 2010-group_H-1,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-16,Honduras,Chile,0.0,1.0
+FIFA World Cup 2010-group_H-2,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-16,Spain,Switzerland,0.0,1.0
+FIFA World Cup 2010-group_H-3,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-21,Chile,Switzerland,1.0,0.0
+FIFA World Cup 2010-group_H-4,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-21,Spain,Honduras,2.0,0.0
+FIFA World Cup 2010-group_H-5,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-25,Chile,Spain,1.0,2.0
+FIFA World Cup 2010-group_H-6,FIFA World Cup 2010,FIFA World Cup,2010,Group H,group,2010-06-25,Switzerland,Honduras,0.0,0.0
+FIFA World Cup 2014-main-1,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-28,Brazil,Chile,1.0,1.0
+FIFA World Cup 2014-main-2,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-28,Colombia,Uruguay,2.0,0.0
+FIFA World Cup 2014-main-3,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-29,Netherlands,Mexico,2.0,1.0
+FIFA World Cup 2014-main-4,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-29,Costa Rica,Greece,1.0,1.0
+FIFA World Cup 2014-main-5,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-30,France,Nigeria,2.0,0.0
+FIFA World Cup 2014-main-6,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-06-30,Germany,Algeria,2.0,1.0
+FIFA World Cup 2014-main-7,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-07-01,Argentina,Switzerland,1.0,0.0
+FIFA World Cup 2014-main-8,FIFA World Cup 2014,FIFA World Cup,2014,Round of 16,knockout,2014-07-01,Belgium,United States,2.0,1.0
+FIFA World Cup 2014-main-9,FIFA World Cup 2014,FIFA World Cup,2014,Quarter-finals,knockout,2014-07-04,France,Germany,0.0,1.0
+FIFA World Cup 2014-main-10,FIFA World Cup 2014,FIFA World Cup,2014,Quarter-finals,knockout,2014-07-04,Brazil,Colombia,2.0,1.0
+FIFA World Cup 2014-main-11,FIFA World Cup 2014,FIFA World Cup,2014,Quarter-finals,knockout,2014-07-05,Argentina,Belgium,1.0,0.0
+FIFA World Cup 2014-main-12,FIFA World Cup 2014,FIFA World Cup,2014,Quarter-finals,knockout,2014-07-05,Netherlands,Costa Rica,0.0,0.0
+FIFA World Cup 2014-main-13,FIFA World Cup 2014,FIFA World Cup,2014,Semi-finals,knockout,2014-07-08,Brazil,Germany,1.0,7.0
+FIFA World Cup 2014-main-14,FIFA World Cup 2014,FIFA World Cup,2014,Semi-finals,knockout,2014-07-09,Netherlands,Argentina,0.0,0.0
+FIFA World Cup 2014-main-15,FIFA World Cup 2014,FIFA World Cup,2014,Match for third place,knockout,2014-07-12,Brazil,Netherlands,0.0,3.0
+FIFA World Cup 2014-main-16,FIFA World Cup 2014,FIFA World Cup,2014,Final,knockout,2014-07-13,Germany,Argentina,1.0,0.0
+FIFA World Cup 2014-group_A-1,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-12,Brazil,Croatia,3.0,1.0
+FIFA World Cup 2014-group_A-2,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-13,Mexico,Cameroon,1.0,0.0
+FIFA World Cup 2014-group_A-3,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-17,Brazil,Mexico,0.0,0.0
+FIFA World Cup 2014-group_A-4,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-18,Cameroon,Croatia,0.0,4.0
+FIFA World Cup 2014-group_A-5,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-23,Cameroon,Brazil,1.0,4.0
+FIFA World Cup 2014-group_A-6,FIFA World Cup 2014,FIFA World Cup,2014,Group A,group,2014-06-23,Croatia,Mexico,1.0,3.0
+FIFA World Cup 2014-group_B-1,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-13,Spain,Netherlands,1.0,5.0
+FIFA World Cup 2014-group_B-2,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-13,Chile,Australia,3.0,1.0
+FIFA World Cup 2014-group_B-3,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-18,Australia,Netherlands,2.0,3.0
+FIFA World Cup 2014-group_B-4,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-18,Spain,Chile,0.0,2.0
+FIFA World Cup 2014-group_B-5,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-23,Australia,Spain,0.0,3.0
+FIFA World Cup 2014-group_B-6,FIFA World Cup 2014,FIFA World Cup,2014,Group B,group,2014-06-23,Netherlands,Chile,2.0,0.0
+FIFA World Cup 2014-group_C-1,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-14,Colombia,Greece,3.0,0.0
+FIFA World Cup 2014-group_C-2,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-14,Ivory Coast,Japan,2.0,1.0
+FIFA World Cup 2014-group_C-3,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-19,Colombia,Ivory Coast,2.0,1.0
+FIFA World Cup 2014-group_C-4,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-19,Japan,Greece,0.0,0.0
+FIFA World Cup 2014-group_C-5,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-24,Japan,Colombia,1.0,4.0
+FIFA World Cup 2014-group_C-6,FIFA World Cup 2014,FIFA World Cup,2014,Group C,group,2014-06-24,Greece,Ivory Coast,2.0,1.0
+FIFA World Cup 2014-group_D-1,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-14,Uruguay,Costa Rica,1.0,3.0
+FIFA World Cup 2014-group_D-2,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-14,England,Italy,1.0,2.0
+FIFA World Cup 2014-group_D-3,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-19,Uruguay,England,2.0,1.0
+FIFA World Cup 2014-group_D-4,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-20,Italy,Costa Rica,0.0,1.0
+FIFA World Cup 2014-group_D-5,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-24,Italy,Uruguay,0.0,1.0
+FIFA World Cup 2014-group_D-6,FIFA World Cup 2014,FIFA World Cup,2014,Group D,group,2014-06-24,Costa Rica,England,0.0,0.0
+FIFA World Cup 2014-group_E-1,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-15,Switzerland,Ecuador,2.0,1.0
+FIFA World Cup 2014-group_E-2,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-15,France,Honduras,3.0,0.0
+FIFA World Cup 2014-group_E-3,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-20,Switzerland,France,2.0,5.0
+FIFA World Cup 2014-group_E-4,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-20,Honduras,Ecuador,1.0,2.0
+FIFA World Cup 2014-group_E-5,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-25,Honduras,Switzerland,0.0,3.0
+FIFA World Cup 2014-group_E-6,FIFA World Cup 2014,FIFA World Cup,2014,Group E,group,2014-06-25,Ecuador,France,0.0,0.0
+FIFA World Cup 2014-group_F-1,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-15,Argentina,Bosnia and Herzegovina,2.0,1.0
+FIFA World Cup 2014-group_F-2,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-16,Iran,Nigeria,0.0,0.0
+FIFA World Cup 2014-group_F-3,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-21,Argentina,Iran,1.0,0.0
+FIFA World Cup 2014-group_F-4,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-21,Nigeria,Bosnia and Herzegovina,1.0,0.0
+FIFA World Cup 2014-group_F-5,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-25,Nigeria,Argentina,2.0,3.0
+FIFA World Cup 2014-group_F-6,FIFA World Cup 2014,FIFA World Cup,2014,Group F,group,2014-06-25,Bosnia and Herzegovina,Iran,3.0,1.0
+FIFA World Cup 2014-group_G-1,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-16,Germany,Portugal,4.0,0.0
+FIFA World Cup 2014-group_G-2,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-16,Ghana,United States,1.0,2.0
+FIFA World Cup 2014-group_G-3,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-21,Germany,Ghana,2.0,2.0
+FIFA World Cup 2014-group_G-4,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-22,United States,Portugal,2.0,2.0
+FIFA World Cup 2014-group_G-5,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-26,United States,Germany,0.0,1.0
+FIFA World Cup 2014-group_G-6,FIFA World Cup 2014,FIFA World Cup,2014,Group G,group,2014-06-26,Portugal,Ghana,2.0,1.0
+FIFA World Cup 2014-group_H-1,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-17,Belgium,Algeria,2.0,1.0
+FIFA World Cup 2014-group_H-2,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-17,Russia,South Korea,1.0,1.0
+FIFA World Cup 2014-group_H-3,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-22,Belgium,Russia,1.0,0.0
+FIFA World Cup 2014-group_H-4,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-22,South Korea,Algeria,2.0,4.0
+FIFA World Cup 2014-group_H-5,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-26,South Korea,Belgium,0.0,1.0
+FIFA World Cup 2014-group_H-6,FIFA World Cup 2014,FIFA World Cup,2014,Group H,group,2014-06-26,Algeria,Russia,1.0,1.0
+FIFA World Cup 2018-main-1,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-06-30,France,Argentina,4.0,3.0
+FIFA World Cup 2018-main-2,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-06-30,Uruguay,Portugal,2.0,1.0
+FIFA World Cup 2018-main-3,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-01,Spain,Russia,1.0,1.0
+FIFA World Cup 2018-main-4,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-01,Croatia,Denmark,1.0,1.0
+FIFA World Cup 2018-main-5,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-02,Brazil,Mexico,2.0,0.0
+FIFA World Cup 2018-main-6,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-02,Belgium,Japan,3.0,2.0
+FIFA World Cup 2018-main-7,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-03,Sweden,Switzerland,1.0,0.0
+FIFA World Cup 2018-main-8,FIFA World Cup 2018,FIFA World Cup,2018,Round of 16,knockout,2018-07-03,Colombia,England,1.0,1.0
+FIFA World Cup 2018-main-9,FIFA World Cup 2018,FIFA World Cup,2018,Quarter-finals,knockout,2018-07-06,Uruguay,France,0.0,2.0
+FIFA World Cup 2018-main-10,FIFA World Cup 2018,FIFA World Cup,2018,Quarter-finals,knockout,2018-07-06,Brazil,Belgium,1.0,2.0
+FIFA World Cup 2018-main-11,FIFA World Cup 2018,FIFA World Cup,2018,Quarter-finals,knockout,2018-07-07,Sweden,England,0.0,2.0
+FIFA World Cup 2018-main-12,FIFA World Cup 2018,FIFA World Cup,2018,Quarter-finals,knockout,2018-07-07,Russia,Croatia,2.0,2.0
+FIFA World Cup 2018-main-13,FIFA World Cup 2018,FIFA World Cup,2018,Semi-finals,knockout,2018-07-10,France,Belgium,1.0,0.0
+FIFA World Cup 2018-main-14,FIFA World Cup 2018,FIFA World Cup,2018,Semi-finals,knockout,2018-07-11,Croatia,England,2.0,1.0
+FIFA World Cup 2018-main-15,FIFA World Cup 2018,FIFA World Cup,2018,Third Place play-off,other,2018-07-14,Belgium,England,2.0,0.0
+FIFA World Cup 2018-main-16,FIFA World Cup 2018,FIFA World Cup,2018,Final,knockout,2018-07-15,France,Croatia,4.0,2.0
+FIFA World Cup 2018-group_A-1,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-14,Russia,Saudi Arabia,5.0,0.0
+FIFA World Cup 2018-group_A-2,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-15,Egypt,Uruguay,0.0,1.0
+FIFA World Cup 2018-group_A-3,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-19,Russia,Egypt,3.0,1.0
+FIFA World Cup 2018-group_A-4,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-20,Uruguay,Saudi Arabia,1.0,0.0
+FIFA World Cup 2018-group_A-5,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-25,Uruguay,Russia,3.0,0.0
+FIFA World Cup 2018-group_A-6,FIFA World Cup 2018,FIFA World Cup,2018,Group A,group,2018-06-25,Saudi Arabia,Egypt,2.0,1.0
+FIFA World Cup 2018-group_B-1,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-15,Morocco,Iran,0.0,1.0
+FIFA World Cup 2018-group_B-2,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-15,Portugal,Spain,3.0,3.0
+FIFA World Cup 2018-group_B-3,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-20,Portugal,Morocco,1.0,0.0
+FIFA World Cup 2018-group_B-4,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-20,Iran,Spain,0.0,1.0
+FIFA World Cup 2018-group_B-5,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-25,Iran,Portugal,1.0,1.0
+FIFA World Cup 2018-group_B-6,FIFA World Cup 2018,FIFA World Cup,2018,Group B,group,2018-06-25,Spain,Morocco,2.0,2.0
+FIFA World Cup 2018-group_C-1,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-16,France,Australia,2.0,1.0
+FIFA World Cup 2018-group_C-2,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-16,Peru,Denmark,0.0,1.0
+FIFA World Cup 2018-group_C-3,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-21,Denmark,Australia,1.0,1.0
+FIFA World Cup 2018-group_C-4,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-21,France,Peru,1.0,0.0
+FIFA World Cup 2018-group_C-5,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-26,Denmark,France,0.0,0.0
+FIFA World Cup 2018-group_C-6,FIFA World Cup 2018,FIFA World Cup,2018,Group C,group,2018-06-26,Australia,Peru,0.0,2.0
+FIFA World Cup 2018-group_D-1,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-16,Argentina,Iceland,1.0,1.0
+FIFA World Cup 2018-group_D-2,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-16,Croatia,Nigeria,2.0,0.0
+FIFA World Cup 2018-group_D-3,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-21,Argentina,Croatia,0.0,3.0
+FIFA World Cup 2018-group_D-4,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-22,Nigeria,Iceland,2.0,0.0
+FIFA World Cup 2018-group_D-5,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-26,Nigeria,Argentina,1.0,2.0
+FIFA World Cup 2018-group_D-6,FIFA World Cup 2018,FIFA World Cup,2018,Group D,group,2018-06-26,Iceland,Croatia,1.0,2.0
+FIFA World Cup 2018-group_E-1,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-17,Costa Rica,Serbia,0.0,1.0
+FIFA World Cup 2018-group_E-2,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-17,Brazil,Switzerland,1.0,1.0
+FIFA World Cup 2018-group_E-3,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-22,Brazil,Costa Rica,2.0,0.0
+FIFA World Cup 2018-group_E-4,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-22,Serbia,Switzerland,1.0,2.0
+FIFA World Cup 2018-group_E-5,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-27,Serbia,Brazil,0.0,2.0
+FIFA World Cup 2018-group_E-6,FIFA World Cup 2018,FIFA World Cup,2018,Group E,group,2018-06-27,Switzerland,Costa Rica,2.0,2.0
+FIFA World Cup 2018-group_F-1,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-17,Germany,Mexico,0.0,1.0
+FIFA World Cup 2018-group_F-2,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-18,Sweden,South Korea,1.0,0.0
+FIFA World Cup 2018-group_F-3,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-23,South Korea,Mexico,1.0,2.0
+FIFA World Cup 2018-group_F-4,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-23,Germany,Sweden,2.0,1.0
+FIFA World Cup 2018-group_F-5,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-27,South Korea,Germany,2.0,0.0
+FIFA World Cup 2018-group_F-6,FIFA World Cup 2018,FIFA World Cup,2018,Group F,group,2018-06-27,Mexico,Sweden,0.0,3.0
+FIFA World Cup 2018-group_G-1,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-18,Belgium,Panama,3.0,0.0
+FIFA World Cup 2018-group_G-2,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-18,Tunisia,England,1.0,2.0
+FIFA World Cup 2018-group_G-3,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-23,Belgium,Tunisia,5.0,2.0
+FIFA World Cup 2018-group_G-4,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-24,England,Panama,6.0,1.0
+FIFA World Cup 2018-group_G-5,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-28,England,Belgium,0.0,1.0
+FIFA World Cup 2018-group_G-6,FIFA World Cup 2018,FIFA World Cup,2018,Group G,group,2018-06-28,Panama,Tunisia,1.0,2.0
+FIFA World Cup 2018-group_H-1,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-19,Colombia,Japan,1.0,2.0
+FIFA World Cup 2018-group_H-2,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-19,Poland,Senegal,1.0,2.0
+FIFA World Cup 2018-group_H-3,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-24,Japan,Senegal,2.0,2.0
+FIFA World Cup 2018-group_H-4,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-24,Poland,Colombia,0.0,3.0
+FIFA World Cup 2018-group_H-5,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-28,Japan,Poland,0.0,1.0
+FIFA World Cup 2018-group_H-6,FIFA World Cup 2018,FIFA World Cup,2018,Group H,group,2018-06-28,Senegal,Colombia,0.0,1.0
+FIFA World Cup 2022-main-1,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-03,Netherlands,United States,3.0,1.0
+FIFA World Cup 2022-main-2,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-03,Argentina,Australia,2.0,1.0
+FIFA World Cup 2022-main-3,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-04,France,Poland,3.0,1.0
+FIFA World Cup 2022-main-4,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-04,England,Senegal,3.0,0.0
+FIFA World Cup 2022-main-5,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-05,Japan,Croatia,1.0,1.0
+FIFA World Cup 2022-main-6,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-05,Brazil,South Korea,4.0,1.0
+FIFA World Cup 2022-main-7,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-06,Morocco,Spain,0.0,0.0
+FIFA World Cup 2022-main-8,FIFA World Cup 2022,FIFA World Cup,2022,Round of 16,knockout,2022-12-06,Portugal,Switzerland,6.0,1.0
+FIFA World Cup 2022-main-9,FIFA World Cup 2022,FIFA World Cup,2022,Quarter-finals,knockout,2022-12-09,Croatia,Brazil,1.0,1.0
+FIFA World Cup 2022-main-10,FIFA World Cup 2022,FIFA World Cup,2022,Quarter-finals,knockout,2022-12-09,Netherlands,Argentina,2.0,2.0
+FIFA World Cup 2022-main-11,FIFA World Cup 2022,FIFA World Cup,2022,Quarter-finals,knockout,2022-12-10,Morocco,Portugal,1.0,0.0
+FIFA World Cup 2022-main-12,FIFA World Cup 2022,FIFA World Cup,2022,Quarter-finals,knockout,2022-12-10,England,France,1.0,2.0
+FIFA World Cup 2022-main-13,FIFA World Cup 2022,FIFA World Cup,2022,Semi-finals,knockout,2022-12-13,Argentina,Croatia,3.0,0.0
+FIFA World Cup 2022-main-14,FIFA World Cup 2022,FIFA World Cup,2022,Semi-finals,knockout,2022-12-14,France,Morocco,2.0,0.0
+FIFA World Cup 2022-main-15,FIFA World Cup 2022,FIFA World Cup,2022,Match for third place,knockout,2022-12-17,Croatia,Morocco,2.0,1.0
+FIFA World Cup 2022-main-16,FIFA World Cup 2022,FIFA World Cup,2022,Final,knockout,2022-12-18,Argentina,France,3.0,3.0
+FIFA World Cup 2022-group_A-1,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-20,Qatar,Ecuador,0.0,2.0
+FIFA World Cup 2022-group_A-2,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-21,Senegal,Netherlands,0.0,2.0
+FIFA World Cup 2022-group_A-3,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-25,Qatar,Senegal,1.0,3.0
+FIFA World Cup 2022-group_A-4,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-25,Netherlands,Ecuador,1.0,1.0
+FIFA World Cup 2022-group_A-5,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-29,Ecuador,Senegal,1.0,2.0
+FIFA World Cup 2022-group_A-6,FIFA World Cup 2022,FIFA World Cup,2022,Group A,group,2022-11-29,Netherlands,Qatar,2.0,0.0
+FIFA World Cup 2022-group_B-1,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-21,England,Iran,6.0,2.0
+FIFA World Cup 2022-group_B-2,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-21,United States,Wales,1.0,1.0
+FIFA World Cup 2022-group_B-3,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-25,Wales,Iran,0.0,2.0
+FIFA World Cup 2022-group_B-4,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-25,England,United States,0.0,0.0
+FIFA World Cup 2022-group_B-5,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-29,Wales,England,0.0,3.0
+FIFA World Cup 2022-group_B-6,FIFA World Cup 2022,FIFA World Cup,2022,Group B,group,2022-11-29,Iran,United States,0.0,1.0
+FIFA World Cup 2022-group_C-1,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-22,Argentina,Saudi Arabia,1.0,2.0
+FIFA World Cup 2022-group_C-2,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-22,Mexico,Poland,0.0,0.0
+FIFA World Cup 2022-group_C-3,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-26,Poland,Saudi Arabia,2.0,0.0
+FIFA World Cup 2022-group_C-4,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-26,Argentina,Mexico,2.0,0.0
+FIFA World Cup 2022-group_C-5,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-30,Poland,Argentina,0.0,2.0
+FIFA World Cup 2022-group_C-6,FIFA World Cup 2022,FIFA World Cup,2022,Group C,group,2022-11-30,Saudi Arabia,Mexico,1.0,2.0
+FIFA World Cup 2022-group_D-1,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-22,Denmark,Tunisia,0.0,0.0
+FIFA World Cup 2022-group_D-2,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-22,France,Australia,4.0,1.0
+FIFA World Cup 2022-group_D-3,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-26,Tunisia,Australia,0.0,1.0
+FIFA World Cup 2022-group_D-4,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-26,France,Denmark,2.0,1.0
+FIFA World Cup 2022-group_D-5,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-30,Australia,Denmark,1.0,0.0
+FIFA World Cup 2022-group_D-6,FIFA World Cup 2022,FIFA World Cup,2022,Group D,group,2022-11-30,Tunisia,France,1.0,0.0
+FIFA World Cup 2022-group_E-1,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-11-23,Germany,Japan,1.0,2.0
+FIFA World Cup 2022-group_E-2,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-11-23,Spain,Costa Rica,7.0,0.0
+FIFA World Cup 2022-group_E-3,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-11-27,Japan,Costa Rica,0.0,1.0
+FIFA World Cup 2022-group_E-4,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-11-27,Spain,Germany,1.0,1.0
+FIFA World Cup 2022-group_E-5,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-12-01,Japan,Spain,2.0,1.0
+FIFA World Cup 2022-group_E-6,FIFA World Cup 2022,FIFA World Cup,2022,Group E,group,2022-12-01,Costa Rica,Germany,2.0,4.0
+FIFA World Cup 2022-group_F-1,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-11-23,Morocco,Croatia,0.0,0.0
+FIFA World Cup 2022-group_F-2,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-11-23,Belgium,Canada,1.0,0.0
+FIFA World Cup 2022-group_F-3,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-11-27,Belgium,Morocco,0.0,2.0
+FIFA World Cup 2022-group_F-4,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-11-27,Croatia,Canada,4.0,1.0
+FIFA World Cup 2022-group_F-5,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-12-01,Croatia,Belgium,0.0,0.0
+FIFA World Cup 2022-group_F-6,FIFA World Cup 2022,FIFA World Cup,2022,Group F,group,2022-12-01,Canada,Morocco,1.0,2.0
+FIFA World Cup 2022-group_G-1,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-11-24,Switzerland,Cameroon,1.0,0.0
+FIFA World Cup 2022-group_G-2,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-11-24,Brazil,Serbia,2.0,0.0
+FIFA World Cup 2022-group_G-3,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-11-28,Cameroon,Serbia,3.0,3.0
+FIFA World Cup 2022-group_G-4,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-11-28,Brazil,Switzerland,1.0,0.0
+FIFA World Cup 2022-group_G-5,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-12-02,Serbia,Switzerland,2.0,3.0
+FIFA World Cup 2022-group_G-6,FIFA World Cup 2022,FIFA World Cup,2022,Group G,group,2022-12-02,Cameroon,Brazil,1.0,0.0
+FIFA World Cup 2022-group_H-1,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-11-24,Uruguay,South Korea,0.0,0.0
+FIFA World Cup 2022-group_H-2,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-11-24,Portugal,Ghana,3.0,2.0
+FIFA World Cup 2022-group_H-3,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-11-28,South Korea,Ghana,2.0,3.0
+FIFA World Cup 2022-group_H-4,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-11-28,Portugal,Uruguay,2.0,0.0
+FIFA World Cup 2022-group_H-5,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-12-02,Ghana,Uruguay,0.0,2.0
+FIFA World Cup 2022-group_H-6,FIFA World Cup 2022,FIFA World Cup,2022,Group H,group,2022-12-02,South Korea,Portugal,2.0,1.0
+UEFA Euro 2012-main-1,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-08,Poland,Greece,1.0,1.0
+UEFA Euro 2012-main-2,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-08,Russia,Czech Republic,4.0,1.0
+UEFA Euro 2012-main-3,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-12,Greece,Czech Republic,1.0,2.0
+UEFA Euro 2012-main-4,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-12,Poland,Russia,1.0,1.0
+UEFA Euro 2012-main-5,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-16,Czech Republic,Poland,1.0,0.0
+UEFA Euro 2012-main-6,UEFA Euro 2012,UEFA Euro,2012,Group A,group,2012-06-16,Greece,Russia,1.0,0.0
+UEFA Euro 2012-main-7,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-09,Netherlands,Denmark,0.0,1.0
+UEFA Euro 2012-main-8,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-09,Germany,Portugal,1.0,0.0
+UEFA Euro 2012-main-9,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-13,Denmark,Portugal,2.0,3.0
+UEFA Euro 2012-main-10,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-13,Netherlands,Germany,1.0,2.0
+UEFA Euro 2012-main-11,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-17,Portugal,Netherlands,2.0,1.0
+UEFA Euro 2012-main-12,UEFA Euro 2012,UEFA Euro,2012,Group B,group,2012-06-17,Denmark,Germany,1.0,2.0
+UEFA Euro 2012-main-13,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-10,Spain,Italy,1.0,1.0
+UEFA Euro 2012-main-14,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-10,Republic of Ireland,Croatia,1.0,3.0
+UEFA Euro 2012-main-15,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-14,Italy,Croatia,1.0,1.0
+UEFA Euro 2012-main-16,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-14,Spain,Republic of Ireland,4.0,0.0
+UEFA Euro 2012-main-17,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-18,Croatia,Spain,0.0,1.0
+UEFA Euro 2012-main-18,UEFA Euro 2012,UEFA Euro,2012,Group C,group,2012-06-18,Italy,Republic of Ireland,2.0,0.0
+UEFA Euro 2012-main-19,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-11,France,England,1.0,1.0
+UEFA Euro 2012-main-20,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-11,Ukraine,Sweden,2.0,1.0
+UEFA Euro 2012-main-21,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-15,Ukraine,France,0.0,2.0
+UEFA Euro 2012-main-22,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-15,Sweden,England,2.0,3.0
+UEFA Euro 2012-main-23,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-19,England,Ukraine,1.0,0.0
+UEFA Euro 2012-main-24,UEFA Euro 2012,UEFA Euro,2012,Group D,group,2012-06-19,Sweden,France,2.0,0.0
+UEFA Euro 2012-main-25,UEFA Euro 2012,UEFA Euro,2012,Quarter-finals,knockout,2012-06-21,Czech Republic,Portugal,0.0,1.0
+UEFA Euro 2012-main-26,UEFA Euro 2012,UEFA Euro,2012,Quarter-finals,knockout,2012-06-22,Germany,Greece,4.0,2.0
+UEFA Euro 2012-main-27,UEFA Euro 2012,UEFA Euro,2012,Quarter-finals,knockout,2012-06-23,Spain,France,2.0,0.0
+UEFA Euro 2012-main-28,UEFA Euro 2012,UEFA Euro,2012,Quarter-finals,knockout,2012-06-24,England,Italy,0.0,0.0
+UEFA Euro 2012-main-29,UEFA Euro 2012,UEFA Euro,2012,Semi-finals,knockout,2012-06-27,Portugal,Spain,0.0,0.0
+UEFA Euro 2012-main-30,UEFA Euro 2012,UEFA Euro,2012,Semi-finals,knockout,2012-06-28,Germany,Italy,1.0,2.0
+UEFA Euro 2012-main-31,UEFA Euro 2012,UEFA Euro,2012,Final,knockout,2012-07-01,Spain,Italy,4.0,0.0
+UEFA Euro 2016-main-1,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-10,France,Romania,2.0,1.0
+UEFA Euro 2016-main-2,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-11,Albania,Switzerland,0.0,1.0
+UEFA Euro 2016-main-3,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-15,Romania,Switzerland,1.0,1.0
+UEFA Euro 2016-main-4,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-15,France,Albania,2.0,0.0
+UEFA Euro 2016-main-5,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-19,Romania,Albania,0.0,1.0
+UEFA Euro 2016-main-6,UEFA Euro 2016,UEFA Euro,2016,Group A,group,2016-06-19,Switzerland,France,0.0,0.0
+UEFA Euro 2016-main-7,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-11,Wales,Slovakia,2.0,1.0
+UEFA Euro 2016-main-8,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-11,England,Russia,1.0,1.0
+UEFA Euro 2016-main-9,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-15,Russia,Slovakia,1.0,2.0
+UEFA Euro 2016-main-10,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-16,England,Wales,2.0,1.0
+UEFA Euro 2016-main-11,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-20,Russia,Wales,0.0,3.0
+UEFA Euro 2016-main-12,UEFA Euro 2016,UEFA Euro,2016,Group B,group,2016-06-20,Slovakia,England,0.0,0.0
+UEFA Euro 2016-main-13,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-12,Poland,Northern Ireland,1.0,0.0
+UEFA Euro 2016-main-14,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-12,Germany,Ukraine,2.0,0.0
+UEFA Euro 2016-main-15,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-16,Ukraine,Northern Ireland,0.0,2.0
+UEFA Euro 2016-main-16,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-16,Germany,Poland,0.0,0.0
+UEFA Euro 2016-main-17,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-21,Ukraine,Poland,0.0,1.0
+UEFA Euro 2016-main-18,UEFA Euro 2016,UEFA Euro,2016,Group C,group,2016-06-21,Northern Ireland,Germany,0.0,1.0
+UEFA Euro 2016-main-19,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-12,Turkey,Croatia,0.0,1.0
+UEFA Euro 2016-main-20,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-13,Spain,Czech Republic,1.0,0.0
+UEFA Euro 2016-main-21,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-17,Czech Republic,Croatia,2.0,2.0
+UEFA Euro 2016-main-22,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-17,Spain,Turkey,3.0,0.0
+UEFA Euro 2016-main-23,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-21,Czech Republic,Turkey,0.0,2.0
+UEFA Euro 2016-main-24,UEFA Euro 2016,UEFA Euro,2016,Group D,group,2016-06-21,Croatia,Spain,2.0,1.0
+UEFA Euro 2016-main-25,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-13,Republic of Ireland,Sweden,1.0,1.0
+UEFA Euro 2016-main-26,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-13,Belgium,Italy,0.0,2.0
+UEFA Euro 2016-main-27,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-17,Italy,Sweden,1.0,0.0
+UEFA Euro 2016-main-28,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-18,Belgium,Republic of Ireland,3.0,0.0
+UEFA Euro 2016-main-29,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-22,Italy,Republic of Ireland,0.0,1.0
+UEFA Euro 2016-main-30,UEFA Euro 2016,UEFA Euro,2016,Group E,group,2016-06-22,Sweden,Belgium,0.0,1.0
+UEFA Euro 2016-main-31,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-14,Austria,Hungary,0.0,2.0
+UEFA Euro 2016-main-32,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-14,Portugal,Iceland,1.0,1.0
+UEFA Euro 2016-main-33,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-18,Iceland,Hungary,1.0,1.0
+UEFA Euro 2016-main-34,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-18,Portugal,Austria,0.0,0.0
+UEFA Euro 2016-main-35,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-22,Iceland,Austria,2.0,1.0
+UEFA Euro 2016-main-36,UEFA Euro 2016,UEFA Euro,2016,Group F,group,2016-06-22,Hungary,Portugal,3.0,3.0
+UEFA Euro 2016-main-37,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-25,Switzerland,Poland,1.0,1.0
+UEFA Euro 2016-main-38,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-25,Wales,Northern Ireland,1.0,0.0
+UEFA Euro 2016-main-39,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-25,Croatia,Portugal,0.0,1.0
+UEFA Euro 2016-main-40,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-26,France,Republic of Ireland,2.0,1.0
+UEFA Euro 2016-main-41,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-26,Germany,Slovakia,3.0,0.0
+UEFA Euro 2016-main-42,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-26,Hungary,Belgium,0.0,4.0
+UEFA Euro 2016-main-43,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-27,Italy,Spain,2.0,0.0
+UEFA Euro 2016-main-44,UEFA Euro 2016,UEFA Euro,2016,Round of 16,knockout,2016-06-27,England,Iceland,1.0,2.0
+UEFA Euro 2016-main-45,UEFA Euro 2016,UEFA Euro,2016,Quarter-finals,knockout,2016-06-30,Poland,Portugal,1.0,1.0
+UEFA Euro 2016-main-46,UEFA Euro 2016,UEFA Euro,2016,Quarter-finals,knockout,2016-07-01,Wales,Belgium,3.0,1.0
+UEFA Euro 2016-main-47,UEFA Euro 2016,UEFA Euro,2016,Quarter-finals,knockout,2016-07-02,Germany,Italy,1.0,1.0
+UEFA Euro 2016-main-48,UEFA Euro 2016,UEFA Euro,2016,Quarter-finals,knockout,2016-07-03,France,Iceland,5.0,2.0
+UEFA Euro 2016-main-49,UEFA Euro 2016,UEFA Euro,2016,Semi-finals,knockout,2016-07-06,Portugal,Wales,2.0,0.0
+UEFA Euro 2016-main-50,UEFA Euro 2016,UEFA Euro,2016,Semi-finals,knockout,2016-07-07,Germany,France,0.0,2.0
+UEFA Euro 2016-main-51,UEFA Euro 2016,UEFA Euro,2016,Final,knockout,2016-07-10,Portugal,France,1.0,0.0
+UEFA Euro 2020-main-1,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-11,Turkey,Italy,0.0,3.0
+UEFA Euro 2020-main-2,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-12,Wales,Switzerland,1.0,1.0
+UEFA Euro 2020-main-3,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-16,Turkey,Wales,0.0,2.0
+UEFA Euro 2020-main-4,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-16,Italy,Switzerland,3.0,0.0
+UEFA Euro 2020-main-5,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-20,Switzerland,Turkey,3.0,1.0
+UEFA Euro 2020-main-6,UEFA Euro 2020,UEFA Euro,2020,Group A,group,2021-06-20,Italy,Wales,1.0,0.0
+UEFA Euro 2020-main-7,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-12,Denmark,Finland,0.0,1.0
+UEFA Euro 2020-main-8,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-12,Belgium,Russia,3.0,0.0
+UEFA Euro 2020-main-9,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-16,Finland,Russia,0.0,1.0
+UEFA Euro 2020-main-10,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-17,Denmark,Belgium,1.0,2.0
+UEFA Euro 2020-main-11,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-21,Russia,Denmark,1.0,4.0
+UEFA Euro 2020-main-12,UEFA Euro 2020,UEFA Euro,2020,Group B,group,2021-06-21,Finland,Belgium,0.0,2.0
+UEFA Euro 2020-main-13,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-13,Austria,North Macedonia,3.0,1.0
+UEFA Euro 2020-main-14,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-13,Netherlands,Ukraine,3.0,2.0
+UEFA Euro 2020-main-15,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-17,Ukraine,North Macedonia,2.0,1.0
+UEFA Euro 2020-main-16,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-17,Netherlands,Austria,2.0,0.0
+UEFA Euro 2020-main-17,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-21,North Macedonia,Netherlands,0.0,3.0
+UEFA Euro 2020-main-18,UEFA Euro 2020,UEFA Euro,2020,Group C,group,2021-06-21,Ukraine,Austria,0.0,1.0
+UEFA Euro 2020-main-19,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-13,England,Croatia,1.0,0.0
+UEFA Euro 2020-main-20,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-14,Scotland,Czech Republic,0.0,2.0
+UEFA Euro 2020-main-21,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-18,Croatia,Czech Republic,1.0,1.0
+UEFA Euro 2020-main-22,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-18,England,Scotland,0.0,0.0
+UEFA Euro 2020-main-23,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-22,Croatia,Scotland,3.0,1.0
+UEFA Euro 2020-main-24,UEFA Euro 2020,UEFA Euro,2020,Group D,group,2021-06-22,Czech Republic,England,0.0,1.0
+UEFA Euro 2020-main-25,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-14,Poland,Slovakia,1.0,2.0
+UEFA Euro 2020-main-26,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-14,Spain,Sweden,0.0,0.0
+UEFA Euro 2020-main-27,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-18,Sweden,Slovakia,1.0,0.0
+UEFA Euro 2020-main-28,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-19,Spain,Poland,1.0,1.0
+UEFA Euro 2020-main-29,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-23,Slovakia,Spain,0.0,5.0
+UEFA Euro 2020-main-30,UEFA Euro 2020,UEFA Euro,2020,Group E,group,2021-06-23,Sweden,Poland,3.0,2.0
+UEFA Euro 2020-main-31,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-15,Hungary,Portugal,0.0,3.0
+UEFA Euro 2020-main-32,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-15,France,Germany,1.0,0.0
+UEFA Euro 2020-main-33,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-19,Hungary,France,1.0,1.0
+UEFA Euro 2020-main-34,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-19,Portugal,Germany,2.0,4.0
+UEFA Euro 2020-main-35,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-23,Portugal,France,2.0,2.0
+UEFA Euro 2020-main-36,UEFA Euro 2020,UEFA Euro,2020,Group F,group,2021-06-23,Germany,Hungary,2.0,2.0
+UEFA Euro 2020-main-37,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-26,Wales,Denmark,0.0,4.0
+UEFA Euro 2020-main-38,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-26,Italy,Austria,2.0,1.0
+UEFA Euro 2020-main-39,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-27,Netherlands,Czech Republic,0.0,2.0
+UEFA Euro 2020-main-40,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-27,Belgium,Portugal,1.0,0.0
+UEFA Euro 2020-main-41,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-28,Croatia,Spain,3.0,5.0
+UEFA Euro 2020-main-42,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-28,France,Switzerland,3.0,3.0
+UEFA Euro 2020-main-43,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-29,England,Germany,2.0,0.0
+UEFA Euro 2020-main-44,UEFA Euro 2020,UEFA Euro,2020,Round of 16,knockout,2021-06-29,Sweden,Ukraine,1.0,2.0
+UEFA Euro 2020-main-45,UEFA Euro 2020,UEFA Euro,2020,Quarter-finals,knockout,2021-07-02,Switzerland,Spain,1.0,1.0
+UEFA Euro 2020-main-46,UEFA Euro 2020,UEFA Euro,2020,Quarter-finals,knockout,2021-07-02,Belgium,Italy,1.0,2.0
+UEFA Euro 2020-main-47,UEFA Euro 2020,UEFA Euro,2020,Quarter-finals,knockout,2021-07-03,Czech Republic,Denmark,1.0,2.0
+UEFA Euro 2020-main-48,UEFA Euro 2020,UEFA Euro,2020,Quarter-finals,knockout,2021-07-03,Ukraine,England,0.0,4.0
+UEFA Euro 2020-main-49,UEFA Euro 2020,UEFA Euro,2020,Semi-finals,knockout,2021-07-06,Italy,Spain,1.0,1.0
+UEFA Euro 2020-main-50,UEFA Euro 2020,UEFA Euro,2020,Semi-finals,knockout,2021-07-07,England,Denmark,2.0,1.0
+UEFA Euro 2020-main-51,UEFA Euro 2020,UEFA Euro,2020,Final,knockout,2021-07-11,Italy,England,1.0,1.0
+UEFA Euro 2024-main-1,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-14,Germany,Scotland,5.0,1.0
+UEFA Euro 2024-main-2,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-15,Hungary,Switzerland,1.0,3.0
+UEFA Euro 2024-main-3,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-19,Germany,Hungary,2.0,0.0
+UEFA Euro 2024-main-4,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-19,Scotland,Switzerland,1.0,1.0
+UEFA Euro 2024-main-5,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-23,Switzerland,Germany,1.0,1.0
+UEFA Euro 2024-main-6,UEFA Euro 2024,UEFA Euro,2024,Group A,group,2024-06-23,Scotland,Hungary,0.0,1.0
+UEFA Euro 2024-main-7,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-15,Spain,Croatia,3.0,0.0
+UEFA Euro 2024-main-8,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-15,Italy,Albania,2.0,1.0
+UEFA Euro 2024-main-9,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-19,Croatia,Albania,2.0,2.0
+UEFA Euro 2024-main-10,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-20,Spain,Italy,1.0,0.0
+UEFA Euro 2024-main-11,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-24,Albania,Spain,0.0,1.0
+UEFA Euro 2024-main-12,UEFA Euro 2024,UEFA Euro,2024,Group B,group,2024-06-24,Croatia,Italy,1.0,1.0
+UEFA Euro 2024-main-13,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-16,Slovenia,Denmark,1.0,1.0
+UEFA Euro 2024-main-14,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-16,Serbia,England,0.0,1.0
+UEFA Euro 2024-main-15,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-20,Slovenia,Serbia,1.0,1.0
+UEFA Euro 2024-main-16,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-20,Denmark,England,1.0,1.0
+UEFA Euro 2024-main-17,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-25,England,Slovenia,0.0,0.0
+UEFA Euro 2024-main-18,UEFA Euro 2024,UEFA Euro,2024,Group C,group,2024-06-25,Denmark,Serbia,0.0,0.0
+UEFA Euro 2024-main-19,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-16,Poland,Netherlands,1.0,2.0
+UEFA Euro 2024-main-20,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-17,Austria,France,0.0,1.0
+UEFA Euro 2024-main-21,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-21,Poland,Austria,1.0,3.0
+UEFA Euro 2024-main-22,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-21,Netherlands,France,0.0,0.0
+UEFA Euro 2024-main-23,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-25,Netherlands,Austria,2.0,3.0
+UEFA Euro 2024-main-24,UEFA Euro 2024,UEFA Euro,2024,Group D,group,2024-06-25,France,Poland,1.0,1.0
+UEFA Euro 2024-main-25,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-17,Romania,Ukraine,3.0,0.0
+UEFA Euro 2024-main-26,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-17,Belgium,Slovakia,0.0,1.0
+UEFA Euro 2024-main-27,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-21,Slovakia,Ukraine,1.0,2.0
+UEFA Euro 2024-main-28,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-22,Belgium,Romania,2.0,0.0
+UEFA Euro 2024-main-29,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-26,Slovakia,Romania,1.0,1.0
+UEFA Euro 2024-main-30,UEFA Euro 2024,UEFA Euro,2024,Group E,group,2024-06-26,Ukraine,Belgium,0.0,0.0
+UEFA Euro 2024-main-31,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-18,Turkey,Georgia,3.0,1.0
+UEFA Euro 2024-main-32,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-18,Portugal,Czech Republic,2.0,1.0
+UEFA Euro 2024-main-33,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-22,Georgia,Czech Republic,1.0,1.0
+UEFA Euro 2024-main-34,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-22,Turkey,Portugal,0.0,3.0
+UEFA Euro 2024-main-35,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-26,Georgia,Portugal,2.0,0.0
+UEFA Euro 2024-main-36,UEFA Euro 2024,UEFA Euro,2024,Group F,group,2024-06-26,Czech Republic,Turkey,1.0,2.0
+UEFA Euro 2024-main-37,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-06-29,Switzerland,Italy,2.0,0.0
+UEFA Euro 2024-main-38,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-06-29,Germany,Denmark,2.0,0.0
+UEFA Euro 2024-main-39,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-06-30,England,Slovakia,2.0,1.0
+UEFA Euro 2024-main-40,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-06-30,Spain,Georgia,4.0,1.0
+UEFA Euro 2024-main-41,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-07-01,France,Belgium,1.0,0.0
+UEFA Euro 2024-main-42,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-07-01,Portugal,Slovenia,0.0,0.0
+UEFA Euro 2024-main-43,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-07-02,Romania,Netherlands,0.0,3.0
+UEFA Euro 2024-main-44,UEFA Euro 2024,UEFA Euro,2024,Round of 16,knockout,2024-07-02,Austria,Turkey,1.0,2.0
+UEFA Euro 2024-main-45,UEFA Euro 2024,UEFA Euro,2024,Quarter-finals,knockout,2024-07-05,Spain,Germany,2.0,1.0
+UEFA Euro 2024-main-46,UEFA Euro 2024,UEFA Euro,2024,Quarter-finals,knockout,2024-07-05,Portugal,France,0.0,0.0
+UEFA Euro 2024-main-47,UEFA Euro 2024,UEFA Euro,2024,Quarter-finals,knockout,2024-07-06,England,Switzerland,1.0,1.0
+UEFA Euro 2024-main-48,UEFA Euro 2024,UEFA Euro,2024,Quarter-finals,knockout,2024-07-06,Netherlands,Turkey,2.0,1.0
+UEFA Euro 2024-main-49,UEFA Euro 2024,UEFA Euro,2024,Semi-finals,knockout,2024-07-09,Spain,France,2.0,1.0
+UEFA Euro 2024-main-50,UEFA Euro 2024,UEFA Euro,2024,Semi-finals,knockout,2024-07-10,Netherlands,England,1.0,2.0
+UEFA Euro 2024-main-51,UEFA Euro 2024,UEFA Euro,2024,Final,knockout,2024-07-14,Spain,England,2.0,1.0

@@ -1,0 +1,23 @@
+phase,round,phase_pick_rank,pick_style,player,team,opponent,scorito_position,group_goals,expected_round_goals,points_per_goal,expected_round_points,team_xg,team_elo_diff,pure_points_rank,differential_score,selected_for_pool_size
+Fase 2 - Round of 32 / 1e knockout,Round of 32,1,core_expected_points,Maximiliano Araújo,Uruguay,Egypt,Keeper / Verdediger,2,0.95395927129751,96,91.58009004456096,1.235,-69.98,1,128.21212606238535,medium
+Fase 2 - Round of 32 / 1e knockout,Round of 32,2,core_expected_points,Daichi Kamada,Japan,Morocco,Middenvelder,2,0.790254135648755,48,37.93219851114024,1.497,55.47,2,43.622028287811276,medium
+Fase 2 - Round of 32 / 1e knockout,Round of 32,3,core_expected_points,Daniel Muñoz,Colombia,Iraq,Keeper / Verdediger,1,0.3853058786670051,96,36.989364352032496,1.926,219.03,3,51.78511009284549,medium
+Fase 2 - Round of 32 / 1e knockout,Round of 32,4,core_expected_points,Ramin Rezaeian,Iran,Australia,Keeper / Verdediger,1,0.3801044493599739,96,36.49002713855749,1.52,64.99,4,51.086037993980476,medium
+Fase 2b - Achtste finale,Round of 16,1,core_expected_points,Daichi Kamada,Japan,South Korea,Middenvelder,2,0.8937209429882045,48,42.898605263433815,1.693,135.22,1,49.333396052948885,medium
+Fase 2b - Achtste finale,Round of 16,2,core_expected_points,Daniel Muñoz,Colombia,Switzerland,Keeper / Verdediger,1,0.312485868368568,96,29.99864336338253,1.562,83.04,2,41.99810070873554,medium
+Fase 2b - Achtste finale,Round of 16,3,core_expected_points,Ramin Rezaeian,Iran,Argentina,Keeper / Verdediger,1,0.271574626319034,96,26.071164126627263,1.086,-153.63,3,36.499629777278166,medium
+Fase 2b - Achtste finale,Round of 16,4,differential_upside,Luis Romo,Mexico,England,Keeper / Verdediger,1,0.2544699260978352,96,24.42911290539218,1.272,-50.54,5,34.20075806754905,medium
+Fase 3 - Kwartfinale,Quarterfinals,1,core_expected_points,Vinícius Júnior,Brazil,Mexico,Aanvaller,2,1.1943170142151427,32,38.218144454884566,1.551,78.08,1,36.30723723214034,medium
+Fase 3 - Kwartfinale,Quarterfinals,2,core_expected_points,João Neves,Portugal,United States,Middenvelder,1,0.5251735528399271,64,33.61110738175533,1.34,-16.57,2,38.65277348901863,medium
+Fase 3 - Kwartfinale,Quarterfinals,3,core_expected_points,Luis Romo,Mexico,Brazil,Keeper / Verdediger,1,0.2438670125104254,128,31.214977601334454,1.219,-78.08,3,43.70096864186823,medium
+Fase 3 - Kwartfinale,Quarterfinals,4,differential_upside,Alex Freeman,United States,Portugal,Keeper / Verdediger,1,0.1764234796206984,128,22.5822053914494,1.411,16.57,5,31.615087548029155,medium
+Fase 4 - Halve finale,Semifinals,1,core_expected_points,Vinícius Júnior,Brazil,Argentina,Aanvaller,2,1.0172100424101893,40,40.68840169640757,1.321,-26.05,1,38.653981611587184,medium
+Fase 4 - Halve finale,Semifinals,2,core_expected_points,João Neves,Portugal,Germany,Middenvelder,1,0.4840218938487387,80,38.7217515078991,1.235,-69.63,2,44.530014234083964,medium
+Fase 4 - Halve finale,Semifinals,3,core_expected_points,Deniz Undav,Germany,Portugal,Aanvaller,2,0.64262529690493,40,25.7050118761972,1.53,69.63,3,24.41976128238734,medium
+Fase 4 - Halve finale,Semifinals,4,core_expected_points,Nathaniel Brown,Germany,Portugal,Keeper / Verdediger,1,0.1391291405552057,160,22.26066248883292,1.53,69.63,4,31.164927484366086,medium
+Fase 5 - Troostfinale,Match for third place,1,core_expected_points,João Neves,Portugal,Argentina,Middenvelder,1,0.443654075981192,96,42.59079129419444,1.132,-126.39,1,48.9794099883236,medium
+Fase 5 - Troostfinale,Match for third place,2,core_expected_points,Lionel Messi,Argentina,Portugal,Aanvaller,1,0.4571782601443231,48,21.94455648692751,1.67,126.39,2,20.847328662581134,medium
+Fase 6 - Finale,Final,1,core_expected_points,Vinícius Júnior,Brazil,Germany,Aanvaller,2,1.1103837101858387,48,53.29841808892026,1.442,30.7,1,50.633497184474244,medium
+Fase 6 - Finale,Final,2,core_expected_points,Deniz Undav,Germany,Brazil,Aanvaller,2,0.5510616925093257,48,26.450961240447636,1.312,-30.7,2,25.128413178425255,medium
+Fase 6 - Finale,Final,3,core_expected_points,Nathaniel Brown,Germany,Brazil,Keeper / Verdediger,1,0.1193055113780588,192,22.906658184587293,1.312,-30.7,3,32.06932145842221,medium
+Fase 6 - Finale,Final,4,core_expected_points,Nico Schlotterbeck,Germany,Brazil,Keeper / Verdediger,1,0.1193055113780588,192,22.906658184587293,1.312,-30.7,4,32.06932145842221,medium

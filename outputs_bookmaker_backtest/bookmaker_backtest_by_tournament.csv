@@ -1,0 +1,17 @@
+strategy,matches_evaluated,exact_accuracy,toto_accuracy,scorito_points,points_per_match,market_coverage_rate,notes,tournament
+model_all,16,0.0625,0.375,630.0,39.375,0.0,,FIFA World Cup 2010
+common_home_1_0_all,16,0.0625,0.4375,705.0,44.0625,0.0,,FIFA World Cup 2010
+model_all,16,0.3125,0.4375,945.0,59.0625,0.0,,FIFA World Cup 2014
+common_home_1_0_all,16,0.1875,0.5625,1155.0,72.1875,0.0,,FIFA World Cup 2014
+model_all,15,0.06666666666666667,0.4,615.0,41.0,0.0,,FIFA World Cup 2018
+common_home_1_0_all,15,0.13333333333333333,0.5333333333333333,1050.0,70.0,0.0,,FIFA World Cup 2018
+model_all,16,0.0,0.5,840.0,52.5,0.0,,FIFA World Cup 2022
+common_home_1_0_all,16,0.0625,0.625,1200.0,75.0,0.0,,FIFA World Cup 2022
+model_all,7,0.0,0.7142857142857143,690.0,98.57142857142857,0.0,,UEFA Euro 2012
+common_home_1_0_all,7,0.0,0.42857142857142855,420.0,60.0,0.0,,UEFA Euro 2012
+model_all,15,0.06666666666666667,0.4,645.0,43.0,0.0,,UEFA Euro 2016
+common_home_1_0_all,15,0.13333333333333333,0.5333333333333333,1065.0,71.0,0.0,,UEFA Euro 2016
+model_all,15,0.06666666666666667,0.4,705.0,47.0,0.0,,UEFA Euro 2020
+common_home_1_0_all,15,0.06666666666666667,0.26666666666666666,465.0,31.0,0.0,,UEFA Euro 2020
+model_all,15,0.0,0.26666666666666666,510.0,34.0,0.0,,UEFA Euro 2024
+common_home_1_0_all,15,0.06666666666666667,0.6,1065.0,71.0,0.0,,UEFA Euro 2024

@@ -1,0 +1,49 @@
+team,group,played,wins,draws,losses,goals_for,goals_against,actual_matches,projected_matches,points,goal_difference,form_adjusted_elo,position,third_place_rank
+Mexico,Group A,3,3,0,0,6,2,1,2,9,4,1671.65,1,
+South Korea,Group A,3,2,0,1,5,4,1,2,6,1,1639.76,2,
+Czech Republic,Group A,3,1,0,2,4,5,1,2,3,-1,1531.5,3,5.0
+South Africa,Group A,3,0,0,3,2,6,1,2,0,-4,1518.03,4,
+Switzerland,Group B,3,2,1,0,4,2,1,2,7,2,1576.4,1,
+Bosnia and Herzegovina,Group B,3,1,1,1,4,4,1,2,4,0,1528.32,2,
+Canada,Group B,3,1,1,1,3,3,1,2,4,0,1568.03,3,2.0
+Qatar,Group B,3,0,1,2,3,5,1,2,1,-2,1465.01,4,
+Morocco,Group C,3,2,1,0,5,3,1,2,7,2,1717.98,1,
+Brazil,Group C,3,2,1,0,5,3,1,2,7,2,1632.37,2,
+Scotland,Group C,3,1,0,2,3,4,1,2,3,-1,1598.53,3,6.0
+Haiti,Group C,3,0,0,3,2,5,1,2,0,-3,1496.62,4,
+Australia,Group D,3,3,0,0,6,2,1,2,9,4,1644.64,1,
+United States,Group D,3,2,0,1,7,4,1,2,6,3,1580.07,2,
+Turkey,Group D,3,1,0,2,3,5,1,2,3,-2,1561.13,3,10.0
+Paraguay,Group D,3,0,0,3,3,8,1,2,0,-5,1486.25,4,
+Ivory Coast,Group E,3,3,0,0,5,2,1,2,9,3,1698.17,1,
+Germany,Group E,3,2,0,1,10,4,1,2,6,6,1685.68,2,
+Ecuador,Group E,3,1,0,2,3,4,1,2,3,-1,1562.66,3,7.0
+Curaçao,Group E,3,0,0,3,3,11,1,2,0,-8,1472.57,4,
+Japan,Group F,3,2,1,0,6,4,1,2,7,2,1638.62,1,
+Netherlands,Group F,3,2,1,0,6,4,1,2,7,2,1611.87,2,
+Sweden,Group F,3,1,0,2,7,5,1,2,3,2,1603.99,3,4.0
+Tunisia,Group F,3,0,0,3,3,9,1,2,0,-6,1472.29,4,
+Belgium,Group G,3,2,1,0,5,3,1,2,7,2,1626.46,1,
+Egypt,Group G,3,2,1,0,4,2,1,2,7,2,1612.15,2,
+New Zealand,Group G,3,0,1,2,4,6,1,2,1,-2,1482.63,3,12.0
+Iran,Group G,3,0,1,2,3,5,1,2,1,-2,1605.56,4,
+Spain,Group H,3,2,1,0,4,2,1,2,7,2,1645.79,1,
+Uruguay,Group H,3,1,1,1,3,3,1,2,4,0,1549.36,2,
+Cape Verde,Group H,3,1,1,1,1,1,1,2,4,0,1543.15,3,3.0
+Saudi Arabia,Group H,3,0,1,2,2,4,1,2,1,-2,1528.79,4,
+France,Group I,3,3,0,0,7,3,1,2,9,4,1687.07,1,
+Norway,Group I,3,2,0,1,7,4,1,2,6,3,1671.26,2,
+Senegal,Group I,3,1,0,2,4,6,1,2,3,-2,1581.35,3,9.0
+Iraq,Group I,3,0,0,3,3,8,1,2,0,-5,1502.78,4,
+Argentina,Group J,3,3,0,0,7,2,1,2,9,5,1743.64,1,
+Austria,Group J,3,2,0,1,6,4,1,2,6,2,1663.4,2,
+Algeria,Group J,3,1,0,2,3,6,1,2,3,-3,1626.55,3,11.0
+Jordan,Group J,3,0,0,3,3,7,1,2,0,-4,1485.39,4,
+Colombia,Group K,3,3,0,0,7,3,1,2,9,4,1657.61,1,
+Portugal,Group K,3,1,1,1,4,4,1,2,4,0,1633.93,2,
+DR Congo,Group K,3,1,1,1,4,4,1,2,4,0,1598.99,3,1.0
+Uzbekistan,Group K,3,0,0,3,3,7,1,2,0,-4,1496.43,4,
+England,Group L,3,3,0,0,8,4,1,2,9,4,1684.53,1,
+Ghana,Group L,3,2,0,1,4,3,1,2,6,1,1552.36,2,
+Croatia,Group L,3,1,0,2,5,7,1,2,3,-2,1527.6,3,8.0
+Panama,Group L,3,0,0,3,2,5,1,2,0,-3,1512.09,4,

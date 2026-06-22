@@ -1,0 +1,35 @@
+tournament,round,picks,selected_points,oracle_candidate_points,oracle_overall_points,selected_goals,scoring_picks,candidate_count,position_known_rate,candidate_efficiency,overall_efficiency
+FIFA World Cup 2010,Round of 16,4,0.0,120.0,264.0,0.0,0.0,51.0,1.0,0.0,0.0
+FIFA World Cup 2010,Quarter-finals,4,32.0,160.0,288.0,1.0,1.0,25.0,1.0,0.2,0.1111111111111111
+FIFA World Cup 2010,Semi-finals,4,0.0,120.0,560.0,0.0,0.0,14.0,1.0,0.0,0.0
+FIFA World Cup 2010,Match for third place,4,48.0,96.0,384.0,1.0,1.0,8.0,1.0,0.5,0.125
+FIFA World Cup 2010,Final,4,96.0,96.0,96.0,1.0,1.0,6.0,1.0,1.0,1.0
+FIFA World Cup 2014,Round of 16,4,0.0,144.0,288.0,0.0,0.0,63.0,1.0,0.0,0.0
+FIFA World Cup 2014,Quarter-finals,4,0.0,160.0,416.0,0.0,0.0,34.0,1.0,0.0,0.0
+FIFA World Cup 2014,Semi-finals,4,0.0,160.0,280.0,0.0,0.0,15.0,1.0,0.0,0.0
+FIFA World Cup 2014,Match for third place,4,0.0,48.0,336.0,0.0,0.0,9.0,1.0,0.0,0.0
+FIFA World Cup 2014,Final,4,0.0,48.0,48.0,0.0,0.0,6.0,1.0,0.0,0.0
+FIFA World Cup 2018,Round of 16,4,96.0,168.0,384.0,1.0,1.0,56.0,1.0,0.5714285714285714,0.25
+FIFA World Cup 2018,Quarter-finals,4,0.0,64.0,512.0,0.0,0.0,29.0,1.0,0.0,0.0
+FIFA World Cup 2018,Semi-finals,4,0.0,40.0,400.0,0.0,0.0,15.0,1.0,0.0,0.0
+FIFA World Cup 2018,Final,4,0.0,144.0,240.0,0.0,0.0,7.0,1.0,0.0,0.0
+FIFA World Cup 2022,Round of 16,4,24.0,96.0,384.0,1.0,1.0,57.0,1.0,0.25,0.0625
+FIFA World Cup 2022,Quarter-finals,4,32.0,96.0,320.0,1.0,1.0,30.0,1.0,0.3333333333333333,0.1
+FIFA World Cup 2022,Semi-finals,4,40.0,80.0,280.0,1.0,1.0,14.0,1.0,0.5,0.14285714285714285
+FIFA World Cup 2022,Match for third place,4,0.0,0.0,432.0,0.0,0.0,7.0,1.0,,0.0
+FIFA World Cup 2022,Final,4,96.0,96.0,144.0,2.0,2.0,7.0,1.0,1.0,0.6666666666666666
+UEFA Euro 2012,Quarter-finals,4,0.0,64.0,288.0,0.0,0.0,28.0,1.0,0.0,0.0
+UEFA Euro 2012,Semi-finals,4,0.0,40.0,120.0,0.0,0.0,15.0,1.0,0.0,0.0
+UEFA Euro 2012,Final,4,96.0,144.0,384.0,1.0,1.0,8.0,1.0,0.6666666666666666,0.25
+UEFA Euro 2016,Round of 16,4,0.0,168.0,384.0,0.0,0.0,47.0,1.0,0.0,0.0
+UEFA Euro 2016,Quarter-finals,4,64.0,224.0,384.0,1.0,1.0,24.0,1.0,0.2857142857142857,0.16666666666666666
+UEFA Euro 2016,Semi-finals,4,40.0,120.0,120.0,1.0,1.0,12.0,1.0,0.3333333333333333,0.3333333333333333
+UEFA Euro 2016,Final,4,0.0,0.0,48.0,0.0,0.0,5.0,1.0,,0.0
+UEFA Euro 2020,Round of 16,4,24.0,192.0,384.0,1.0,1.0,47.0,1.0,0.125,0.0625
+UEFA Euro 2020,Quarter-finals,4,32.0,128.0,320.0,1.0,1.0,23.0,1.0,0.25,0.1
+UEFA Euro 2020,Semi-finals,4,0.0,120.0,200.0,0.0,0.0,13.0,1.0,0.0,0.0
+UEFA Euro 2020,Final,4,0.0,0.0,384.0,0.0,0.0,5.0,1.0,,0.0
+UEFA Euro 2024,Round of 16,4,48.0,168.0,240.0,1.0,1.0,50.0,1.0,0.2857142857142857,0.2
+UEFA Euro 2024,Quarter-finals,4,0.0,96.0,352.0,0.0,0.0,29.0,1.0,0.0,0.0
+UEFA Euro 2024,Semi-finals,4,0.0,40.0,160.0,0.0,0.0,10.0,1.0,0.0,0.0
+UEFA Euro 2024,Final,4,0.0,0.0,144.0,0.0,0.0,6.0,1.0,,0.0

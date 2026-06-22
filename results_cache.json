@@ -1,0 +1,942 @@
+{
+  "generated_at": "2026-06-22T14:04:22.010052+00:00",
+  "source_url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+  "matches": [
+    {
+      "date": "2026-06-11T00:00:00",
+      "group": "Group A",
+      "match_no": 1,
+      "home_team": "Mexico",
+      "away_team": "South Africa",
+      "home_score": 2.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-11T00:00:00",
+      "group": "Group A",
+      "match_no": 2,
+      "home_team": "South Korea",
+      "away_team": "Czech Republic",
+      "home_score": 2.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-12T00:00:00",
+      "group": "Group B",
+      "match_no": 7,
+      "home_team": "Canada",
+      "away_team": "Bosnia and Herzegovina",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-12T00:00:00",
+      "group": "Group D",
+      "match_no": 19,
+      "home_team": "United States",
+      "away_team": "Paraguay",
+      "home_score": 4.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-13T00:00:00",
+      "group": "Group B",
+      "match_no": 8,
+      "home_team": "Qatar",
+      "away_team": "Switzerland",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-13T00:00:00",
+      "group": "Group C",
+      "match_no": 13,
+      "home_team": "Brazil",
+      "away_team": "Morocco",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-13T00:00:00",
+      "group": "Group C",
+      "match_no": 14,
+      "home_team": "Haiti",
+      "away_team": "Scotland",
+      "home_score": 0.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-13T00:00:00",
+      "group": "Group D",
+      "match_no": 20,
+      "home_team": "Australia",
+      "away_team": "Turkey",
+      "home_score": 2.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-14T00:00:00",
+      "group": "Group E",
+      "match_no": 25,
+      "home_team": "Germany",
+      "away_team": "Curaçao",
+      "home_score": 7.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-14T00:00:00",
+      "group": "Group E",
+      "match_no": 26,
+      "home_team": "Ivory Coast",
+      "away_team": "Ecuador",
+      "home_score": 1.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-14T00:00:00",
+      "group": "Group F",
+      "match_no": 31,
+      "home_team": "Netherlands",
+      "away_team": "Japan",
+      "home_score": 2.0,
+      "away_score": 2.0
+    },
+    {
+      "date": "2026-06-14T00:00:00",
+      "group": "Group F",
+      "match_no": 32,
+      "home_team": "Sweden",
+      "away_team": "Tunisia",
+      "home_score": 5.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-15T00:00:00",
+      "group": "Group G",
+      "match_no": 37,
+      "home_team": "Belgium",
+      "away_team": "Egypt",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-15T00:00:00",
+      "group": "Group G",
+      "match_no": 38,
+      "home_team": "Iran",
+      "away_team": "New Zealand",
+      "home_score": 2.0,
+      "away_score": 2.0
+    },
+    {
+      "date": "2026-06-15T00:00:00",
+      "group": "Group H",
+      "match_no": 43,
+      "home_team": "Spain",
+      "away_team": "Cape Verde",
+      "home_score": 0.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-15T00:00:00",
+      "group": "Group H",
+      "match_no": 44,
+      "home_team": "Saudi Arabia",
+      "away_team": "Uruguay",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-16T00:00:00",
+      "group": "Group I",
+      "match_no": 49,
+      "home_team": "France",
+      "away_team": "Senegal",
+      "home_score": 3.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-16T00:00:00",
+      "group": "Group I",
+      "match_no": 50,
+      "home_team": "Iraq",
+      "away_team": "Norway",
+      "home_score": 1.0,
+      "away_score": 4.0
+    },
+    {
+      "date": "2026-06-16T00:00:00",
+      "group": "Group J",
+      "match_no": 55,
+      "home_team": "Argentina",
+      "away_team": "Algeria",
+      "home_score": 3.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-16T00:00:00",
+      "group": "Group J",
+      "match_no": 56,
+      "home_team": "Austria",
+      "away_team": "Jordan",
+      "home_score": 3.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-17T00:00:00",
+      "group": "Group K",
+      "match_no": 61,
+      "home_team": "Portugal",
+      "away_team": "DR Congo",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-17T00:00:00",
+      "group": "Group K",
+      "match_no": 62,
+      "home_team": "Uzbekistan",
+      "away_team": "Colombia",
+      "home_score": 1.0,
+      "away_score": 3.0
+    },
+    {
+      "date": "2026-06-17T00:00:00",
+      "group": "Group L",
+      "match_no": 67,
+      "home_team": "England",
+      "away_team": "Croatia",
+      "home_score": 4.0,
+      "away_score": 2.0
+    },
+    {
+      "date": "2026-06-17T00:00:00",
+      "group": "Group L",
+      "match_no": 68,
+      "home_team": "Ghana",
+      "away_team": "Panama",
+      "home_score": 1.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-18T00:00:00",
+      "group": "Group A",
+      "match_no": 3,
+      "home_team": "Czech Republic",
+      "away_team": "South Africa",
+      "home_score": 1.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-18T00:00:00",
+      "group": "Group A",
+      "match_no": 4,
+      "home_team": "Mexico",
+      "away_team": "South Korea",
+      "home_score": 1.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-18T00:00:00",
+      "group": "Group B",
+      "match_no": 9,
+      "home_team": "Switzerland",
+      "away_team": "Bosnia and Herzegovina",
+      "home_score": 4.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-18T00:00:00",
+      "group": "Group B",
+      "match_no": 10,
+      "home_team": "Canada",
+      "away_team": "Qatar",
+      "home_score": 6.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-19T00:00:00",
+      "group": "Group C",
+      "match_no": 15,
+      "home_team": "Scotland",
+      "away_team": "Morocco",
+      "home_score": 0.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-19T00:00:00",
+      "group": "Group C",
+      "match_no": 16,
+      "home_team": "Brazil",
+      "away_team": "Haiti",
+      "home_score": 3.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-19T00:00:00",
+      "group": "Group D",
+      "match_no": 21,
+      "home_team": "United States",
+      "away_team": "Australia",
+      "home_score": 2.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-19T00:00:00",
+      "group": "Group D",
+      "match_no": 22,
+      "home_team": "Turkey",
+      "away_team": "Paraguay",
+      "home_score": 0.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-20T00:00:00",
+      "group": "Group E",
+      "match_no": 27,
+      "home_team": "Germany",
+      "away_team": "Ivory Coast",
+      "home_score": 2.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-20T00:00:00",
+      "group": "Group E",
+      "match_no": 28,
+      "home_team": "Ecuador",
+      "away_team": "Curaçao",
+      "home_score": 0.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-20T00:00:00",
+      "group": "Group F",
+      "match_no": 33,
+      "home_team": "Netherlands",
+      "away_team": "Sweden",
+      "home_score": 5.0,
+      "away_score": 1.0
+    },
+    {
+      "date": "2026-06-20T00:00:00",
+      "group": "Group F",
+      "match_no": 34,
+      "home_team": "Tunisia",
+      "away_team": "Japan",
+      "home_score": 0.0,
+      "away_score": 4.0
+    },
+    {
+      "date": "2026-06-21T00:00:00",
+      "group": "Group G",
+      "match_no": 39,
+      "home_team": "Belgium",
+      "away_team": "Iran",
+      "home_score": 0.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-21T00:00:00",
+      "group": "Group G",
+      "match_no": 40,
+      "home_team": "New Zealand",
+      "away_team": "Egypt",
+      "home_score": 1.0,
+      "away_score": 3.0
+    },
+    {
+      "date": "2026-06-21T00:00:00",
+      "group": "Group H",
+      "match_no": 45,
+      "home_team": "Spain",
+      "away_team": "Saudi Arabia",
+      "home_score": 4.0,
+      "away_score": 0.0
+    },
+    {
+      "date": "2026-06-21T00:00:00",
+      "group": "Group H",
+      "match_no": 46,
+      "home_team": "Uruguay",
+      "away_team": "Cape Verde",
+      "home_score": 2.0,
+      "away_score": 2.0
+    },
+    {
+      "date": "2026-06-22T00:00:00",
+      "group": "Group I",
+      "match_no": 41,
+      "home_team": "Norway",
+      "away_team": "Senegal",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-22T00:00:00",
+      "group": "Group I",
+      "match_no": 42,
+      "home_team": "France",
+      "away_team": "Iraq",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-22T00:00:00",
+      "group": "Group J",
+      "match_no": 43,
+      "home_team": "Argentina",
+      "away_team": "Austria",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-22T00:00:00",
+      "group": "Group J",
+      "match_no": 44,
+      "home_team": "Jordan",
+      "away_team": "Algeria",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-23T00:00:00",
+      "group": "Group L",
+      "match_no": 45,
+      "home_team": "England",
+      "away_team": "Ghana",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-23T00:00:00",
+      "group": "Group L",
+      "match_no": 46,
+      "home_team": "Panama",
+      "away_team": "Croatia",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-23T00:00:00",
+      "group": "Group K",
+      "match_no": 47,
+      "home_team": "Portugal",
+      "away_team": "Uzbekistan",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-23T00:00:00",
+      "group": "Group K",
+      "match_no": 48,
+      "home_team": "Colombia",
+      "away_team": "DR Congo",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group C",
+      "match_no": 49,
+      "home_team": "Scotland",
+      "away_team": "Brazil",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group C",
+      "match_no": 50,
+      "home_team": "Morocco",
+      "away_team": "Haiti",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group B",
+      "match_no": 51,
+      "home_team": "Switzerland",
+      "away_team": "Canada",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group B",
+      "match_no": 52,
+      "home_team": "Bosnia and Herzegovina",
+      "away_team": "Qatar",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group A",
+      "match_no": 53,
+      "home_team": "Czech Republic",
+      "away_team": "Mexico",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-24T00:00:00",
+      "group": "Group A",
+      "match_no": 54,
+      "home_team": "South Africa",
+      "away_team": "South Korea",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group E",
+      "match_no": 55,
+      "home_team": "Curaçao",
+      "away_team": "Ivory Coast",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group E",
+      "match_no": 56,
+      "home_team": "Ecuador",
+      "away_team": "Germany",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group F",
+      "match_no": 57,
+      "home_team": "Japan",
+      "away_team": "Sweden",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group F",
+      "match_no": 58,
+      "home_team": "Tunisia",
+      "away_team": "Netherlands",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group D",
+      "match_no": 59,
+      "home_team": "Turkey",
+      "away_team": "United States",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-25T00:00:00",
+      "group": "Group D",
+      "match_no": 60,
+      "home_team": "Paraguay",
+      "away_team": "Australia",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group I",
+      "match_no": 61,
+      "home_team": "Norway",
+      "away_team": "France",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group I",
+      "match_no": 62,
+      "home_team": "Senegal",
+      "away_team": "Iraq",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group G",
+      "match_no": 63,
+      "home_team": "Egypt",
+      "away_team": "Iran",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group G",
+      "match_no": 64,
+      "home_team": "New Zealand",
+      "away_team": "Belgium",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group H",
+      "match_no": 65,
+      "home_team": "Cape Verde",
+      "away_team": "Saudi Arabia",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-26T00:00:00",
+      "group": "Group H",
+      "match_no": 66,
+      "home_team": "Uruguay",
+      "away_team": "Spain",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group L",
+      "match_no": 67,
+      "home_team": "Panama",
+      "away_team": "England",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group L",
+      "match_no": 68,
+      "home_team": "Croatia",
+      "away_team": "Ghana",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group J",
+      "match_no": 69,
+      "home_team": "Algeria",
+      "away_team": "Austria",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group J",
+      "match_no": 70,
+      "home_team": "Jordan",
+      "away_team": "Argentina",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group K",
+      "match_no": 71,
+      "home_team": "Colombia",
+      "away_team": "Portugal",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-27T00:00:00",
+      "group": "Group K",
+      "match_no": 72,
+      "home_team": "DR Congo",
+      "away_team": "Uzbekistan",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-28T00:00:00",
+      "group": "Round of 32",
+      "match_no": 73,
+      "home_team": "Runner-up Group A",
+      "away_team": "Runner-up Group B",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-29T00:00:00",
+      "group": "Round of 32",
+      "match_no": 74,
+      "home_team": "Germany",
+      "away_team": "3rd Group A/B/C/D/F",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-29T00:00:00",
+      "group": "Round of 32",
+      "match_no": 75,
+      "home_team": "Winner Group F",
+      "away_team": "Runner-up Group C",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-29T00:00:00",
+      "group": "Round of 32",
+      "match_no": 76,
+      "home_team": "Winner Group C",
+      "away_team": "Runner-up Group F",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-30T00:00:00",
+      "group": "Round of 32",
+      "match_no": 77,
+      "home_team": "Winner Group I",
+      "away_team": "3rd Group C/D/F/G/H",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-30T00:00:00",
+      "group": "Round of 32",
+      "match_no": 78,
+      "home_team": "Runner-up Group E",
+      "away_team": "Runner-up Group I",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-06-30T00:00:00",
+      "group": "Round of 32",
+      "match_no": 79,
+      "home_team": "Mexico",
+      "away_team": "3rd Group C/E/F/H/I",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-01T00:00:00",
+      "group": "Round of 32",
+      "match_no": 80,
+      "home_team": "Winner Group L",
+      "away_team": "3rd Group E/H/I/J/K",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-01T00:00:00",
+      "group": "Round of 32",
+      "match_no": 81,
+      "home_team": "United States",
+      "away_team": "3rd Group B/E/F/I/J",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-01T00:00:00",
+      "group": "Round of 32",
+      "match_no": 82,
+      "home_team": "Winner Group G",
+      "away_team": "3rd Group A/E/H/I/J",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-02T00:00:00",
+      "group": "Round of 32",
+      "match_no": 83,
+      "home_team": "Runner-up Group K",
+      "away_team": "Runner-up Group L",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-02T00:00:00",
+      "group": "Round of 32",
+      "match_no": 84,
+      "home_team": "Winner Group H",
+      "away_team": "Runner-up Group J",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-02T00:00:00",
+      "group": "Round of 32",
+      "match_no": 85,
+      "home_team": "Winner Group B",
+      "away_team": "3rd Group E/F/G/I/J",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-03T00:00:00",
+      "group": "Round of 32",
+      "match_no": 86,
+      "home_team": "Winner Group J",
+      "away_team": "Runner-up Group H",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-03T00:00:00",
+      "group": "Round of 32",
+      "match_no": 87,
+      "home_team": "Winner Group K",
+      "away_team": "3rd Group D/E/I/J/L",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-03T00:00:00",
+      "group": "Round of 32",
+      "match_no": 88,
+      "home_team": "Runner-up Group D",
+      "away_team": "Runner-up Group G",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-04T00:00:00",
+      "group": "Round of 16",
+      "match_no": 89,
+      "home_team": "Winner Match 74",
+      "away_team": "Winner Match 77",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-04T00:00:00",
+      "group": "Round of 16",
+      "match_no": 90,
+      "home_team": "Winner Match 73",
+      "away_team": "Winner Match 75",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-05T00:00:00",
+      "group": "Round of 16",
+      "match_no": 91,
+      "home_team": "Winner Match 76",
+      "away_team": "Winner Match 78",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-05T00:00:00",
+      "group": "Round of 16",
+      "match_no": 92,
+      "home_team": "Winner Match 79",
+      "away_team": "Winner Match 80",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-06T00:00:00",
+      "group": "Round of 16",
+      "match_no": 93,
+      "home_team": "Winner Match 83",
+      "away_team": "Winner Match 84",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-06T00:00:00",
+      "group": "Round of 16",
+      "match_no": 94,
+      "home_team": "Winner Match 81",
+      "away_team": "Winner Match 82",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-07T00:00:00",
+      "group": "Round of 16",
+      "match_no": 95,
+      "home_team": "Winner Match 86",
+      "away_team": "Winner Match 88",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-07T00:00:00",
+      "group": "Round of 16",
+      "match_no": 96,
+      "home_team": "Winner Match 85",
+      "away_team": "Winner Match 87",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-09T00:00:00",
+      "group": "Quarterfinals",
+      "match_no": 97,
+      "home_team": "Winner Match 89",
+      "away_team": "Winner Match 90",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-10T00:00:00",
+      "group": "Quarterfinals",
+      "match_no": 98,
+      "home_team": "Winner Match 93",
+      "away_team": "Winner Match 94",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-11T00:00:00",
+      "group": "Quarterfinals",
+      "match_no": 99,
+      "home_team": "Winner Match 91",
+      "away_team": "Winner Match 92",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-11T00:00:00",
+      "group": "Quarterfinals",
+      "match_no": 100,
+      "home_team": "Winner Match 95",
+      "away_team": "Winner Match 96",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-14T00:00:00",
+      "group": "Semifinals",
+      "match_no": 101,
+      "home_team": "Winner Match 97",
+      "away_team": "Winner Match 98",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-15T00:00:00",
+      "group": "Semifinals",
+      "match_no": 102,
+      "home_team": "Winner Match 99",
+      "away_team": "Winner Match 100",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-18T00:00:00",
+      "group": "Match for third place",
+      "match_no": 103,
+      "home_team": "Loser Match 101",
+      "away_team": "Loser Match 102",
+      "home_score": null,
+      "away_score": null
+    },
+    {
+      "date": "2026-07-19T00:00:00",
+      "group": "Final",
+      "match_no": 104,
+      "home_team": "Winner Match 101",
+      "away_team": "Winner Match 102",
+      "home_score": null,
+      "away_score": null
+    }
+  ]
+}

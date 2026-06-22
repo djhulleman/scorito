@@ -1,0 +1,25 @@
+date,group,match_no,home_team,away_team,actual_home_score,actual_away_score,predicted_home_score,predicted_away_score,predicted_outcome,expected_total_goals,home_xg,away_xg,home_win_probability,draw_probability,away_win_probability,home_decimal_odds,draw_decimal_odds,away_decimal_odds,rating_diff,home_recent_rating,away_recent_rating,actual_outcome,outcome_correct,exact_score_correct,total_goals_absolute_error
+2026-06-11,Group A,1,Mexico,South Africa,2.0,0.0,2,1,home_win,2.873,1.628,1.245,0.4758,0.2567,0.2675,2.1,3.9,3.74,135.35,1636.25,1555.89,home_win,True,False,0.8730000000000002
+2026-06-11,Group A,2,South Korea,Czech Republic,2.0,1.0,2,1,home_win,2.899,1.463,1.436,0.3646,0.2849,0.3505,2.74,3.51,2.85,9.25,1591.28,1582.03,home_win,True,True,0.10099999999999998
+2026-06-12,Group B,7,Canada,Bosnia and Herzegovina,1.0,1.0,1,0,home_win,2.832,1.59,1.242,0.4655,0.2605,0.274,2.15,3.84,3.65,124.53,1583.52,1513.99,draw,False,False,0.8319999999999999
+2026-06-12,Group D,19,United States,Paraguay,4.0,1.0,1,0,home_win,2.714,1.389,1.325,0.3744,0.2874,0.3381,2.67,3.48,2.96,23.94,1518.33,1549.39,home_win,True,False,2.286
+2026-06-13,Group B,8,Qatar,Switzerland,1.0,1.0,1,2,away_win,3.187,1.361,1.826,0.2634,0.244,0.4927,3.8,4.1,2.03,-147.16,1447.44,1594.6,draw,False,False,1.1869999999999998
+2026-06-13,Group C,13,Brazil,Morocco,1.0,1.0,1,2,away_win,3.086,1.369,1.717,0.2842,0.2549,0.4608,3.52,3.92,2.17,-113.57,1619.85,1733.42,draw,False,False,1.0859999999999999
+2026-06-13,Group C,14,Haiti,Scotland,0.0,1.0,2,1,home_win,2.975,1.489,1.486,0.3587,0.2843,0.3569,2.79,3.52,2.8,1.18,1549.31,1548.13,away_win,False,False,1.975
+2026-06-13,Group D,20,Australia,Turkey,2.0,0.0,1,2,away_win,2.97,1.406,1.564,0.3223,0.2724,0.4054,3.1,3.67,2.47,-53.91,1577.0,1630.92,home_win,False,False,0.9700000000000002
+2026-06-14,Group E,25,Germany,Curaçao,7.0,1.0,2,1,home_win,3.103,1.72,1.383,0.4575,0.2553,0.2872,2.19,3.92,3.48,109.46,1634.67,1525.21,home_win,True,False,4.897
+2026-06-14,Group E,26,Ivory Coast,Ecuador,1.0,0.0,1,0,home_win,2.5,1.307,1.193,0.3903,0.2891,0.3205,2.56,3.46,3.12,46.31,1654.45,1608.14,home_win,True,True,1.5
+2026-06-14,Group F,31,Netherlands,Japan,2.0,2.0,1,2,away_win,2.848,1.375,1.473,0.333,0.2806,0.3863,3.0,3.56,2.59,-34.86,1608.4,1643.26,draw,False,False,1.1520000000000001
+2026-06-14,Group F,32,Sweden,Tunisia,5.0,1.0,0,1,away_win,2.803,1.355,1.448,0.3334,0.2824,0.3842,3.0,3.54,2.6,-33.3,1522.05,1555.35,home_win,False,False,3.197
+2026-06-15,Group G,37,Belgium,Egypt,1.0,1.0,2,1,home_win,2.941,1.498,1.443,0.3741,0.2813,0.3447,2.67,3.55,2.9,19.26,1629.49,1610.23,draw,False,False,0.9409999999999998
+2026-06-15,Group G,38,Iran,New Zealand,2.0,2.0,2,1,home_win,3.258,1.89,1.368,0.5067,0.2384,0.2549,1.97,4.19,3.92,161.5,1625.06,1463.56,draw,False,False,0.742
+2026-06-15,Group H,43,Spain,Cape Verde,0.0,0.0,2,1,home_win,3.233,1.835,1.398,0.4834,0.2452,0.2714,2.07,4.08,3.68,135.62,1662.64,1527.02,draw,False,False,3.233
+2026-06-15,Group H,44,Saudi Arabia,Uruguay,1.0,1.0,0,1,away_win,2.678,1.303,1.375,0.3352,0.2878,0.377,2.98,3.47,2.65,-27.58,1525.52,1553.1,draw,False,False,0.6779999999999999
+2026-06-16,Group I,49,France,Senegal,3.0,1.0,1,2,away_win,2.926,1.433,1.493,0.3436,0.2815,0.3749,2.91,3.55,2.67,-20.49,1624.3,1644.79,home_win,False,False,1.0739999999999998
+2026-06-16,Group I,50,Iraq,Norway,1.0,4.0,1,2,away_win,2.941,1.391,1.55,0.3214,0.2731,0.4055,3.11,3.66,2.47,-54.67,1559.93,1614.61,away_win,True,False,2.059
+2026-06-16,Group J,55,Argentina,Algeria,3.0,0.0,1,2,away_win,2.866,1.392,1.474,0.3369,0.2813,0.3817,2.97,3.55,2.62,-29.31,1670.91,1700.22,home_win,False,False,0.1339999999999999
+2026-06-16,Group J,56,Austria,Jordan,3.0,1.0,2,1,home_win,3.066,1.668,1.398,0.4383,0.2613,0.3004,2.28,3.83,3.33,88.75,1619.01,1530.26,home_win,True,False,0.9340000000000002
+2026-06-17,Group K,61,Portugal,DR Congo,1.0,1.0,2,1,home_win,2.887,1.51,1.377,0.3975,0.2767,0.3258,2.52,3.61,3.07,46.76,1640.0,1593.24,draw,False,False,0.887
+2026-06-17,Group K,62,Uzbekistan,Colombia,1.0,3.0,1,2,away_win,2.931,1.373,1.558,0.3155,0.2714,0.4131,3.17,3.68,2.42,-63.35,1545.46,1608.81,away_win,True,False,1.069
+2026-06-17,Group L,67,England,Croatia,4.0,2.0,2,1,home_win,2.99,1.579,1.411,0.4084,0.271,0.3206,2.45,3.69,3.12,56.92,1634.67,1577.75,home_win,True,False,3.01
+2026-06-17,Group L,68,Ghana,Panama,1.0,0.0,1,2,away_win,3.086,1.405,1.681,0.3001,0.2604,0.4394,3.33,3.84,2.28,-89.6,1487.47,1577.07,home_win,False,False,2.086

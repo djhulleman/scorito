@@ -1,0 +1,41 @@
+date,group,match_no,home_team,away_team,actual_home_score,actual_away_score,predicted_home_score,predicted_away_score,predicted_outcome,actual_outcome,outcome_correct,exact_score_correct,outcome_probability,home_xg,away_xg,elo_diff
+2026-06-11,Group A,1,Mexico,South Africa,2.0,0.0,1,0,home_win,home_win,True,False,,1.761,1.073,160.92
+2026-06-11,Group A,2,South Korea,Czech Republic,2.0,1.0,1,0,home_win,home_win,True,False,,1.582,1.195,91.11
+2026-06-12,Group B,7,Canada,Bosnia and Herzegovina,1.0,1.0,1,0,home_win,draw,False,False,,1.752,1.079,157.47
+2026-06-12,Group D,19,United States,Paraguay,4.0,1.0,1,0,home_win,home_win,True,False,,1.658,1.14,121.79
+2026-06-13,Group B,8,Qatar,Switzerland,1.0,1.0,0,1,away_win,draw,False,False,,1.155,1.637,-113.49
+2026-06-13,Group C,13,Brazil,Morocco,1.0,1.0,1,0,home_win,draw,False,False,,1.633,1.157,111.97
+2026-06-13,Group C,14,Haiti,Scotland,0.0,1.0,0,1,away_win,away_win,True,True,,1.32,1.433,-26.7
+2026-06-13,Group D,20,Australia,Turkey,2.0,0.0,1,0,home_win,home_win,True,False,,1.48,1.277,47.98
+2026-06-14,Group E,25,Germany,Curaçao,7.0,1.0,2,0,home_win,home_win,True,False,,2.169,0.872,296.28
+2026-06-14,Group E,26,Ivory Coast,Ecuador,1.0,0.0,1,1,draw,home_win,False,False,,1.369,1.381,-2.65
+2026-06-14,Group F,31,Netherlands,Japan,2.0,2.0,1,1,draw,draw,True,False,,1.389,1.361,6.43
+2026-06-14,Group F,32,Sweden,Tunisia,5.0,1.0,1,1,draw,home_win,False,False,,1.367,1.383,-3.8
+2026-06-15,Group G,37,Belgium,Egypt,1.0,1.0,1,0,home_win,draw,False,False,,1.541,1.227,74.14
+2026-06-15,Group G,38,Iran,New Zealand,2.0,2.0,1,0,home_win,draw,False,False,,1.783,1.061,168.74
+2026-06-15,Group H,43,Spain,Cape Verde,0.0,0.0,2,0,home_win,draw,False,False,,2.283,0.828,329.58
+2026-06-15,Group H,44,Saudi Arabia,Uruguay,1.0,1.0,0,1,away_win,draw,False,False,,1.131,1.671,-126.83
+2026-06-16,Group I,49,France,Senegal,3.0,1.0,1,0,home_win,home_win,True,False,,1.642,1.151,115.51
+2026-06-16,Group I,50,Iraq,Norway,1.0,4.0,0,1,away_win,away_win,True,False,,1.347,1.404,-13.34
+2026-06-16,Group J,55,Argentina,Algeria,3.0,0.0,1,0,home_win,home_win,True,False,,1.725,1.096,147.52
+2026-06-16,Group J,56,Austria,Jordan,3.0,1.0,1,0,home_win,home_win,True,False,,1.465,1.29,41.37
+2026-06-17,Group K,61,Portugal,DR Congo,1.0,1.0,1,0,home_win,draw,False,False,,1.936,0.977,222.32
+2026-06-17,Group K,62,Uzbekistan,Colombia,1.0,3.0,0,1,away_win,away_win,True,False,,1.146,1.65,-118.62
+2026-06-17,Group L,67,England,Croatia,4.0,2.0,1,0,home_win,home_win,True,False,,1.532,1.234,70.14
+2026-06-17,Group L,68,Ghana,Panama,1.0,0.0,0,1,away_win,home_win,False,False,,1.301,1.453,-36.05
+2026-06-18,Group A,3,Czech Republic,South Africa,1.0,1.0,1,0,home_win,draw,False,False,,1.43,1.322,25.35
+2026-06-18,Group A,4,Mexico,South Korea,1.0,0.0,1,0,home_win,home_win,True,True,,1.472,1.284,44.46
+2026-06-18,Group B,9,Switzerland,Bosnia and Herzegovina,4.0,1.0,1,0,home_win,home_win,True,False,,1.761,1.074,160.88
+2026-06-18,Group B,10,Canada,Qatar,6.0,0.0,1,0,home_win,home_win,True,False,,1.629,1.161,110.08
+2026-06-19,Group C,15,Scotland,Morocco,0.0,1.0,0,1,away_win,away_win,True,True,,1.093,1.73,-149.15
+2026-06-19,Group C,16,Brazil,Haiti,3.0,0.0,2,0,home_win,home_win,True,False,,2.141,0.883,287.82
+2026-06-19,Group D,21,United States,Australia,2.0,0.0,1,0,home_win,home_win,True,False,,1.413,1.338,17.76
+2026-06-19,Group D,22,Turkey,Paraguay,0.0,1.0,1,0,home_win,away_win,False,False,,1.499,1.261,56.06
+2026-06-20,Group E,27,Germany,Ivory Coast,2.0,1.0,1,0,home_win,home_win,True,False,,1.61,1.174,102.71
+2026-06-20,Group E,28,Ecuador,Curaçao,0.0,0.0,1,0,home_win,draw,False,False,,1.86,1.017,196.22
+2026-06-20,Group F,33,Netherlands,Sweden,5.0,1.0,1,0,home_win,home_win,True,False,,1.709,1.106,141.38
+2026-06-20,Group F,34,Tunisia,Japan,0.0,4.0,0,1,away_win,away_win,True,False,,1.124,1.682,-131.14
+2026-06-21,Group G,39,Belgium,Iran,0.0,0.0,1,1,draw,draw,True,False,,1.379,1.371,1.8
+2026-06-21,Group G,40,New Zealand,Egypt,1.0,3.0,0,1,away_win,away_win,True,False,,1.185,1.595,-96.4
+2026-06-21,Group H,45,Spain,Saudi Arabia,4.0,0.0,2,0,home_win,home_win,True,False,,2.074,0.912,267.1
+2026-06-21,Group H,46,Uruguay,Cape Verde,2.0,2.0,1,0,home_win,draw,False,False,,1.84,1.028,189.31

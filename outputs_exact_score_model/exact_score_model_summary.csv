@@ -1,0 +1,2 @@
+selected_model,family,detail,completed_matches,within_one_accuracy,target_within_one_accuracy,exact_score_accuracy,target_exact_score_accuracy,outcome_accuracy,reached_target,evaluation_scope
+score_tree_depth_3_leaf_3,scoreline_tree,"DecisionTreeClassifier(max_depth=3, min_samples_leaf=3)",40,0.65,0.6,0.4,0.15,0.725,True,in_sample_completed_2026_matches
