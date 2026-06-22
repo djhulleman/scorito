@@ -1,0 +1,4 @@
+.cache_world_cup/
+__pycache__/
+*.py[cod]
+outputs_bookmaker_backtest/bookmaker_oddsportal_1x2_odds.csv
