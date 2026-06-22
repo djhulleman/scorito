@@ -8,7 +8,7 @@ scoreline-specific model on completed 2026 World Cup matches and iterates
 candidate models until the completed-match score targets are reached:
 
   * at least 60% of predicted scorelines within one goal for both teams
-  * at least 15% exact scorelines
+  * at least 50% exact scorelines
 
 Those selected metrics are in-sample on completed 2026 matches. They are useful
 for fitting the current tournament pattern, not as an unbiased future accuracy
@@ -66,6 +66,12 @@ except Exception:  # pragma: no cover - only used when sklearn is unavailable.
     KNeighborsClassifier = None
 
 
+OUTCOME_LABELS = {"home_win", "draw", "away_win"}
+XG_OUTCOME_MARGIN = 1.00
+MAX_SCORELINE_GOALS = 7
+FUTURE_SCORELINE_XG_DISTANCE = 2.50
+
+
 @dataclass
 class ScoreModelSelection:
     name: str
@@ -91,6 +97,113 @@ def split_score_label(label: object) -> tuple[int, int]:
 
 def scoreline_outcome_label(home_score: object, away_score: object) -> str:
     return outcome_label(outcome_from_scores(float(home_score), float(away_score)))
+
+
+def scoreline_label_outcome(label: object) -> str:
+    home_score, away_score = split_score_label(label)
+    return scoreline_outcome_label(home_score, away_score)
+
+
+def expected_outcome_from_base(row: pd.Series) -> str:
+    home_xg = pd.to_numeric(row.get("home_xg"), errors="coerce")
+    away_xg = pd.to_numeric(row.get("away_xg"), errors="coerce")
+    if not pd.isna(home_xg) and not pd.isna(away_xg):
+        margin = float(home_xg) - float(away_xg)
+        if margin >= XG_OUTCOME_MARGIN:
+            return "home_win"
+        if margin <= -XG_OUTCOME_MARGIN:
+            return "away_win"
+
+    base_outcome = clean_text(row.get("predicted_outcome", ""))
+    if base_outcome in OUTCOME_LABELS:
+        return base_outcome
+    return "draw"
+
+
+def bounded_score(value: float) -> int:
+    if pd.isna(value):
+        return 0
+    return int(max(0, min(MAX_SCORELINE_GOALS, round(float(value)))))
+
+
+def fallback_label_for_outcome(row: pd.Series, required_outcome: str) -> str:
+    base_home = pd.to_numeric(row.get("predicted_home_score"), errors="coerce")
+    base_away = pd.to_numeric(row.get("predicted_away_score"), errors="coerce")
+    if not pd.isna(base_home) and not pd.isna(base_away):
+        base_label = score_label(base_home, base_away)
+        if scoreline_label_outcome(base_label) == required_outcome:
+            return base_label
+
+    home = bounded_score(pd.to_numeric(row.get("home_xg"), errors="coerce"))
+    away = bounded_score(pd.to_numeric(row.get("away_xg"), errors="coerce"))
+    if required_outcome == "home_win" and home <= away:
+        home = min(MAX_SCORELINE_GOALS, away + 1)
+    elif required_outcome == "away_win" and away <= home:
+        away = min(MAX_SCORELINE_GOALS, home + 1)
+    elif required_outcome == "draw":
+        level = bounded_score(
+            (
+                pd.to_numeric(row.get("home_xg"), errors="coerce")
+                + pd.to_numeric(row.get("away_xg"), errors="coerce")
+            )
+            / 2
+        )
+        home = level
+        away = level
+    return score_label(home, away)
+
+
+def has_actual_score(row: pd.Series) -> bool:
+    return (
+        not pd.isna(pd.to_numeric(row.get("actual_home_score"), errors="coerce"))
+        and not pd.isna(pd.to_numeric(row.get("actual_away_score"), errors="coerce"))
+    )
+
+
+def scoreline_xg_distance(label: object, row: pd.Series) -> float:
+    home_score, away_score = split_score_label(label)
+    home_xg = pd.to_numeric(row.get("home_xg"), errors="coerce")
+    away_xg = pd.to_numeric(row.get("away_xg"), errors="coerce")
+    if pd.isna(home_xg) or pd.isna(away_xg):
+        return 0.0
+    return abs(home_score - float(home_xg)) + abs(away_score - float(away_xg))
+
+
+def plausible_future_label(label: object, row: pd.Series) -> bool:
+    if has_actual_score(row):
+        return True
+    return scoreline_xg_distance(label, row) <= FUTURE_SCORELINE_XG_DISTANCE
+
+
+def constrained_score_label(
+    raw_label: object,
+    base_row: pd.Series,
+    class_labels: Iterable[object] | None = None,
+    probabilities: Iterable[float] | None = None,
+) -> str:
+    required_outcome = expected_outcome_from_base(base_row)
+    if (
+        scoreline_label_outcome(raw_label) == required_outcome
+        and plausible_future_label(raw_label, base_row)
+    ):
+        return str(raw_label)
+
+    if class_labels is not None and probabilities is not None:
+        best_label = None
+        best_probability = 0.0
+        for candidate_label, probability in zip(class_labels, probabilities):
+            if scoreline_label_outcome(candidate_label) != required_outcome:
+                continue
+            if not plausible_future_label(candidate_label, base_row):
+                continue
+            probability = float(probability)
+            if best_label is None or probability > best_probability:
+                best_label = str(candidate_label)
+                best_probability = probability
+        if best_label is not None and best_probability > 0.0:
+            return best_label
+
+    return fallback_label_for_outcome(base_row, required_outcome)
 
 
 def add_scoreline_metrics(predictions: pd.DataFrame) -> pd.DataFrame:
@@ -170,15 +283,27 @@ def predictions_from_labels(
     labels: Iterable[object],
     model_name: str,
     model_detail: str,
+    class_labels: Iterable[object] | None = None,
+    probabilities: np.ndarray | None = None,
 ) -> pd.DataFrame:
     predicted_home: list[int] = []
     predicted_away: list[int] = []
-    for label in labels:
-        home_score, away_score = split_score_label(label)
+    base_predictions = base_predictions.copy().reset_index(drop=True)
+    class_label_list = list(class_labels) if class_labels is not None else None
+
+    for row_index, label in enumerate(labels):
+        probability_row = probabilities[row_index] if probabilities is not None else None
+        constrained_label = constrained_score_label(
+            label,
+            base_predictions.iloc[row_index],
+            class_label_list,
+            probability_row,
+        )
+        home_score, away_score = split_score_label(constrained_label)
         predicted_home.append(home_score)
         predicted_away.append(away_score)
 
-    predictions = base_predictions.copy().reset_index(drop=True)
+    predictions = base_predictions
     predictions["predicted_home_score"] = predicted_home
     predictions["predicted_away_score"] = predicted_away
     predictions["score_model"] = model_name
@@ -234,9 +359,6 @@ def build_scoreline_features(
 
     categorical = pd.DataFrame(
         {
-            "home_team": fixtures["home_team"].astype(str),
-            "away_team": fixtures["away_team"].astype(str),
-            "group": fixtures["group"].astype(str),
             "baseline_outcome": base_predictions["predicted_outcome"].astype(str),
         }
     )
@@ -317,11 +439,18 @@ def select_scoreline_model(
                 model.fit(train_features, labels)
                 name = f"score_tree_depth_{depth}_leaf_{min_leaf}"
                 detail = f"DecisionTreeClassifier(max_depth={depth}, min_samples_leaf={min_leaf})"
+                probabilities = (
+                    model.predict_proba(train_features)
+                    if hasattr(model, "predict_proba")
+                    else None
+                )
                 predictions = predictions_from_labels(
                     base_completed_predictions,
                     model.predict(train_features),
                     name,
                     detail,
+                    class_labels=getattr(model, "classes_", None),
+                    probabilities=probabilities,
                 )
                 row = candidate_summary_row(
                     name,
@@ -356,11 +485,18 @@ def select_scoreline_model(
             model.fit(train_features, labels)
             name = f"score_knn_{neighbors}"
             detail = f"KNeighborsClassifier(n_neighbors={min(neighbors, len(completed))})"
+            probabilities = (
+                model.predict_proba(train_features)
+                if hasattr(model, "predict_proba")
+                else None
+            )
             predictions = predictions_from_labels(
                 base_completed_predictions,
                 model.predict(train_features),
                 name,
                 detail,
+                class_labels=getattr(model, "classes_", None),
+                probabilities=probabilities,
             )
             row = candidate_summary_row(
                 name,
@@ -424,11 +560,18 @@ def build_future_score_predictions(
 
     aligned_features = future_features.reindex(columns=selection.feature_columns, fill_value=0.0)
     labels = selection.estimator.predict(aligned_features)
+    probabilities = (
+        selection.estimator.predict_proba(aligned_features)
+        if hasattr(selection.estimator, "predict_proba")
+        else None
+    )
     return predictions_from_labels(
         future_base_predictions,
         labels,
         selection.name,
         selection.detail,
+        class_labels=getattr(selection.estimator, "classes_", None),
+        probabilities=probabilities,
     )
 
 
@@ -741,7 +884,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--target-exact",
         type=float,
-        default=0.15,
+        default=0.50,
         help="Required exact-score share on completed games.",
     )
     parser.add_argument(

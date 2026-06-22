@@ -5,8 +5,9 @@ Python files read:
 - world_cup_score_forecaster.py: Elo plus Poisson score model, with a
   tournament-calibrated decision-tree outcome layer.
 - world_cup_exact_score_forecaster.py: scoreline-specific model on top of the
-  Elo/Poisson baseline; selected DecisionTreeClassifier(max_depth=3,
-  min_samples_leaf=3).
+  Elo/Poisson baseline; selected DecisionTreeClassifier(max_depth=5,
+  min_samples_leaf=1), with scoreline guardrails against outcome/xG
+  contradictions on future fixtures.
 - total_goals_odds_forecaster.py: recent-form total-goals-first model using
   weighted recent internationals, Elo ratings, Poisson score modes, and implied
   win odds.
@@ -36,7 +37,7 @@ Model findings:
   * Tournament-calibrated Elo/Poisson outcome layer:
     outcome accuracy 77.5%, exact score 22.5% on the same in-sample 2026 set.
   * Exact-score tree model:
-    outcome accuracy 72.5%, exact score 40.0%, within-one-goal 65.0%.
+    outcome accuracy 80.0%, exact score 55.0%, within-one-goal 77.5%.
   * Total-goals-first model:
     rolling outcome accuracy 37.5%, exact score 8.3%, total-goals MAE 1.54
     on 24 completed matches in its output.
@@ -412,6 +413,70 @@ def inject_theme() -> None:
             color: var(--muted);
             font-size: 0.78rem;
             margin: -0.3rem 0 0.8rem 0;
+        }
+
+        .strategy-rule-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin: 0.4rem 0 1rem 0;
+        }
+
+        .strategy-rule {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(16, 23, 34, 0.62);
+            padding: 0.78rem 0.82rem;
+            min-height: 9rem;
+        }
+
+        .strategy-rule-title {
+            color: var(--text);
+            font-size: 0.86rem;
+            font-weight: 780;
+            line-height: 1.2;
+            margin: 0.4rem 0 0.36rem 0;
+        }
+
+        .strategy-rule-copy {
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.42;
+        }
+
+        .strategy-note {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin: -0.2rem 0 1rem 0;
+        }
+
+        .strategy-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.45rem;
+        }
+
+        .strategy-meta-item {
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.25;
+        }
+
+        .strategy-meta-value {
+            color: var(--text);
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 760;
+            margin-top: 0.15rem;
+        }
+
+        @media (max-width: 720px) {
+            .strategy-rule-grid,
+            .strategy-meta-grid {
+                grid-template-columns: 1fr;
+            }
         }
         </style>
         """,
@@ -1323,6 +1388,329 @@ def page_matches() -> None:
                 )
 
 
+STRATEGY_ROUND_POINTS = {
+    "Round of 32": (90, 135),
+    "Round of 16": (90, 135),
+    "Quarterfinals": (120, 180),
+    "Quarter-finals": (120, 180),
+    "Semifinals": (150, 225),
+    "Semi-finals": (150, 225),
+    "Match for third place": (180, 270),
+    "Final": (180, 270),
+}
+
+
+def strategy_date_text(value: object) -> str:
+    timestamp = pd.to_datetime(value, errors="coerce")
+    if pd.isna(timestamp):
+        return "date tbd"
+    return timestamp.strftime("%d %b")
+
+
+def clean_strategy_team(value: object) -> str:
+    if pd.isna(value):
+        return ""
+    return str(value).strip()
+
+
+def strategy_decision(row: pd.Series) -> pd.Series:
+    predicted_outcome = str(row.get("predicted_outcome", ""))
+    abs_xg_edge = pd.to_numeric(row.get("abs_xg_edge"), errors="coerce")
+    abs_elo_edge = pd.to_numeric(row.get("abs_elo_edge"), errors="coerce")
+    exact_points = pd.to_numeric(row.get("exact_points"), errors="coerce")
+    abs_xg_edge = 0.0 if pd.isna(abs_xg_edge) else float(abs_xg_edge)
+    abs_elo_edge = 0.0 if pd.isna(abs_elo_edge) else float(abs_elo_edge)
+    exact_points = 0.0 if pd.isna(exact_points) else float(exact_points)
+
+    if predicted_outcome == "draw":
+        if abs_xg_edge >= 0.55 or abs_elo_edge >= 145:
+            return pd.Series(
+                {
+                    "strategy_label": "Follow path",
+                    "strategy_kind": "model",
+                    "strategy_action": "Use the model's advancing team, but personalize the exact score.",
+                    "strategy_reason": "Projected draw, yet the underlying edge points to one side.",
+                }
+            )
+        return pd.Series(
+            {
+                "strategy_label": "Gut zone",
+                "strategy_kind": "pick",
+                "strategy_action": "This is a valid place for a personal read or pool-position move.",
+                "strategy_reason": "Projected draw or penalties; tiny edges are fragile.",
+            }
+        )
+
+    if abs_xg_edge >= 0.60 or abs_elo_edge >= 160:
+        return pd.Series(
+            {
+                "strategy_label": "Follow data",
+                "strategy_kind": "model",
+                "strategy_action": "Take the winner and keep the model score unless you need variance.",
+                "strategy_reason": "The model, xG shape, and strength edge are aligned.",
+            }
+        )
+
+    if exact_points >= 180 and abs_xg_edge < 0.40:
+        return pd.Series(
+            {
+                "strategy_label": "Differential",
+                "strategy_kind": "pick",
+                "strategy_action": "Keep one late-round gut swing available here if chasing.",
+                "strategy_reason": "High points with a narrow edge; leverage beats tiny accuracy gains.",
+            }
+        )
+
+    if abs_xg_edge <= 0.25 and abs_elo_edge <= 70:
+        return pd.Series(
+            {
+                "strategy_label": "Gut zone",
+                "strategy_kind": "pick",
+                "strategy_action": "Let your read decide, especially on exact score.",
+                "strategy_reason": "The model edge is too small to deserve blind obedience.",
+            }
+        )
+
+    return pd.Series(
+        {
+            "strategy_label": "Lean data",
+            "strategy_kind": "next",
+            "strategy_action": "Follow the model winner; allow small exact-score tweaks.",
+            "strategy_reason": "There is useful signal, but not enough to lock the whole pick.",
+        }
+    )
+
+
+def knockout_strategy_frame() -> pd.DataFrame:
+    bracket = csv(BEST_EXACT_KNOCKOUT_PATH)
+    if bracket.empty:
+        return pd.DataFrame()
+
+    frame = bracket.copy()
+    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+    frame["home_team"] = frame["home_team"].map(clean_strategy_team)
+    frame["away_team"] = frame["away_team"].map(clean_strategy_team)
+    frame = frame[frame["home_team"].ne("") & frame["away_team"].ne("")].copy()
+
+    if "actual_home_score" in frame and "actual_away_score" in frame:
+        frame = frame[frame["actual_home_score"].isna() | frame["actual_away_score"].isna()].copy()
+
+    if frame.empty:
+        return frame
+
+    for column in ["home_xg", "away_xg", "elo_diff"]:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame["xg_edge"] = frame["home_xg"] - frame["away_xg"]
+    frame["abs_xg_edge"] = frame["xg_edge"].abs()
+    frame["abs_elo_edge"] = frame["elo_diff"].abs()
+    frame["score"] = frame.apply(score_text, axis=1)
+    frame["winner"] = frame["advancing_team"].fillna("").astype(str)
+    frame["toto_points"] = frame["round"].map(lambda value: STRATEGY_ROUND_POINTS.get(str(value), (0, 0))[0])
+    frame["exact_points"] = frame["round"].map(lambda value: STRATEGY_ROUND_POINTS.get(str(value), (0, 0))[1])
+    frame["round_order"] = frame["round"].map(bracket_round_order)
+
+    advice = csv(MATCH_ADVICE_PATH)
+    advice_keys = ["date", "home_team", "away_team"]
+    if not advice.empty and all(column in advice.columns for column in advice_keys):
+        advice_keyed = advice.copy()
+        advice_keyed["date"] = pd.to_datetime(advice_keyed["date"], errors="coerce")
+        merge_cols = [
+            "date",
+            "home_team",
+            "away_team",
+            "estimated_exact_probability",
+            "estimated_toto_probability",
+            "expected_match_points",
+        ]
+        frame = frame.merge(
+            advice_keyed[[column for column in merge_cols if column in advice_keyed.columns]],
+            how="left",
+            on=["date", "home_team", "away_team"],
+        )
+
+    decisions = frame.apply(strategy_decision, axis=1)
+    frame = pd.concat([frame, decisions], axis=1)
+    return frame.sort_values(["round_order", "date", "match_no"], na_position="last").reset_index(drop=True)
+
+
+def strategy_rule_cards_html() -> str:
+    cards = [
+        (
+            "Follow data",
+            "model",
+            "Use the model when the winner, xG edge, and Elo edge all point the same way. These are not the places to get clever.",
+        ),
+        (
+            "Lean data",
+            "next",
+            "Keep the model winner, but tweak exact scores toward your own read on tempo, injuries, or match-up style.",
+        ),
+        (
+            "Gut zone",
+            "pick",
+            "Spend gut picks on projected draws, penalty paths, and late-round close calls where the points swing is large.",
+        ),
+    ]
+    return (
+        "<div class='strategy-rule-grid'>"
+        + "".join(
+            "<div class='strategy-rule'>"
+            f"{status_pill(title, kind)}"
+            f"<div class='strategy-rule-title'>{escape(title)}</div>"
+            f"<div class='strategy-rule-copy'>{escape(copy)}</div>"
+            "</div>"
+            for title, kind, copy in cards
+        )
+        + "</div>"
+    )
+
+
+def strategy_match_html(row: pd.Series) -> str:
+    exact_probability = row.get("estimated_exact_probability", np.nan)
+    toto_probability = row.get("estimated_toto_probability", np.nan)
+    expected_points = row.get("expected_match_points", np.nan)
+    probability_text = (
+        f"exact {format_percent(exact_probability)} | winner {format_percent(toto_probability)}"
+        if not pd.isna(exact_probability) or not pd.isna(toto_probability)
+        else f"exact pts {int(row['exact_points'])} | winner pts {int(row['toto_points'])}"
+    )
+    ev_text = (
+        f" | EV {format_number(expected_points, 1)}"
+        if not pd.isna(pd.to_numeric(expected_points, errors="coerce"))
+        else ""
+    )
+    xg_text = (
+        f"xG {format_number(row['home_xg'], 2)}-{format_number(row['away_xg'], 2)}"
+        f" | edge {format_number(row['xg_edge'], 2)}"
+    )
+    return (
+        "<div class='match-row'>"
+        f"{status_pill(str(row['strategy_label']), str(row['strategy_kind']))}"
+        f"<span class='match-meta'>M{int(row['match_no'])} | {escape(strategy_date_text(row['date']))} | "
+        f"{escape(str(row['round']))}</span>"
+        f"<div class='match-title'>{escape(str(row['home_team']))} "
+        f"<span>{escape(str(row['score']))}</span> {escape(str(row['away_team']))}</div>"
+        "<div class='strategy-meta-grid'>"
+        f"<div class='strategy-meta-item'>Pick<span class='strategy-meta-value'>{escape(str(row['winner']))}</span></div>"
+        f"<div class='strategy-meta-item'>Signal<span class='strategy-meta-value'>{escape(xg_text)}</span></div>"
+        f"<div class='strategy-meta-item'>Points<span class='strategy-meta-value'>{escape(probability_text + ev_text)}</span></div>"
+        "</div>"
+        f"<div class='match-meta'>{escape(str(row['strategy_action']))} {escape(str(row['strategy_reason']))}</div>"
+        "</div>"
+    )
+
+
+def page_strategy_guide() -> None:
+    page_heading("Strategy Guide")
+    planner = knockout_strategy_frame()
+    exact_summary = csv(ROOT / "outputs_exact_score_model" / "exact_score_model_summary.csv")
+
+    st.markdown(
+        "<div class='strategy-note'>Group-stage picks are now context. The active decision space starts "
+        "at the knockout bracket: protect high-signal winners, then spend gut calls where the model admits "
+        "the match is close.</div>",
+        unsafe_allow_html=True,
+    )
+
+    metric_cols = st.columns(3)
+    if not exact_summary.empty:
+        summary = exact_summary.iloc[0]
+        metric_cols[0].metric("Exact model", format_percent(summary["exact_score_accuracy"]))
+    else:
+        metric_cols[0].metric("Exact model", "n/a")
+    if planner.empty:
+        metric_cols[1].metric("Data locks", "n/a")
+        metric_cols[2].metric("Gut spots", "n/a")
+    else:
+        metric_cols[1].metric("Data locks", int(planner["strategy_label"].eq("Follow data").sum()))
+        gut_count = int(planner["strategy_label"].isin(["Gut zone", "Differential"]).sum())
+        metric_cols[2].metric("Gut spots", gut_count)
+
+    st.markdown(strategy_rule_cards_html(), unsafe_allow_html=True)
+
+    if planner.empty:
+        st.warning("No knockout strategy data found.")
+        return
+
+    tabs = st.tabs(["Planner", "Playbook", "Audit"])
+    with tabs[0]:
+        st.markdown(
+            "<div class='strategy-note'>Default plan: follow every data lock, lean with the model on medium edges, "
+            "and reserve gut moves for projected draws or high-point close calls.</div>",
+            unsafe_allow_html=True,
+        )
+        for round_name, round_df in planner.groupby("round", sort=False):
+            expanded = bracket_round_order(round_name) <= 1
+            with st.expander(f"{round_name} ({len(round_df)} matches)", expanded=expanded):
+                for _, row in round_df.iterrows():
+                    st.markdown(strategy_match_html(row), unsafe_allow_html=True)
+
+    with tabs[1]:
+        st.dataframe(
+            pd.DataFrame(
+                [
+                    {
+                        "Mode": "Protect a lead",
+                        "Winner picks": "Follow all data locks and most lean-data matches",
+                        "Exact scores": "Use model score or one-goal conservative tweaks",
+                        "Gut budget": "0-2 matches",
+                    },
+                    {
+                        "Mode": "Balanced",
+                        "Winner picks": "Follow data locks; choose gut in projected draws",
+                        "Exact scores": "Tweak close games toward your read",
+                        "Gut budget": "3-5 matches",
+                    },
+                    {
+                        "Mode": "Chasing",
+                        "Winner picks": "Still protect locks; flip close late-round paths",
+                        "Exact scores": "Use unpopular 1-goal margins in gut zones",
+                        "Gut budget": "5-7 matches",
+                    },
+                ]
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+        st.markdown(
+            "<div class='strategy-note'>Game-theory rule: do not be contrarian everywhere. Be different only where "
+            "the model edge is thin, the bracket leverage is high, or your pool position requires variance.</div>",
+            unsafe_allow_html=True,
+        )
+
+    with tabs[2]:
+        audit = planner[
+            [
+                "round",
+                "match_no",
+                "home_team",
+                "away_team",
+                "score",
+                "winner",
+                "strategy_label",
+                "home_xg",
+                "away_xg",
+                "elo_diff",
+                "exact_points",
+            ]
+        ].rename(
+            columns={
+                "round": "Round",
+                "match_no": "Match",
+                "home_team": "Home",
+                "away_team": "Away",
+                "score": "Score",
+                "winner": "Pick",
+                "strategy_label": "Strategy",
+                "home_xg": "Home xG",
+                "away_xg": "Away xG",
+                "elo_diff": "Elo edge",
+                "exact_points": "Exact pts",
+            }
+        )
+        st.dataframe(audit, use_container_width=True, hide_index=True)
+
+
 def bracket_tag(row: pd.Series, selected: str, model_pick: str) -> str:
     if pd.notna(row.get("actual_home_score")) and pd.notna(row.get("actual_away_score")):
         return status_pill("Confirmed", "final")
@@ -1482,6 +1870,7 @@ def page_bracket() -> None:
 pages = [
     st.Page(page_backtest_stats, title="Backtest Stats"),
     st.Page(page_schedule, title="Schedule & Live Results"),
+    st.Page(page_strategy_guide, title="Strategy Guide"),
     st.Page(page_topscorers, title="Topscorer Predictions"),
     st.Page(page_matches, title="Match Predictions & Goals"),
     st.Page(page_bracket, title="Bracket Prediction"),
