@@ -1,2 +1,2 @@
 candidate,family,detail,completed_matches,within_one_accuracy,exact_score_accuracy,outcome_accuracy,mean_scoreline_absolute_error,reached_target,selected
-exact_score_tree_walk_forward,scoreline_tree,"DecisionTreeClassifier(max_depth=3, min_samples_leaf=3); retrained before each match date / knockout round",40,0.6,0.1,0.475,2.05,False,True
+exact_score_tree_walk_forward,scoreline_tree,"DecisionTreeClassifier(max_depth=5, min_samples_leaf=1); retrained before each match date / knockout round",40,0.5,0.075,0.425,2.075,False,True
