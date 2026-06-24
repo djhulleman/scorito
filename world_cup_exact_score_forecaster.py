@@ -70,6 +70,19 @@ OUTCOME_LABELS = {"home_win", "draw", "away_win"}
 XG_OUTCOME_MARGIN = 1.00
 MAX_SCORELINE_GOALS = 7
 FUTURE_SCORELINE_XG_DISTANCE = 2.50
+SCORITO_MATCH_POINTS = {
+    # Official WK 2026 market 301 values from Scorito's public game-points API.
+    # Phase types: group=11, Round of 32=16, R16=12, QF=13, SF=14, final=15.
+    "Group": {"toto": 30, "exact": 45},
+    "Round of 32": {"toto": 60, "exact": 90},
+    "Round of 16": {"toto": 90, "exact": 135},
+    "Quarterfinals": {"toto": 120, "exact": 180},
+    "Quarter-finals": {"toto": 120, "exact": 180},
+    "Semifinals": {"toto": 150, "exact": 225},
+    "Semi-finals": {"toto": 150, "exact": 225},
+    "Match for third place": {"toto": 180, "exact": 270},
+    "Final": {"toto": 180, "exact": 270},
+}
 
 
 @dataclass
@@ -607,10 +620,17 @@ def completed_before_cutoff(
 
     prior = completed_matches.copy()
     prior["date"] = pd.to_datetime(prior["date"], errors="coerce")
+    if "fixture_date" in prior:
+        comparison_dates = pd.to_datetime(
+            prior["fixture_date"],
+            errors="coerce",
+        ).dt.normalize()
+    else:
+        comparison_dates = prior["date"].dt.normalize()
     return prior[
         prior["home_score"].notna()
         & prior["away_score"].notna()
-        & (prior["date"] < cutoff)
+        & (comparison_dates < cutoff.normalize())
     ].sort_values(["date", "match_no"], na_position="last")
 
 
@@ -693,7 +713,15 @@ def build_prediction_snapshot(
             f"min_samples_leaf={EXACT_TREE_MIN_SAMPLES_LEAF})"
         )
 
-    training_data_through = None if prior.empty else pd.Timestamp(prior["date"].max())
+    if prior.empty:
+        training_data_through = None
+    elif "fixture_date" in prior:
+        training_data_through = pd.to_datetime(
+            prior["fixture_date"],
+            errors="coerce",
+        ).max()
+    else:
+        training_data_through = pd.Timestamp(prior["date"].max()).normalize()
     return PredictionSnapshot(
         cutoff_date=pd.Timestamp(cutoff),
         training_data_through=training_data_through,
@@ -778,6 +806,24 @@ def predict_fixtures_from_snapshot(
     return exact_predictions
 
 
+def elo_poisson_prediction_view(predictions: pd.DataFrame) -> pd.DataFrame:
+    operational = predictions.copy()
+    mappings = {
+        "elo_poisson_predicted_home_score": "predicted_home_score",
+        "elo_poisson_predicted_away_score": "predicted_away_score",
+        "elo_poisson_predicted_outcome": "predicted_outcome",
+    }
+    for source, target in mappings.items():
+        if source in operational:
+            operational[target] = operational[source]
+    operational["score_model"] = "tournament_calibrated_elo_poisson"
+    if "elo_poisson_model_detail" in operational:
+        operational["score_model_detail"] = operational[
+            "elo_poisson_model_detail"
+        ]
+    return operational
+
+
 def build_date_safe_group_predictions(
     group_matches: pd.DataFrame,
     historical: pd.DataFrame,
@@ -791,10 +837,23 @@ def build_date_safe_group_predictions(
 
     fixtures = group_matches.copy()
     fixtures["date"] = pd.to_datetime(fixtures["date"], errors="coerce")
+    if "fixture_date" in fixtures:
+        prediction_dates = pd.to_datetime(
+            fixtures["fixture_date"],
+            errors="coerce",
+        ).dt.normalize()
+    else:
+        prediction_dates = fixtures["date"].dt.normalize()
+    fixtures["_prediction_date"] = prediction_dates
     frames: list[pd.DataFrame] = []
-    for match_date, date_fixtures in fixtures.groupby("date", sort=True, dropna=False):
+    for match_date, date_fixtures in fixtures.groupby(
+        "_prediction_date",
+        sort=True,
+        dropna=False,
+    ):
         if pd.isna(match_date):
             continue
+        date_fixtures = date_fixtures.drop(columns="_prediction_date")
         snapshot = build_prediction_snapshot(
             historical,
             completed_matches,
@@ -868,7 +927,14 @@ def forecast_exact_score_knockout_phase(
 
     layout = knockout_layout.copy()
     layout["date"] = pd.to_datetime(layout["date"], errors="coerce")
-    round_starts = layout.groupby("group", dropna=False)["date"].min().to_dict()
+    if "fixture_date" in layout:
+        layout["_round_date"] = pd.to_datetime(
+            layout["fixture_date"],
+            errors="coerce",
+        ).dt.normalize()
+    else:
+        layout["_round_date"] = layout["date"].dt.normalize()
+    round_starts = layout.groupby("group", dropna=False)["_round_date"].min().to_dict()
     group_lookup = group_position_lookup(group_standings)
     third_places = third_place_candidates(group_standings)
     winners: dict[int, str] = {}
@@ -981,6 +1047,7 @@ def forecast_exact_score_knockout_phase(
                     "home_score": actual_home_score,
                     "away_score": actual_away_score,
                     "neutral": True,
+                    "fixture_date": getattr(match, "fixture_date", match.date),
                 }
             ]
         )
@@ -990,8 +1057,17 @@ def forecast_exact_score_knockout_phase(
             params,
             training_scope="before_knockout_round",
         ).iloc[0]
-        predicted_winner, predicted_loser, predicted_method = choose_knockout_winner(
+        exact_winner, _, _ = choose_knockout_winner(
             prediction,
+            home_team,
+            away_team,
+            snapshot.ratings,
+        )
+        elo_prediction = elo_poisson_prediction_view(
+            prediction.to_frame().T
+        ).iloc[0]
+        predicted_winner, predicted_loser, predicted_method = choose_knockout_winner(
+            elo_prediction,
             home_team,
             away_team,
             snapshot.ratings,
@@ -1021,6 +1097,8 @@ def forecast_exact_score_knockout_phase(
                 "predicted_away_score": prediction["predicted_away_score"],
                 "predicted_outcome": prediction["predicted_outcome"],
                 "advancing_team": advancing_team,
+                "exact_tree_advancing_team": exact_winner,
+                "elo_poisson_advancing_team": predicted_winner,
                 "eliminated_team": eliminated_team,
                 "win_method": win_method,
                 "home_xg": prediction["home_xg"],
@@ -1059,6 +1137,11 @@ def forecast_exact_score_knockout_phase(
                                 "home_score": actual_home_score,
                                 "away_score": actual_away_score,
                                 "neutral": True,
+                                "fixture_date": getattr(
+                                    match,
+                                    "fixture_date",
+                                    match.date,
+                                ),
                             }
                         ]
                     ),
@@ -1166,6 +1249,7 @@ def build_schedule_prediction_export(
         "elo_poisson_predicted_home_score",
         "elo_poisson_predicted_away_score",
         "elo_poisson_predicted_outcome",
+        "elo_poisson_advancing_team",
         "score_model",
         "score_model_detail",
         "elo_poisson_model_detail",
@@ -1176,7 +1260,85 @@ def build_schedule_prediction_export(
     for column in columns:
         if column not in schedule:
             schedule[column] = np.nan
-    return schedule[columns].sort_values(["date", "match_no"], na_position="last")
+    schedule = schedule[columns].sort_values(
+        ["date", "match_no"],
+        na_position="last",
+    )
+    return add_elo_poisson_scorito_points(schedule)
+
+
+def scorito_match_points(round_name: object) -> dict[str, int]:
+    key = "Group" if str(round_name).startswith("Group") else str(round_name)
+    return SCORITO_MATCH_POINTS.get(key, SCORITO_MATCH_POINTS["Round of 16"])
+
+
+def add_elo_poisson_scorito_points(schedule: pd.DataFrame) -> pd.DataFrame:
+    scored = schedule.copy()
+    scored["actual_outcome"] = pd.Series(pd.NA, index=scored.index, dtype="object")
+    scored["elo_poisson_exact_correct"] = pd.Series(
+        pd.NA,
+        index=scored.index,
+        dtype="boolean",
+    )
+    scored["elo_poisson_toto_correct"] = pd.Series(
+        pd.NA,
+        index=scored.index,
+        dtype="boolean",
+    )
+    scored["elo_poisson_scorito_points"] = pd.Series(
+        pd.NA,
+        index=scored.index,
+        dtype="Int64",
+    )
+    scored["elo_poisson_scorito_result"] = pd.Series(
+        "not_played",
+        index=scored.index,
+        dtype="object",
+    )
+    scored["scorito_toto_points"] = scored["group"].map(
+        lambda value: scorito_match_points(value)["toto"]
+    )
+    scored["scorito_exact_points"] = scored["group"].map(
+        lambda value: scorito_match_points(value)["exact"]
+    )
+
+    completed = scored[
+        scored["actual_home_score"].notna()
+        & scored["actual_away_score"].notna()
+        & scored["elo_poisson_predicted_home_score"].notna()
+        & scored["elo_poisson_predicted_away_score"].notna()
+    ].index
+    for index in completed:
+        actual_home = int(float(scored.loc[index, "actual_home_score"]))
+        actual_away = int(float(scored.loc[index, "actual_away_score"]))
+        predicted_home = int(
+            float(scored.loc[index, "elo_poisson_predicted_home_score"])
+        )
+        predicted_away = int(
+            float(scored.loc[index, "elo_poisson_predicted_away_score"])
+        )
+        actual_outcome = scoreline_outcome_label(actual_home, actual_away)
+        predicted_outcome = scoreline_outcome_label(predicted_home, predicted_away)
+        exact = predicted_home == actual_home and predicted_away == actual_away
+        toto = predicted_outcome == actual_outcome
+
+        if exact:
+            result = "exact"
+            points = int(scored.loc[index, "scorito_exact_points"])
+        elif toto:
+            result = "toto"
+            points = int(scored.loc[index, "scorito_toto_points"])
+        else:
+            result = "miss"
+            points = 0
+
+        scored.loc[index, "actual_outcome"] = actual_outcome
+        scored.loc[index, "elo_poisson_exact_correct"] = exact
+        scored.loc[index, "elo_poisson_toto_correct"] = toto
+        scored.loc[index, "elo_poisson_scorito_points"] = points
+        scored.loc[index, "elo_poisson_scorito_result"] = result
+
+    return scored
 
 
 def write_outputs(
@@ -1376,7 +1538,7 @@ def main() -> int:
 
     group_standings = project_group_standings(
         group_matches,
-        future_predictions,
+        elo_poisson_prediction_view(future_predictions),
         standings_snapshot.ratings,
     )
     knockout_input_path = args.knockout_input or (

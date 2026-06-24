@@ -155,6 +155,49 @@ def team_from_cell(cell) -> str:
     return normalize_team(tag.get_text(" ", strip=True))
 
 
+def parse_kickoff_datetime(date_value: object, date_block) -> pd.Timestamp:
+    fixture_date = pd.to_datetime(date_value, errors="coerce")
+    if pd.isna(fixture_date) or date_block is None:
+        return fixture_date
+
+    time_tag = date_block.find(class_="ftime")
+    if time_tag is None:
+        return fixture_date
+
+    time_text = clean_text(time_tag.get_text(" ", strip=True)).lower()
+    clock_match = re.search(
+        r"([0-9]{1,2}):([0-9]{2})\s*([ap])\.?\s*m\.?",
+        time_text,
+    )
+    offset_link = time_tag.find("a", title=re.compile(r"^UTC"))
+    offset_text = clean_text(
+        offset_link.get("title", "") if offset_link else time_text
+    ).replace("\u2212", "-")
+    offset_match = re.search(
+        r"UTC\s*([+-])\s*([0-9]{1,2})(?::([0-9]{2}))?",
+        offset_text,
+        re.IGNORECASE,
+    )
+    if clock_match is None or offset_match is None:
+        return fixture_date
+
+    hour = int(clock_match.group(1)) % 12
+    if clock_match.group(3) == "p":
+        hour += 12
+    minute = int(clock_match.group(2))
+    offset_minutes = int(offset_match.group(2)) * 60 + int(
+        offset_match.group(3) or 0
+    )
+    if offset_match.group(1) == "-":
+        offset_minutes *= -1
+
+    local_kickoff = fixture_date.normalize() + pd.Timedelta(
+        hours=hour,
+        minutes=minute,
+    )
+    return local_kickoff - pd.Timedelta(minutes=offset_minutes)
+
+
 def parse_world_cup_page(html: bytes) -> pd.DataFrame:
     soup = BeautifulSoup(html, "html.parser")
     rows: list[dict[str, object]] = []
@@ -175,6 +218,8 @@ def parse_world_cup_page(html: bytes) -> pd.DataFrame:
             date_tag = date_block.find(class_="bday")
             if date_tag:
                 date_value = date_tag.get_text(strip=True)
+        fixture_date = pd.to_datetime(date_value, errors="coerce")
+        kickoff = parse_kickoff_datetime(date_value, date_block)
 
         heading = table.find_previous(["h3", "h2"])
         group = None
@@ -191,7 +236,8 @@ def parse_world_cup_page(html: bytes) -> pd.DataFrame:
 
         rows.append(
             {
-                "date": pd.to_datetime(date_value, errors="coerce"),
+                "date": kickoff,
+                "fixture_date": fixture_date,
                 "group": group,
                 "match_no": match_no,
                 "home_team": team_from_cell(home_cell),
@@ -221,12 +267,12 @@ def load_current_world_cup(cache_dir: Path, refresh: bool, historical: pd.DataFr
     ].copy()
     historical_wc = historical_wc[
         ["date", "home_team", "away_team", "city", "country", "neutral"]
-    ].drop_duplicates()
+    ].rename(columns={"date": "fixture_date"}).drop_duplicates()
 
     merged = current.merge(
         historical_wc,
         how="left",
-        on=["date", "home_team", "away_team"],
+        on=["fixture_date", "home_team", "away_team"],
     )
     merged["neutral"] = merged["neutral"].where(merged["neutral"].notna(), True).astype(bool)
     merged["country"] = merged["country"].fillna("")

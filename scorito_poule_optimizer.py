@@ -6,15 +6,14 @@ This script combines the exact-score match model, projected knockout bracket,
 country-prediction logic, and phase-specific top-scorer model into one advice
 sheet for Scorito.
 
-The model follows the user-provided Scorito rules:
+The model follows the official Scorito WK 2026 rules:
   * match toto/exact points increase by round
   * top-scorer goals are worth much more for keepers/defenders
   * country-prediction milestones are scored separately
   * top scorers can be changed every phase
 
-For 2026's extra Round of 32, the script maps Round of 32 and Round of 16 to
-the first knockout multiplier because the supplied Scorito table starts at
-"1/8 finale".
+The extra 2026 Round of 32 has its own multiplier between the group stage and
+Round of 16.
 """
 
 from __future__ import annotations
@@ -34,8 +33,8 @@ import pandas as pd
 
 
 MATCH_POINTS = {
-    "Group": {"label": "Groepsfase", "toto": 60, "exact": 90},
-    "Round of 32": {"label": "Achtste-finale multiplier", "toto": 90, "exact": 135},
+    "Group": {"label": "Groepsfase", "toto": 30, "exact": 45},
+    "Round of 32": {"label": "Laatste 32", "toto": 60, "exact": 90},
     "Round of 16": {"label": "Achtste finale", "toto": 90, "exact": 135},
     "Quarterfinals": {"label": "Kwartfinale", "toto": 120, "exact": 180},
     "Quarter-finals": {"label": "Kwartfinale", "toto": 120, "exact": 180},
@@ -220,8 +219,24 @@ def build_match_advice(
         away_team = getattr(row, "away_team", "")
         if not str(home_team).strip() or not str(away_team).strip():
             continue
-        predicted_home = int(float(getattr(row, "predicted_home_score")))
-        predicted_away = int(float(getattr(row, "predicted_away_score")))
+        predicted_home = int(
+            float(
+                getattr(
+                    row,
+                    "elo_poisson_predicted_home_score",
+                    getattr(row, "predicted_home_score"),
+                )
+            )
+        )
+        predicted_away = int(
+            float(
+                getattr(
+                    row,
+                    "elo_poisson_predicted_away_score",
+                    getattr(row, "predicted_away_score"),
+                )
+            )
+        )
         home_xg = float(getattr(row, "home_xg", predicted_home + 0.3) or predicted_home + 0.3)
         away_xg = float(getattr(row, "away_xg", predicted_away + 0.3) or predicted_away + 0.3)
         points = match_points_for_round(getattr(row, "round"))

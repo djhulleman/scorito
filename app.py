@@ -69,13 +69,10 @@ Model findings:
 Best models used by this app:
 - Topscorers: scorito_knockout_topscorer_picker.py recommendations and
   scorito_poule_optimizer.py phase expected-points output.
-- Match winners / bracket: the Strategy Guide and bracket continue to use the
-  Big strategy update's guarded exact-score path, while the schedule also shows
-  the tournament-calibrated Elo/Poisson score for comparison.
-- Exact scores: world_cup_exact_score_forecaster.py retrains both models using
-  only information available before each match date or knockout round. Current
-  walk-forward accuracy is read from the generated summary rather than assumed
-  from the earlier in-sample audit.
+- Operational match predictions: Schedule, Strategy Guide, Match Predictions,
+  and Bracket Prediction all use the date-safe tournament-calibrated
+  Elo/Poisson score. The exact-score tree remains visible only on Backtest Stats
+  for model comparison.
 """
 
 from __future__ import annotations
@@ -615,6 +612,20 @@ def prediction_score_text(home: object, away: object) -> str:
     return f"{int(float(home))}-{int(float(away))}"
 
 
+def use_elo_poisson_predictions(frame: pd.DataFrame) -> pd.DataFrame:
+    operational = frame.copy()
+    mappings = {
+        "elo_poisson_predicted_home_score": "predicted_home_score",
+        "elo_poisson_predicted_away_score": "predicted_away_score",
+        "elo_poisson_predicted_outcome": "predicted_outcome",
+        "elo_poisson_advancing_team": "advancing_team",
+    }
+    for source, target in mappings.items():
+        if source in operational:
+            operational[target] = operational[source]
+    return operational
+
+
 def local_date_text(value: object) -> str:
     timestamp = pd.to_datetime(value, errors="coerce")
     if pd.isna(timestamp):
@@ -697,6 +708,13 @@ def add_schedule_model_predictions(schedule: pd.DataFrame) -> pd.DataFrame:
         "training_cutoff",
         "training_data_through",
         "training_scope",
+        "actual_outcome",
+        "elo_poisson_exact_correct",
+        "elo_poisson_toto_correct",
+        "elo_poisson_scorito_points",
+        "elo_poisson_scorito_result",
+        "scorito_toto_points",
+        "scorito_exact_points",
     ]
     available_models = [column for column in model_columns if column in predictions]
     identity_columns = ["date", "group", "home_team", "away_team"]
@@ -1234,10 +1252,89 @@ def page_schedule() -> None:
         return now_local <= local <= next_24
 
     schedule["next_24h"] = schedule["date"].map(is_next_24) & ~schedule["completed"]
-    c1, c2, c3 = st.columns(3)
+    completed_elo = schedule[
+        schedule["completed"]
+        & schedule.get(
+            "elo_poisson_scorito_points",
+            pd.Series(pd.NA, index=schedule.index),
+        ).notna()
+    ]
+    elo_points = int(completed_elo["elo_poisson_scorito_points"].sum())
+
+    c1, c2, c3, c4 = st.columns(4)
     c1.metric("Matches", len(schedule))
     c2.metric("Final", int(schedule["completed"].sum()))
     c3.metric("Next 24h", int(schedule["next_24h"].sum()))
+    c4.metric("Elo what-if", f"{elo_points} pts")
+
+    if not completed_elo.empty:
+        exact_hits = int(completed_elo["elo_poisson_exact_correct"].fillna(False).sum())
+        toto_hits = int(completed_elo["elo_poisson_toto_correct"].fillna(False).sum())
+        max_points = int(completed_elo["scorito_exact_points"].sum())
+        with st.expander("Calibrated Elo/Poisson Scorito what-if", expanded=False):
+            w1, w2, w3, w4 = st.columns(4)
+            w1.metric("Points", elo_points)
+            w2.metric("Exact", exact_hits)
+            w3.metric("Correct outcome", toto_hits)
+            w4.metric("Maximum", max_points)
+            st.caption(
+                "Official WK 2026 match scoring used here: exact score earns the "
+                "exact round points; otherwise a correct home/draw/away outcome "
+                "earns the toto points. Exact and toto points are not stacked. "
+                "[Scorito points API]"
+                "(https://platform.scorito.com/gamepoints/v1.0/gamepoints/301)"
+            )
+            audit = completed_elo[
+                [
+                    "date",
+                    "group",
+                    "home_team",
+                    "away_team",
+                    "home_score",
+                    "away_score",
+                    "elo_poisson_predicted_home_score",
+                    "elo_poisson_predicted_away_score",
+                    "elo_poisson_scorito_result",
+                    "elo_poisson_scorito_points",
+                ]
+            ].copy()
+            audit["Match"] = audit["home_team"] + " - " + audit["away_team"]
+            audit["Prediction"] = audit.apply(
+                lambda row: prediction_score_text(
+                    row["elo_poisson_predicted_home_score"],
+                    row["elo_poisson_predicted_away_score"],
+                ),
+                axis=1,
+            )
+            audit["Actual"] = audit.apply(
+                lambda row: prediction_score_text(
+                    row["home_score"],
+                    row["away_score"],
+                ),
+                axis=1,
+            )
+            st.dataframe(
+                audit[
+                    [
+                        "date",
+                        "group",
+                        "Match",
+                        "Prediction",
+                        "Actual",
+                        "elo_poisson_scorito_result",
+                        "elo_poisson_scorito_points",
+                    ]
+                ].rename(
+                    columns={
+                        "date": "Date",
+                        "group": "Round",
+                        "elo_poisson_scorito_result": "Result",
+                        "elo_poisson_scorito_points": "Points",
+                    }
+                ),
+                use_container_width=True,
+                hide_index=True,
+            )
 
     for round_name, round_df in schedule.groupby(schedule["group"].map(round_label), sort=False):
         with st.expander(str(round_name), expanded=bool(round_df["next_24h"].any())):
@@ -1253,21 +1350,30 @@ def page_schedule() -> None:
                     if bool(row.completed)
                     else "vs"
                 )
-                exact_score = prediction_score_text(
-                    getattr(row, "exact_tree_predicted_home_score", np.nan),
-                    getattr(row, "exact_tree_predicted_away_score", np.nan),
-                )
                 elo_score = prediction_score_text(
                     getattr(row, "elo_poisson_predicted_home_score", np.nan),
                     getattr(row, "elo_poisson_predicted_away_score", np.nan),
                 )
                 prediction_html = ""
-                if exact_score != "-" or elo_score != "-":
+                if elo_score != "-":
+                    elo_points_text = ""
+                    row_elo_points = getattr(
+                        row,
+                        "elo_poisson_scorito_points",
+                        pd.NA,
+                    )
+                    if bool(row.completed) and not pd.isna(row_elo_points):
+                        row_result = str(
+                            getattr(row, "elo_poisson_scorito_result", "")
+                        )
+                        elo_points_text = (
+                            f" &middot; Scorito {int(row_elo_points)} pts "
+                            f"({escape(row_result)})"
+                        )
                     prediction_html = (
                         "<div class='match-predictions'>"
-                        f"Exact-score tree {escape(exact_score)}"
-                        " &middot; "
                         f"Calibrated Elo/Poisson {escape(elo_score)}"
+                        f"{elo_points_text}"
                         "</div>"
                     )
                 st.markdown(
@@ -1377,11 +1483,11 @@ def merged_match_predictions() -> pd.DataFrame:
     advice = csv(MATCH_ADVICE_PATH)
     frames: list[pd.DataFrame] = []
     if not forecast.empty:
-        group = forecast.copy()
+        group = use_elo_poisson_predictions(forecast)
         group["round"] = group["group"]
         frames.append(group)
     if not knockout.empty:
-        frames.append(knockout.copy())
+        frames.append(use_elo_poisson_predictions(knockout))
     if not frames:
         return pd.DataFrame()
     predictions = pd.concat(frames, ignore_index=True, sort=False)
@@ -1413,12 +1519,18 @@ def merged_match_predictions() -> pd.DataFrame:
 
 def page_matches() -> None:
     page_heading("Match Predictions & Goals")
-    completed = csv(BEST_EXACT_EVAL_PATH)
+    completed = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    if not completed.empty:
+        completed = completed[
+            completed["actual_home_score"].notna()
+            & completed["actual_away_score"].notna()
+        ].copy()
     future = merged_match_predictions()
     if not completed.empty:
-        completed = completed.copy()
-        completed["simple_points"] = completed.apply(simple_points, axis=1)
-        st.metric("Actual points so far", int(completed["simple_points"].sum()))
+        st.metric(
+            "Elo/Poisson Scorito points",
+            int(completed["elo_poisson_scorito_points"].sum()),
+        )
         with st.expander("Completed matches", expanded=False):
             for group, group_df in completed.groupby("group", sort=False):
                 st.markdown(f"**{group}**")
@@ -1427,9 +1539,15 @@ def page_matches() -> None:
                     rows.append(
                         {
                             "Match": f"{row['home_team']} - {row['away_team']}",
-                            "Prediction": score_text(row),
-                            "Actual": actual_score_text(row),
-                            "Points": int(row["simple_points"]),
+                            "Prediction": prediction_score_text(
+                                row["elo_poisson_predicted_home_score"],
+                                row["elo_poisson_predicted_away_score"],
+                            ),
+                            "Actual": prediction_score_text(
+                                row["actual_home_score"],
+                                row["actual_away_score"],
+                            ),
+                            "Points": int(row["elo_poisson_scorito_points"]),
                         }
                     )
                 st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
@@ -1472,7 +1590,7 @@ def page_matches() -> None:
 
 
 STRATEGY_ROUND_POINTS = {
-    "Round of 32": (90, 135),
+    "Round of 32": (60, 90),
     "Round of 16": (90, 135),
     "Quarterfinals": (120, 180),
     "Quarter-finals": (120, 180),
@@ -1569,7 +1687,7 @@ def knockout_strategy_frame() -> pd.DataFrame:
     if bracket.empty:
         return pd.DataFrame()
 
-    frame = bracket.copy()
+    frame = use_elo_poisson_predictions(bracket)
     frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
     frame["home_team"] = frame["home_team"].map(clean_strategy_team)
     frame["away_team"] = frame["away_team"].map(clean_strategy_team)
@@ -1686,7 +1804,7 @@ def strategy_match_html(row: pd.Series) -> str:
 def page_strategy_guide() -> None:
     page_heading("Strategy Guide")
     planner = knockout_strategy_frame()
-    exact_summary = csv(ROOT / "outputs_exact_score_model" / "exact_score_model_summary.csv")
+    schedule_predictions = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
 
     st.markdown(
         "<div class='strategy-note'>Group-stage picks are now context. The active decision space starts "
@@ -1696,11 +1814,20 @@ def page_strategy_guide() -> None:
     )
 
     metric_cols = st.columns(3)
-    if not exact_summary.empty:
-        summary = exact_summary.iloc[0]
-        metric_cols[0].metric("Exact model", format_percent(summary["exact_score_accuracy"]))
+    completed_elo = (
+        schedule_predictions[
+            schedule_predictions["elo_poisson_scorito_points"].notna()
+        ]
+        if not schedule_predictions.empty
+        else pd.DataFrame()
+    )
+    if not completed_elo.empty:
+        metric_cols[0].metric(
+            "Elo what-if",
+            f"{int(completed_elo['elo_poisson_scorito_points'].sum())} pts",
+        )
     else:
-        metric_cols[0].metric("Exact model", "n/a")
+        metric_cols[0].metric("Elo what-if", "n/a")
     if planner.empty:
         metric_cols[1].metric("Data locks", "n/a")
         metric_cols[2].metric("Gut spots", "n/a")
@@ -1871,7 +1998,7 @@ def page_bracket() -> None:
         return
     state = prediction_state()
     overrides = state.setdefault("bracket_overrides", {})
-    bracket = bracket.copy()
+    bracket = use_elo_poisson_predictions(bracket)
     bracket["date"] = pd.to_datetime(bracket["date"], errors="coerce")
     today = pd.Timestamp(datetime.now(AMSTERDAM).date())
     changed = False

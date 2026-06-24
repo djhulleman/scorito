@@ -1,45 +1,45 @@
 section,priority,advice,points_context,reason
-Landen,250.0,Wereldkampioen: Germany,250 pnt,Germany 2-0 Brazil
-Landen,120.0,Door naar finale: Germany,120 pnt,Germany 1-1 Portugal
-Landen,120.0,Door naar finale: Brazil,120 pnt,Brazil 2-0 Argentina
+Landen,250.0,Wereldkampioen: Argentina,250 pnt,Spain 2-2 Argentina
+Landen,120.0,Door naar finale: Argentina,120 pnt,Brazil 2-2 Argentina
+Landen,120.0,Door naar finale: Spain,120 pnt,France 2-2 Spain
 Landen,75.0,Juiste groepspositie 1/2: Germany,75 pnt,"Projected GD 8, goals for 10"
-Landen,75.0,Juiste groepspositie 1/2: Japan,75 pnt,"Projected GD 8, goals for 11"
-Landen,75.0,Juiste groepspositie 1/2: Norway,75 pnt,"Projected GD 7, goals for 8"
 Landen,75.0,Juiste groepspositie 1/2: United States,75 pnt,"Projected GD 6, goals for 7"
+Landen,75.0,Juiste groepspositie 1/2: Netherlands,75 pnt,"Projected GD 6, goals for 9"
 Landen,75.0,Juiste groepspositie 1/2: Argentina,75 pnt,"Projected GD 6, goals for 6"
-Landen,75.0,Juiste groepspositie 1/2: Switzerland,75 pnt,"Projected GD 5, goals for 7"
+Landen,75.0,Juiste groepspositie 1/2: Canada,75 pnt,"Projected GD 5, goals for 7"
+Landen,75.0,Juiste groepspositie 1/2: Brazil,75 pnt,"Projected GD 5, goals for 6"
+Landen,75.0,Juiste groepspositie 1/2: Japan,75 pnt,"Projected GD 5, goals for 7"
 Landen,75.0,Juiste groepspositie 1/2: Spain,75 pnt,"Projected GD 5, goals for 5"
+Landen,75.0,Juiste groepspositie 1/2: France,75 pnt,"Projected GD 5, goals for 6"
 Landen,75.0,Juiste groepspositie 1/2: England,75 pnt,"Projected GD 5, goals for 7"
 Landen,75.0,Juiste groepspositie 1/2: Mexico,75 pnt,"Projected GD 4, goals for 4"
-Landen,75.0,Juiste groepspositie 1/2: Canada,75 pnt,"Projected GD 4, goals for 7"
-Landen,75.0,Juiste groepspositie 1/2: Brazil,75 pnt,"Projected GD 4, goals for 5"
-Landen,75.0,Juiste groepspositie 1/2: Colombia,75 pnt,"Projected GD 4, goals for 6"
-Landen,75.0,Juiste groepspositie 1/2: Egypt,75 pnt,"Projected GD 2, goals for 6"
-Landen,75.0,Juiste groepspositie 1/2: Portugal,75 pnt,"Projected GD 2, goals for 4"
-Landen,75.0,Juiste groepspositie 1/2: Morocco,75 pnt,"Projected GD 1, goals for 4"
-Landen,75.0,Juiste groepspositie 1/2: Austria,75 pnt,"Projected GD 1, goals for 4"
-Landen,75.0,Juiste groepspositie 1/2: South Korea,75 pnt,"Projected GD 0, goals for 3"
-Topscorers huidige fase,91.58009004456096,"Maximiliano Araújo (Uruguay, Keeper / Verdediger)",96 pnt/goal; EV 91.6,core_expected_points; vs Egypt; team xG 1.24
-Topscorers huidige fase,37.93219851114024,"Daichi Kamada (Japan, Middenvelder)",48 pnt/goal; EV 37.9,core_expected_points; vs Morocco; team xG 1.50
-Topscorers huidige fase,36.989364352032496,"Daniel Muñoz (Colombia, Keeper / Verdediger)",96 pnt/goal; EV 37.0,core_expected_points; vs Iraq; team xG 1.93
-Topscorers huidige fase,36.49002713855749,"Ramin Rezaeian (Iran, Keeper / Verdediger)",96 pnt/goal; EV 36.5,core_expected_points; vs Australia; team xG 1.52
-Wedstrijden,42.32971109334546,Scotland - Brazil: 0-1,EV 42.3; exact 90; toto 60,"Groepsfase, exact p~10.4%, toto p~65.3%"
-Wedstrijden,38.463830659112254,Argentina - Austria: 2-0,EV 38.5; exact 90; toto 60,"Groepsfase, exact p~10.1%, toto p~59.1%"
-Wedstrijden,38.27976093010483,Ecuador - Germany: 0-1,EV 38.3; exact 90; toto 60,"Groepsfase, exact p~10.5%, toto p~58.5%"
-Wedstrijden,38.198919737513364,England - Ghana: 2-0,EV 38.2; exact 90; toto 60,"Groepsfase, exact p~10.0%, toto p~58.7%"
-Wedstrijden,37.97932936198585,Turkey - United States: 0-1,EV 38.0; exact 90; toto 60,"Groepsfase, exact p~10.5%, toto p~58.0%"
-Wedstrijden,37.17094865433843,Colombia - DR Congo: 2-0,EV 37.2; exact 90; toto 60,"Groepsfase, exact p~9.7%, toto p~57.1%"
-Wedstrijden,36.103175382621366,Czech Republic - Mexico: 0-1,EV 36.1; exact 90; toto 60,"Groepsfase, exact p~10.4%, toto p~55.0%"
-Wedstrijden,35.470368672848494,Japan - Sweden: 5-1,EV 35.5; exact 90; toto 60,"Groepsfase, exact p~1.1%, toto p~58.5%"
-Wedstrijden,34.0842895891068,Portugal - Uzbekistan: 2-0,EV 34.1; exact 90; toto 60,"Groepsfase, exact p~8.9%, toto p~52.4%"
-Wedstrijden,27.32926936416529,Bosnia and Herzegovina - Qatar: 0-1,EV 27.3; exact 90; toto 60,"Groepsfase, exact p~9.3%, toto p~40.9%"
-Wedstrijden,25.667226700059665,Switzerland - Canada: 2-0,EV 25.7; exact 90; toto 60,"Groepsfase, exact p~6.5%, toto p~39.5%"
-Wedstrijden,24.81345554361591,Norway - Senegal: 2-0,EV 24.8; exact 90; toto 60,"Groepsfase, exact p~6.2%, toto p~38.2%"
-Wedstrijden,18.90972361338212,Paraguay - Australia: 1-1,EV 18.9; exact 90; toto 60,"Groepsfase, exact p~12.1%, toto p~25.5%"
-Wedstrijden,18.36374115240571,South Africa - South Korea: 1-1,EV 18.4; exact 90; toto 60,"Groepsfase, exact p~11.7%, toto p~24.8%"
-Wedstrijden,18.227457564801142,Panama - Croatia: 1-1,EV 18.2; exact 90; toto 60,"Groepsfase, exact p~11.6%, toto p~24.6%"
-Wedstrijden,18.163238096023033,Jordan - Algeria: 1-1,EV 18.2; exact 90; toto 60,"Groepsfase, exact p~11.6%, toto p~24.5%"
-Wedstrijden,17.502983319313884,Curaçao - Ivory Coast: 1-1,EV 17.5; exact 90; toto 60,"Groepsfase, exact p~11.2%, toto p~23.6%"
-Wedstrijden,14.730823333713296,France - Iraq: 1-1,EV 14.7; exact 90; toto 60,"Groepsfase, exact p~9.4%, toto p~19.9%"
-Wedstrijden,13.726352767125132,Morocco - Haiti: 2-2,EV 13.7; exact 90; toto 60,"Groepsfase, exact p~4.6%, toto p~20.6%"
-Wedstrijden,8.388956094076311,Tunisia - Netherlands: 5-1,EV 8.4; exact 90; toto 60,"Groepsfase, exact p~0.0%, toto p~14.0%"
+Landen,75.0,Juiste groepspositie 1/2: Switzerland,75 pnt,"Projected GD 4, goals for 6"
+Landen,75.0,Juiste groepspositie 1/2: Morocco,75 pnt,"Projected GD 3, goals for 4"
+Landen,75.0,Juiste groepspositie 1/2: Norway,75 pnt,"Projected GD 3, goals for 5"
+Landen,75.0,Juiste groepspositie 1/2: Colombia,75 pnt,"Projected GD 3, goals for 5"
+Landen,75.0,Juiste groepspositie 1/2: Egypt,75 pnt,"Projected GD 2, goals for 5"
+Landen,75.0,Juiste groepspositie 1/2: South Korea,75 pnt,"Projected GD 1, goals for 3"
+Topscorers huidige fase,103.25933229720738,"Daniel Muñoz (Colombia, Keeper / Verdediger)",96 pnt/goal; EV 103.3,core_expected_points; vs Australia; team xG 1.67
+Topscorers huidige fase,34.8454116874685,"Ismael Saibari (Morocco, Aanvaller)",24 pnt/goal; EV 34.8,core_expected_points; vs Netherlands; team xG 1.26
+Topscorers huidige fase,33.95493051629982,"Luis Romo (Mexico, Keeper / Verdediger)",96 pnt/goal; EV 34.0,core_expected_points; vs Sweden; team xG 1.77
+Topscorers huidige fase,27.535566531529906,"Ramin Rezaeian (Iran, Keeper / Verdediger)",96 pnt/goal; EV 27.5,differential_upside; vs France; team xG 1.15
+Wedstrijden,22.15703048048566,Tunisia - Netherlands: 0-2,EV 22.2; exact 45; toto 30,"Groepsfase, exact p~11.4%, toto p~68.2%"
+Wedstrijden,21.251741379516936,Scotland - Brazil: 0-2,EV 21.3; exact 45; toto 30,"Groepsfase, exact p~11.0%, toto p~65.3%"
+Wedstrijden,21.1783593855945,France - Iraq: 2-0,EV 21.2; exact 45; toto 30,"Groepsfase, exact p~11.0%, toto p~65.1%"
+Wedstrijden,20.5463334264193,Morocco - Haiti: 2-0,EV 20.5; exact 45; toto 30,"Groepsfase, exact p~10.7%, toto p~63.1%"
+Wedstrijden,19.339028141476227,Turkey - United States: 0-1,EV 19.3; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~59.2%"
+Wedstrijden,19.23084096287489,Japan - Sweden: 1-0,EV 19.2; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~58.8%"
+Wedstrijden,19.175116731139077,England - Ghana: 1-0,EV 19.2; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~58.7%"
+Wedstrijden,19.15456552635518,Argentina - Austria: 1-0,EV 19.2; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~58.6%"
+Wedstrijden,19.139880465052414,Ecuador - Germany: 0-1,EV 19.1; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~58.5%"
+Wedstrijden,18.835874637817447,Colombia - DR Congo: 1-0,EV 18.8; exact 45; toto 30,"Groepsfase, exact p~10.5%, toto p~57.5%"
+Wedstrijden,18.1089062782491,Czech Republic - Mexico: 0-1,EV 18.1; exact 45; toto 30,"Groepsfase, exact p~10.4%, toto p~55.2%"
+Wedstrijden,17.446909588820073,Curaçao - Ivory Coast: 0-1,EV 17.4; exact 45; toto 30,"Groepsfase, exact p~10.3%, toto p~53.0%"
+Wedstrijden,17.39527481944385,Portugal - Uzbekistan: 1-0,EV 17.4; exact 45; toto 30,"Groepsfase, exact p~10.3%, toto p~52.8%"
+Wedstrijden,16.261836019536826,Jordan - Algeria: 0-1,EV 16.3; exact 45; toto 30,"Groepsfase, exact p~10.1%, toto p~49.2%"
+Wedstrijden,15.956542452180411,Panama - Croatia: 0-1,EV 16.0; exact 45; toto 30,"Groepsfase, exact p~10.0%, toto p~48.2%"
+Wedstrijden,15.657572651349401,South Africa - South Korea: 0-1,EV 15.7; exact 45; toto 30,"Groepsfase, exact p~9.9%, toto p~47.2%"
+Wedstrijden,13.664634682082646,Bosnia and Herzegovina - Qatar: 0-1,EV 13.7; exact 45; toto 30,"Groepsfase, exact p~9.3%, toto p~40.9%"
+Wedstrijden,13.225277902071856,Switzerland - Canada: 1-0,EV 13.2; exact 45; toto 30,"Groepsfase, exact p~9.1%, toto p~39.5%"
+Wedstrijden,12.810619683781301,Norway - Senegal: 1-0,EV 12.8; exact 45; toto 30,"Groepsfase, exact p~8.9%, toto p~38.2%"
+Wedstrijden,11.823963031949031,Paraguay - Australia: 1-0,EV 11.8; exact 45; toto 30,"Groepsfase, exact p~8.5%, toto p~35.2%"
