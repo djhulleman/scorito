@@ -111,6 +111,9 @@ BEST_TOPSCORER_PHASE_PATH = ROOT / "outputs_scorito_poule" / "scorito_topscorers
 BEST_EXACT_FORECAST_PATH = ROOT / "outputs_exact_score_model" / "exact_score_model_forecast.csv"
 BEST_EXACT_EVAL_PATH = ROOT / "outputs_exact_score_model" / "exact_score_model_evaluation.csv"
 BEST_EXACT_KNOCKOUT_PATH = ROOT / "outputs_exact_score_model" / "exact_score_knockout_forecast.csv"
+SCHEDULE_MODEL_PREDICTIONS_PATH = (
+    ROOT / "outputs_exact_score_model" / "schedule_model_predictions.csv"
+)
 BEST_BRACKET_PATH = BEST_EXACT_KNOCKOUT_PATH
 MATCH_ADVICE_PATH = ROOT / "outputs_scorito_poule" / "scorito_match_picks.csv"
 COUNTRY_ADVICE_PATH = ROOT / "outputs_scorito_poule" / "scorito_country_picks.csv"
@@ -127,6 +130,7 @@ MODEL_OUTPUT_PATHS = [
     BEST_EXACT_FORECAST_PATH,
     BEST_EXACT_EVAL_PATH,
     BEST_EXACT_KNOCKOUT_PATH,
+    SCHEDULE_MODEL_PREDICTIONS_PATH,
     BEST_TOPSCORER_PATH,
     BEST_TOPSCORER_PHASE_PATH,
     MATCH_ADVICE_PATH,
@@ -269,6 +273,13 @@ def inject_theme() -> None:
             font-weight: 680;
             line-height: 1.28;
             margin-top: 0.25rem;
+        }
+
+        .match-predictions {
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.35;
+            margin-top: 0.28rem;
         }
 
         .status-pill {
@@ -532,6 +543,12 @@ def actual_score_text(row: pd.Series) -> str:
     return f"{int(float(home))}-{int(float(away))}"
 
 
+def prediction_score_text(home: object, away: object) -> str:
+    if pd.isna(home) or pd.isna(away):
+        return "-"
+    return f"{int(float(home))}-{int(float(away))}"
+
+
 def local_date_text(value: object) -> str:
     timestamp = pd.to_datetime(value, errors="coerce")
     if pd.isna(timestamp):
@@ -599,6 +616,53 @@ def fallback_schedule() -> pd.DataFrame:
     result = pd.concat(frames, ignore_index=True)
     result["date"] = pd.to_datetime(result["date"], errors="coerce")
     return result.sort_values(["date", "match_no"], na_position="last").reset_index(drop=True)
+
+
+def add_schedule_model_predictions(schedule: pd.DataFrame) -> pd.DataFrame:
+    predictions = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    if schedule.empty or predictions.empty or "match_no" not in predictions:
+        return schedule
+
+    model_columns = [
+        "exact_tree_predicted_home_score",
+        "exact_tree_predicted_away_score",
+        "elo_poisson_predicted_home_score",
+        "elo_poisson_predicted_away_score",
+        "training_cutoff",
+        "training_data_through",
+        "training_scope",
+    ]
+    available_models = [column for column in model_columns if column in predictions]
+    identity_columns = ["date", "group", "home_team", "away_team"]
+    keyed_predictions = predictions[identity_columns + ["match_no"] + available_models].copy()
+    merged = schedule.copy()
+    for frame in (merged, keyed_predictions):
+        frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+        frame["match_no"] = pd.to_numeric(frame["match_no"], errors="coerce").astype("Int64")
+
+    keyed_predictions = keyed_predictions.drop_duplicates(identity_columns, keep="last")
+    merged = merged.merge(
+        keyed_predictions[identity_columns + available_models],
+        how="left",
+        on=identity_columns,
+    )
+
+    # Wikipedia's group-stage match numbers are not globally unique in the
+    # parsed schedule. Use match_no only as a fallback when it is unique on both
+    # sides, which covers knockout placeholders whose projected team names differ.
+    schedule_match_counts = merged["match_no"].value_counts()
+    prediction_match_counts = keyed_predictions["match_no"].value_counts()
+    unique_match_numbers = set(schedule_match_counts[schedule_match_counts.eq(1)].index) & set(
+        prediction_match_counts[prediction_match_counts.eq(1)].index
+    )
+    fallback = keyed_predictions[
+        keyed_predictions["match_no"].isin(unique_match_numbers)
+    ].set_index("match_no")
+    for column in available_models:
+        merged[column] = merged[column].fillna(merged["match_no"].map(fallback[column]))
+
+    merged["match_no"] = pd.to_numeric(merged["match_no"], errors="coerce").astype("Int64")
+    return merged
 
 
 def read_results_cache() -> tuple[pd.DataFrame, datetime | None]:
@@ -1088,7 +1152,7 @@ def page_schedule() -> None:
         st.warning("No schedule data available.")
         return
 
-    schedule = schedule.copy()
+    schedule = add_schedule_model_predictions(schedule.copy())
     schedule["date"] = pd.to_datetime(schedule["date"], errors="coerce")
     schedule["completed"] = schedule["home_score"].notna() & schedule["away_score"].notna()
     now_local = datetime.now(AMSTERDAM)
@@ -1123,12 +1187,30 @@ def page_schedule() -> None:
                     if bool(row.completed)
                     else "vs"
                 )
+                exact_score = prediction_score_text(
+                    getattr(row, "exact_tree_predicted_home_score", np.nan),
+                    getattr(row, "exact_tree_predicted_away_score", np.nan),
+                )
+                elo_score = prediction_score_text(
+                    getattr(row, "elo_poisson_predicted_home_score", np.nan),
+                    getattr(row, "elo_poisson_predicted_away_score", np.nan),
+                )
+                prediction_html = ""
+                if exact_score != "-" or elo_score != "-":
+                    prediction_html = (
+                        "<div class='match-predictions'>"
+                        f"Exact-score tree {escape(exact_score)}"
+                        " &middot; "
+                        f"Calibrated Elo/Poisson {escape(elo_score)}"
+                        "</div>"
+                    )
                 st.markdown(
                     "<div class='match-row'>"
                     f"{status_pill(label, kind)}"
                     f"<span class='match-meta'>{escape(local_date_text(row.date))}</span>"
                     f"<div class='match-title'>{escape(str(row.home_team))} "
                     f"<span>{escape(score)}</span> {escape(str(row.away_team))}</div>"
+                    f"{prediction_html}"
                     "</div>",
                     unsafe_allow_html=True,
                 )

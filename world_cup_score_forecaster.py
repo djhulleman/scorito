@@ -257,7 +257,12 @@ def elo_multiplier(goal_diff: float, rating_diff: float) -> float:
     return math.log(goal_diff + 1.0) * 2.2 / ((abs(rating_diff) * 0.001) + 2.2)
 
 
-def train_elo_ratings(matches: pd.DataFrame, params: ModelParams) -> dict[str, float]:
+def train_elo_ratings(
+    matches: pd.DataFrame,
+    params: ModelParams,
+    cutoff_date: object | None = None,
+) -> dict[str, float]:
+    cutoff = pd.to_datetime(cutoff_date, errors="coerce")
     training = matches[
         (matches["date"].dt.year >= params.start_year)
         & matches["home_score"].notna()
@@ -266,6 +271,8 @@ def train_elo_ratings(matches: pd.DataFrame, params: ModelParams) -> dict[str, f
             & (matches["date"] >= TOURNAMENT_START)
         )
     ].sort_values("date")
+    if not pd.isna(cutoff):
+        training = training[training["date"] < cutoff]
 
     ratings: dict[str, float] = {}
     apply_elo_updates(ratings, training, params, in_place=True)

@@ -2,17 +2,14 @@
 """
 Scoreline-focused World Cup forecaster.
 
-This script leaves world_cup_score_forecaster.py intact and reuses it for
-source loading, Elo ratings, and baseline score forecasts. It then trains a
-scoreline-specific model on completed 2026 World Cup matches and iterates
-candidate models until the completed-match score targets are reached:
+Every displayed schedule prediction is generated from a dated model snapshot:
 
-  * at least 60% of predicted scorelines within one goal for both teams
-  * at least 15% exact scorelines
+  * group-stage matches use only results strictly before the match date;
+  * knockout matches share one snapshot per round, using only results available
+    before that round starts.
 
-Those selected metrics are in-sample on completed 2026 matches. They are useful
-for fitting the current tournament pattern, not as an unbiased future accuracy
-estimate.
+The exact-score tree and tournament-calibrated Elo/Poisson model are therefore
+evaluated without using the result of the match they predict.
 """
 
 from __future__ import annotations
@@ -45,6 +42,7 @@ from world_cup_score_forecaster import (
     load_current_world_cup,
     load_historical_results,
     make_predictions,
+    ModelParams,
     normalize_team,
     outcome_from_scores,
     outcome_label,
@@ -78,6 +76,28 @@ class ScoreModelSelection:
     exact_score_accuracy: float
     outcome_accuracy: float
     reached_target: bool
+
+
+CAUSAL_MODEL_PARAMS = ModelParams(
+    start_year=1980,
+    k_factor=8.0,
+    home_advantage=30.0,
+    draw_margin=10.0,
+)
+EXACT_TREE_MAX_DEPTH = 3
+EXACT_TREE_MIN_SAMPLES_LEAF = 3
+
+
+@dataclass
+class PredictionSnapshot:
+    cutoff_date: pd.Timestamp
+    training_data_through: pd.Timestamp | None
+    ratings: dict[str, float]
+    calibrator: object | None
+    exact_estimator: object | None
+    exact_feature_columns: list[str]
+    elo_model_detail: str
+    exact_model_detail: str
 
 
 def score_label(home_score: object, away_score: object) -> str:
@@ -432,6 +452,208 @@ def build_future_score_predictions(
     )
 
 
+def completed_before_cutoff(
+    completed_matches: pd.DataFrame,
+    cutoff_date: object,
+) -> pd.DataFrame:
+    cutoff = pd.to_datetime(cutoff_date, errors="coerce")
+    if pd.isna(cutoff) or completed_matches.empty:
+        return completed_matches.iloc[0:0].copy()
+
+    prior = completed_matches.copy()
+    prior["date"] = pd.to_datetime(prior["date"], errors="coerce")
+    return prior[
+        prior["home_score"].notna()
+        & prior["away_score"].notna()
+        & (prior["date"] < cutoff)
+    ].sort_values(["date", "match_no"], na_position="last")
+
+
+def build_prediction_snapshot(
+    historical: pd.DataFrame,
+    completed_matches: pd.DataFrame,
+    cutoff_date: object,
+    params: ModelParams,
+    baseline_outcome_target: float,
+    recent_form_half_life_days: float,
+) -> PredictionSnapshot:
+    cutoff = pd.to_datetime(cutoff_date, errors="coerce")
+    if pd.isna(cutoff):
+        raise ValueError("A valid cutoff date is required for date-safe predictions.")
+
+    prior = completed_before_cutoff(completed_matches, cutoff)
+    baseline_ratings = train_elo_ratings(
+        historical,
+        params,
+        cutoff_date=cutoff,
+    )
+    tournament_ratings = apply_elo_updates(
+        baseline_ratings,
+        prior,
+        params,
+        in_place=False,
+    )
+    form_adjustments = compute_recent_form_adjustments(
+        prior,
+        baseline_ratings,
+        params,
+        half_life_days=recent_form_half_life_days,
+    )
+    ratings = apply_recent_form_adjustments(tournament_ratings, form_adjustments)
+
+    calibrator = None
+    elo_model_detail = "Historical Elo/Poisson fallback; no prior tournament results"
+    if not prior.empty:
+        calibrated_result, calibrator = tune_calibrator(
+            prior,
+            ratings,
+            params,
+            baseline_outcome_target,
+        )
+        if calibrator is not None:
+            elo_model_detail = (
+                "Tournament-calibrated Elo/Poisson "
+                f"(depth={calibrated_result.calibrator_depth}, "
+                f"leaf={calibrated_result.calibrator_min_leaf})"
+            )
+
+    exact_estimator = None
+    exact_feature_columns: list[str] = []
+    exact_model_detail = "Elo/Poisson fallback; no prior scorelines"
+    if not prior.empty and DecisionTreeClassifier is not None:
+        prior_base_predictions = add_scoreline_metrics(
+            make_predictions(
+                prior,
+                ratings,
+                params,
+                calibrator=calibrator,
+            )
+        )
+        prior_features = build_scoreline_features(
+            prior,
+            prior_base_predictions,
+            ratings,
+            params,
+        )
+        exact_estimator = DecisionTreeClassifier(
+            max_depth=EXACT_TREE_MAX_DEPTH,
+            min_samples_leaf=EXACT_TREE_MIN_SAMPLES_LEAF,
+            random_state=7,
+        )
+        exact_estimator.fit(prior_features, labels_from_completed(prior))
+        exact_feature_columns = list(prior_features.columns)
+        exact_model_detail = (
+            "DecisionTreeClassifier("
+            f"max_depth={EXACT_TREE_MAX_DEPTH}, "
+            f"min_samples_leaf={EXACT_TREE_MIN_SAMPLES_LEAF})"
+        )
+
+    training_data_through = None if prior.empty else pd.Timestamp(prior["date"].max())
+    return PredictionSnapshot(
+        cutoff_date=pd.Timestamp(cutoff),
+        training_data_through=training_data_through,
+        ratings=ratings,
+        calibrator=calibrator,
+        exact_estimator=exact_estimator,
+        exact_feature_columns=exact_feature_columns,
+        elo_model_detail=elo_model_detail,
+        exact_model_detail=exact_model_detail,
+    )
+
+
+def predict_fixtures_from_snapshot(
+    fixtures: pd.DataFrame,
+    snapshot: PredictionSnapshot,
+    params: ModelParams,
+    training_scope: str,
+) -> pd.DataFrame:
+    if fixtures.empty:
+        return pd.DataFrame()
+
+    base_predictions = add_scoreline_metrics(
+        make_predictions(
+            fixtures,
+            snapshot.ratings,
+            params,
+            calibrator=snapshot.calibrator,
+        )
+    )
+    if snapshot.exact_estimator is None:
+        exact_predictions = base_predictions.copy()
+        exact_predictions["score_model"] = "exact_score_tree_fallback"
+        exact_predictions["score_model_detail"] = snapshot.exact_model_detail
+    else:
+        exact_features = build_scoreline_features(
+            fixtures,
+            base_predictions,
+            snapshot.ratings,
+            params,
+        ).reindex(columns=snapshot.exact_feature_columns, fill_value=0.0)
+        exact_predictions = predictions_from_labels(
+            base_predictions,
+            snapshot.exact_estimator.predict(exact_features),
+            "exact_score_tree_walk_forward",
+            snapshot.exact_model_detail,
+        )
+
+    exact_predictions["elo_poisson_predicted_home_score"] = base_predictions[
+        "predicted_home_score"
+    ].to_numpy()
+    exact_predictions["elo_poisson_predicted_away_score"] = base_predictions[
+        "predicted_away_score"
+    ].to_numpy()
+    exact_predictions["elo_poisson_predicted_outcome"] = base_predictions[
+        "predicted_outcome"
+    ].to_numpy()
+    exact_predictions["elo_poisson_model_detail"] = snapshot.elo_model_detail
+    exact_predictions["training_cutoff"] = snapshot.cutoff_date
+    exact_predictions["training_data_through"] = snapshot.training_data_through
+    exact_predictions["training_scope"] = training_scope
+    return exact_predictions
+
+
+def build_date_safe_group_predictions(
+    group_matches: pd.DataFrame,
+    historical: pd.DataFrame,
+    completed_matches: pd.DataFrame,
+    params: ModelParams,
+    baseline_outcome_target: float,
+    recent_form_half_life_days: float,
+) -> pd.DataFrame:
+    if group_matches.empty:
+        return pd.DataFrame()
+
+    fixtures = group_matches.copy()
+    fixtures["date"] = pd.to_datetime(fixtures["date"], errors="coerce")
+    frames: list[pd.DataFrame] = []
+    for match_date, date_fixtures in fixtures.groupby("date", sort=True, dropna=False):
+        if pd.isna(match_date):
+            continue
+        snapshot = build_prediction_snapshot(
+            historical,
+            completed_matches,
+            match_date,
+            params,
+            baseline_outcome_target,
+            recent_form_half_life_days,
+        )
+        frames.append(
+            predict_fixtures_from_snapshot(
+                date_fixtures.sort_values("match_no"),
+                snapshot,
+                params,
+                training_scope="before_match_date",
+            )
+        )
+
+    if not frames:
+        return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True, sort=False).sort_values(
+        ["date", "match_no"],
+        na_position="last",
+    )
+
+
 def predict_exact_score_fixture(
     date: object,
     round_name: str,
@@ -469,14 +691,18 @@ def forecast_exact_score_knockout_phase(
     knockout_layout: pd.DataFrame,
     knockout_input: pd.DataFrame,
     group_standings: pd.DataFrame,
-    ratings: dict[str, float],
-    params,
-    calibrator,
-    selection: ScoreModelSelection,
+    historical: pd.DataFrame,
+    completed_matches: pd.DataFrame,
+    params: ModelParams,
+    baseline_outcome_target: float,
+    recent_form_half_life_days: float,
 ) -> pd.DataFrame:
     if knockout_layout.empty:
         return pd.DataFrame()
 
+    layout = knockout_layout.copy()
+    layout["date"] = pd.to_datetime(layout["date"], errors="coerce")
+    round_starts = layout.groupby("group", dropna=False)["date"].min().to_dict()
     group_lookup = group_position_lookup(group_standings)
     third_places = third_place_candidates(group_standings)
     winners: dict[int, str] = {}
@@ -484,9 +710,12 @@ def forecast_exact_score_knockout_phase(
     used_third_groups: set[str] = set()
     input_lookup = knockout_input.set_index("match_no").to_dict("index")
     rows: list[dict[str, object]] = []
+    completed_context = completed_matches.copy()
+    snapshots: dict[str, PredictionSnapshot] = {}
 
-    for match in knockout_layout.sort_values(["date", "match_no"]).itertuples(index=False):
+    for match in layout.sort_values(["date", "match_no"]).itertuples(index=False):
         match_no = int(match.match_no)
+        round_name = str(match.group)
         input_row = input_lookup.get(match_no, {})
         home_slot = clean_text(match.home_team)
         away_slot = clean_text(match.away_team)
@@ -552,28 +781,54 @@ def forecast_exact_score_knockout_phase(
                     "home_xg": np.nan,
                     "away_xg": np.nan,
                     "elo_diff": np.nan,
-                    "score_model": selection.name,
-                    "score_model_detail": selection.detail,
+                    "score_model": "exact_score_tree_walk_forward",
+                    "score_model_detail": "Unresolved fixture",
+                    "elo_poisson_predicted_home_score": np.nan,
+                    "elo_poisson_predicted_away_score": np.nan,
+                    "elo_poisson_predicted_outcome": "",
+                    "elo_poisson_model_detail": "Unresolved fixture",
+                    "training_cutoff": round_starts.get(match.group),
+                    "training_data_through": pd.NaT,
+                    "training_scope": "before_knockout_round",
                 }
             )
             continue
 
-        prediction = predict_exact_score_fixture(
-            match.date,
-            str(match.group),
-            match_no,
-            home_team,
-            away_team,
-            ratings,
-            params,
-            calibrator,
-            selection,
+        if round_name not in snapshots:
+            snapshots[round_name] = build_prediction_snapshot(
+                historical,
+                completed_context,
+                round_starts.get(match.group, match.date),
+                params,
+                baseline_outcome_target,
+                recent_form_half_life_days,
+            )
+        snapshot = snapshots[round_name]
+        fixture = pd.DataFrame(
+            [
+                {
+                    "date": match.date,
+                    "group": match.group,
+                    "match_no": match_no,
+                    "home_team": home_team,
+                    "away_team": away_team,
+                    "home_score": actual_home_score,
+                    "away_score": actual_away_score,
+                    "neutral": True,
+                }
+            ]
         )
+        prediction = predict_fixtures_from_snapshot(
+            fixture,
+            snapshot,
+            params,
+            training_scope="before_knockout_round",
+        ).iloc[0]
         predicted_winner, predicted_loser, predicted_method = choose_knockout_winner(
             prediction,
             home_team,
             away_team,
-            ratings,
+            snapshot.ratings,
         )
         actual_advancement = actual_knockout_winner(
             actual_winner_text,
@@ -605,10 +860,46 @@ def forecast_exact_score_knockout_phase(
                 "home_xg": prediction["home_xg"],
                 "away_xg": prediction["away_xg"],
                 "elo_diff": prediction["elo_diff"],
-                "score_model": selection.name,
-                "score_model_detail": selection.detail,
+                "score_model": prediction["score_model"],
+                "score_model_detail": prediction["score_model_detail"],
+                "elo_poisson_predicted_home_score": prediction[
+                    "elo_poisson_predicted_home_score"
+                ],
+                "elo_poisson_predicted_away_score": prediction[
+                    "elo_poisson_predicted_away_score"
+                ],
+                "elo_poisson_predicted_outcome": prediction[
+                    "elo_poisson_predicted_outcome"
+                ],
+                "elo_poisson_model_detail": prediction["elo_poisson_model_detail"],
+                "training_cutoff": prediction["training_cutoff"],
+                "training_data_through": prediction["training_data_through"],
+                "training_scope": prediction["training_scope"],
             }
         )
+
+        if not pd.isna(actual_home_score) and not pd.isna(actual_away_score):
+            completed_context = pd.concat(
+                [
+                    completed_context,
+                    pd.DataFrame(
+                        [
+                            {
+                                "date": match.date,
+                                "group": match.group,
+                                "match_no": match_no,
+                                "home_team": home_team,
+                                "away_team": away_team,
+                                "home_score": actual_home_score,
+                                "away_score": actual_away_score,
+                                "neutral": True,
+                            }
+                        ]
+                    ),
+                ],
+                ignore_index=True,
+                sort=False,
+            )
 
     return add_scoreline_metrics(pd.DataFrame(rows))
 
@@ -674,6 +965,54 @@ def plot_exact_score_knockout_forecast(
     return path
 
 
+def build_schedule_prediction_export(
+    group_predictions: pd.DataFrame,
+    knockout_predictions: pd.DataFrame,
+) -> pd.DataFrame:
+    frames: list[pd.DataFrame] = []
+    if not group_predictions.empty:
+        frames.append(group_predictions.copy())
+    if not knockout_predictions.empty:
+        knockout = knockout_predictions.rename(columns={"round": "group"}).copy()
+        frames.append(knockout)
+    if not frames:
+        return pd.DataFrame()
+
+    schedule = pd.concat(frames, ignore_index=True, sort=False)
+    schedule = schedule.rename(
+        columns={
+            "predicted_home_score": "exact_tree_predicted_home_score",
+            "predicted_away_score": "exact_tree_predicted_away_score",
+            "predicted_outcome": "exact_tree_predicted_outcome",
+        }
+    )
+    columns = [
+        "date",
+        "group",
+        "match_no",
+        "home_team",
+        "away_team",
+        "actual_home_score",
+        "actual_away_score",
+        "exact_tree_predicted_home_score",
+        "exact_tree_predicted_away_score",
+        "exact_tree_predicted_outcome",
+        "elo_poisson_predicted_home_score",
+        "elo_poisson_predicted_away_score",
+        "elo_poisson_predicted_outcome",
+        "score_model",
+        "score_model_detail",
+        "elo_poisson_model_detail",
+        "training_cutoff",
+        "training_data_through",
+        "training_scope",
+    ]
+    for column in columns:
+        if column not in schedule:
+            schedule[column] = np.nan
+    return schedule[columns].sort_values(["date", "match_no"], na_position="last")
+
+
 def write_outputs(
     output_dir: Path,
     selection: ScoreModelSelection,
@@ -682,6 +1021,7 @@ def write_outputs(
     knockout_input: pd.DataFrame,
     knockout_input_path: Path,
     knockout_predictions: pd.DataFrame,
+    schedule_predictions: pd.DataFrame,
     iterations: pd.DataFrame,
     target_within_one: float,
     target_exact: float,
@@ -702,7 +1042,7 @@ def write_outputs(
                 "target_exact_score_accuracy": target_exact,
                 "outcome_accuracy": selection.outcome_accuracy,
                 "reached_target": selection.reached_target,
-                "evaluation_scope": "in_sample_completed_2026_matches",
+                "evaluation_scope": "date_safe_walk_forward_and_round_start_snapshots",
             }
         ]
     )
@@ -712,6 +1052,7 @@ def write_outputs(
     group_standings.to_csv(output_dir / "exact_score_projected_group_standings.csv", index=False)
     knockout_input.to_csv(knockout_input_path, index=False)
     knockout_predictions.to_csv(output_dir / "exact_score_knockout_forecast.csv", index=False)
+    schedule_predictions.to_csv(output_dir / "schedule_model_predictions.csv", index=False)
     iterations.to_csv(output_dir / "exact_score_model_iterations.csv", index=False)
     summary.to_csv(output_dir / "exact_score_model_summary.csv", index=False)
 
@@ -794,94 +1135,83 @@ def main() -> int:
     if completed.empty:
         raise RuntimeError("No completed 2026 World Cup matches were available for evaluation.")
 
-    historical_baseline = tune_baseline(historical, completed, args.baseline_outcome_target)
-    baseline_ratings = train_elo_ratings(historical, historical_baseline.params)
-    baseline_completed_predictions = add_scoreline_metrics(historical_baseline.predictions)
-
-    calibrated_result, calibrator = tune_calibrator(
+    group_predictions = build_date_safe_group_predictions(
+        known_group_matches,
+        historical,
         completed,
-        baseline_ratings,
-        historical_baseline.params,
+        CAUSAL_MODEL_PARAMS,
         args.baseline_outcome_target,
+        args.recent_form_half_life_days,
     )
-    calibrated_completed_predictions = add_scoreline_metrics(calibrated_result.predictions)
+    completed_predictions = group_predictions[
+        group_predictions["actual_home_score"].notna()
+        & group_predictions["actual_away_score"].notna()
+    ].copy()
+    future_predictions = group_predictions[
+        group_predictions["actual_home_score"].isna()
+        | group_predictions["actual_away_score"].isna()
+    ].copy()
 
-    base_completed_predictions = calibrated_completed_predictions
-    train_features = build_scoreline_features(
-        completed,
-        base_completed_predictions,
-        baseline_ratings,
-        historical_baseline.params,
+    metrics = scoreline_metrics(completed_predictions)
+    reached_target = (
+        metrics["within_one_accuracy"] >= args.target_within_one
+        and metrics["exact_score_accuracy"] >= args.target_exact
     )
-    labels = labels_from_completed(completed)
-
-    baseline_candidates = [
-        (
-            "historical_only_baseline",
-            "baseline_reference",
-            str(historical_baseline.params),
-            baseline_completed_predictions,
+    selection = ScoreModelSelection(
+        name="exact_score_tree_walk_forward",
+        family="scoreline_tree",
+        detail=(
+            "DecisionTreeClassifier("
+            f"max_depth={EXACT_TREE_MAX_DEPTH}, "
+            f"min_samples_leaf={EXACT_TREE_MIN_SAMPLES_LEAF}); "
+            "retrained before each match date / knockout round"
         ),
-        (
-            "outcome_calibrated_baseline",
-            "baseline_reference",
-            calibrated_result.name,
-            calibrated_completed_predictions,
-        ),
-    ]
-
-    selection, iterations = select_scoreline_model(
-        completed=completed,
-        base_completed_predictions=base_completed_predictions,
-        train_features=train_features,
-        labels=labels,
-        baseline_candidates=baseline_candidates,
-        target_within_one=args.target_within_one,
-        target_exact=args.target_exact,
-        max_tree_depth=args.max_tree_depth,
+        estimator=None,
+        feature_columns=[],
+        predictions=completed_predictions,
+        within_one_accuracy=float(metrics["within_one_accuracy"]),
+        exact_score_accuracy=float(metrics["exact_score_accuracy"]),
+        outcome_accuracy=float(metrics["outcome_accuracy"]),
+        reached_target=reached_target,
+    )
+    iterations = pd.DataFrame(
+        [
+            {
+                "candidate": selection.name,
+                "family": selection.family,
+                "detail": selection.detail,
+                "completed_matches": metrics["completed_matches"],
+                "within_one_accuracy": metrics["within_one_accuracy"],
+                "exact_score_accuracy": metrics["exact_score_accuracy"],
+                "outcome_accuracy": metrics["outcome_accuracy"],
+                "mean_scoreline_absolute_error": metrics[
+                    "mean_scoreline_absolute_error"
+                ],
+                "reached_target": reached_target,
+                "selected": True,
+            }
+        ]
     )
 
-    tournament_ratings = apply_elo_updates(
-        baseline_ratings,
-        completed.assign(tournament="FIFA World Cup"),
-        historical_baseline.params,
-        in_place=False,
-    )
-    form_adjustments = compute_recent_form_adjustments(
-        completed,
-        baseline_ratings,
-        historical_baseline.params,
-        half_life_days=args.recent_form_half_life_days,
-    )
-    form_adjusted_ratings = apply_recent_form_adjustments(tournament_ratings, form_adjustments)
-
-    if future.empty:
-        future_predictions = pd.DataFrame(columns=selection.predictions.columns)
+    if not future.empty:
+        standings_cutoff = pd.to_datetime(future["date"], errors="coerce").min()
     else:
-        future_base_predictions = add_scoreline_metrics(
-            make_predictions(
-                future,
-                form_adjusted_ratings,
-                historical_baseline.params,
-                calibrator=calibrator,
-            )
+        standings_cutoff = pd.to_datetime(completed["date"], errors="coerce").max() + pd.Timedelta(
+            days=1
         )
-        future_features = build_scoreline_features(
-            future,
-            future_base_predictions,
-            form_adjusted_ratings,
-            historical_baseline.params,
-        )
-        future_predictions = build_future_score_predictions(
-            selection,
-            future_base_predictions,
-            future_features,
-        )
+    standings_snapshot = build_prediction_snapshot(
+        historical,
+        completed,
+        standings_cutoff,
+        CAUSAL_MODEL_PARAMS,
+        args.baseline_outcome_target,
+        args.recent_form_half_life_days,
+    )
 
     group_standings = project_group_standings(
         group_matches,
         future_predictions,
-        form_adjusted_ratings,
+        standings_snapshot.ratings,
     )
     knockout_input_path = args.knockout_input or (
         args.output_dir / "exact_score_knockout_input_template.csv"
@@ -891,10 +1221,15 @@ def main() -> int:
         knockout_layout,
         knockout_input,
         group_standings,
-        form_adjusted_ratings,
-        historical_baseline.params,
-        calibrator,
-        selection,
+        historical,
+        completed,
+        CAUSAL_MODEL_PARAMS,
+        args.baseline_outcome_target,
+        args.recent_form_half_life_days,
+    )
+    schedule_predictions = build_schedule_prediction_export(
+        group_predictions,
+        knockout_predictions,
     )
 
     _, visual_paths = write_outputs(
@@ -905,6 +1240,7 @@ def main() -> int:
         knockout_input,
         knockout_input_path,
         knockout_predictions,
+        schedule_predictions,
         iterations,
         args.target_within_one,
         args.target_exact,
@@ -928,14 +1264,15 @@ def main() -> int:
     )
     print(f"Outcome accuracy from scorelines: {selection.outcome_accuracy:.1%}")
     print(
-        "Note: selected metrics are in-sample on completed 2026 matches; "
-        "future forecasts should be treated as fitted scoreline projections."
+        "Note: completed-match metrics are date-safe walk-forward results; "
+        "knockout models are retrained once at each round start."
     )
     print(f"Wrote: {args.output_dir / 'exact_score_model_evaluation.csv'}")
     print(f"Wrote: {args.output_dir / 'exact_score_model_forecast.csv'}")
     print(f"Wrote: {args.output_dir / 'exact_score_projected_group_standings.csv'}")
     print(f"Wrote: {knockout_input_path}")
     print(f"Wrote: {args.output_dir / 'exact_score_knockout_forecast.csv'}")
+    print(f"Wrote: {args.output_dir / 'schedule_model_predictions.csv'}")
     for visual_path in visual_paths:
         print(f"Wrote: {visual_path}")
     print(f"Wrote: {args.output_dir / 'exact_score_model_iterations.csv'}")
