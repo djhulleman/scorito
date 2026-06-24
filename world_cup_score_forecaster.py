@@ -58,6 +58,19 @@ KNOCKOUT_ROUNDS = {
     "Match for third place",
     "Final",
 }
+GOAL_TOTAL_GRID = [2.0, 2.25, 2.5, 2.75, 3.0, 3.25]
+GOAL_SCALE_GRID = [500.0, 600.0, 650.0, 750.0, 900.0]
+SCORITO_MATCH_POINTS = {
+    "Group": (30.0, 45.0),
+    "Round of 32": (60.0, 90.0),
+    "Round of 16": (90.0, 135.0),
+    "Quarterfinals": (120.0, 180.0),
+    "Quarter-finals": (120.0, 180.0),
+    "Semifinals": (150.0, 225.0),
+    "Semi-finals": (150.0, 225.0),
+    "Match for third place": (180.0, 270.0),
+    "Final": (180.0, 270.0),
+}
 
 TEAM_ALIASES = {
     "Czechia": "Czech Republic",
@@ -93,6 +106,7 @@ class EvaluationResult:
     predictions: pd.DataFrame
     params: ModelParams
     reached_target: bool
+    total_goals_mae: float = math.inf
     calibrator_depth: int | None = None
     calibrator_min_leaf: int | None = None
 
@@ -539,25 +553,49 @@ def score_forecast(
     elo_diff: float,
     params: ModelParams,
     forced_outcome: str | None = None,
+    toto_pts: float = 30.0,
+    exact_pts: float = 45.0,
     max_goals: int = 8,
 ) -> tuple[int, int, float, float]:
     home_lambda = max(0.10, params.goal_total / 2.0 * math.exp(elo_diff / params.goal_scale))
     away_lambda = max(0.10, params.goal_total / 2.0 * math.exp(-elo_diff / params.goal_scale))
 
-    best_score: tuple[float, int, int] | None = None
+    score_probabilities: list[tuple[int, int, str, float]] = []
+    outcome_probabilities = {"H": 0.0, "D": 0.0, "A": 0.0}
     for home_goals in range(max_goals + 1):
         home_prob = poisson_prob(home_lambda, home_goals)
         for away_goals in range(max_goals + 1):
             outcome = outcome_from_scores(home_goals, away_goals)
-            if forced_outcome is not None and outcome != forced_outcome:
-                continue
             probability = home_prob * poisson_prob(away_lambda, away_goals)
-            if best_score is None or probability > best_score[0]:
-                best_score = (probability, home_goals, away_goals)
+            score_probabilities.append((home_goals, away_goals, outcome, probability))
+            outcome_probabilities[outcome] += probability
+
+    best_score: tuple[float, float, int, int] | None = None
+    for home_goals, away_goals, outcome, exact_probability in score_probabilities:
+        if forced_outcome is not None and outcome != forced_outcome:
+            continue
+        outcome_probability = outcome_probabilities[outcome]
+        expected_points = (
+            exact_probability * float(exact_pts)
+            + max(outcome_probability - exact_probability, 0.0) * float(toto_pts)
+        )
+        candidate = (
+            expected_points,
+            exact_probability,
+            home_goals,
+            away_goals,
+        )
+        if best_score is None or candidate > best_score:
+            best_score = candidate
 
     if best_score is None:
         return 1, 1, home_lambda, away_lambda
-    return best_score[1], best_score[2], home_lambda, away_lambda
+    return best_score[2], best_score[3], home_lambda, away_lambda
+
+
+def scorito_points_for_round(round_name: object) -> tuple[float, float]:
+    key = "Group" if str(round_name).startswith("Group") else str(round_name)
+    return SCORITO_MATCH_POINTS.get(key, SCORITO_MATCH_POINTS["Group"])
 
 
 def make_predictions(
@@ -592,10 +630,13 @@ def make_predictions(
         outcomes,
         probabilities,
     ):
+        toto_pts, exact_pts = scorito_points_for_round(fixture.group)
         predicted_home, predicted_away, home_xg, away_xg = score_forecast(
             feature.elo_diff,
             params,
             forced_outcome=predicted_outcome,
+            toto_pts=toto_pts,
+            exact_pts=exact_pts,
         )
         actual_outcome = np.nan
         outcome_correct = np.nan
@@ -643,6 +684,24 @@ def evaluate_predictions(predictions: pd.DataFrame) -> tuple[float, float]:
         float(evaluated["outcome_correct"].mean()),
         float(evaluated["exact_score_correct"].mean()),
     )
+
+
+def total_goals_mae(predictions: pd.DataFrame) -> float:
+    evaluated = predictions[
+        predictions["actual_home_score"].notna()
+        & predictions["actual_away_score"].notna()
+    ].copy()
+    if evaluated.empty:
+        return math.inf
+    predicted_total = (
+        pd.to_numeric(evaluated["predicted_home_score"], errors="coerce")
+        + pd.to_numeric(evaluated["predicted_away_score"], errors="coerce")
+    )
+    actual_total = (
+        pd.to_numeric(evaluated["actual_home_score"], errors="coerce")
+        + pd.to_numeric(evaluated["actual_away_score"], errors="coerce")
+    )
+    return float((predicted_total - actual_total).abs().mean())
 
 
 def is_group_stage_match(row: pd.Series) -> bool:
@@ -1134,6 +1193,24 @@ def parameter_grid() -> Iterable[ModelParams]:
         for k_factor in [8.0, 12.0, 16.0, 20.0, 24.0, 32.0, 48.0]:
             for home_advantage in [0.0, 30.0, 60.0, 90.0, 120.0]:
                 for draw_margin in range(0, 301, 10):
+                    for goal_total in GOAL_TOTAL_GRID:
+                        for goal_scale in GOAL_SCALE_GRID:
+                            yield ModelParams(
+                                start_year=start_year,
+                                k_factor=k_factor,
+                                home_advantage=home_advantage,
+                                draw_margin=float(draw_margin),
+                                goal_total=goal_total,
+                                goal_scale=goal_scale,
+                            )
+
+
+def outcome_parameter_grid() -> Iterable[ModelParams]:
+    """Outcome-only grid; score parameters are tuned after the best outcome tier."""
+    for start_year in [1970, 1980, 1990, 2000, 2010, 2015, 2020]:
+        for k_factor in [8.0, 12.0, 16.0, 20.0, 24.0, 32.0, 48.0]:
+            for home_advantage in [0.0, 30.0, 60.0, 90.0, 120.0]:
+                for draw_margin in range(0, 301, 10):
                     yield ModelParams(
                         start_year=start_year,
                         k_factor=k_factor,
@@ -1147,27 +1224,74 @@ def tune_baseline(
     completed: pd.DataFrame,
     target_accuracy: float,
 ) -> EvaluationResult:
-    best_result: EvaluationResult | None = None
-
     rating_cache: dict[tuple[int, float, float], dict[str, float]] = {}
-    for params in parameter_grid():
+    best_accuracy = -1.0
+    best_outcome_candidates: list[tuple[ModelParams, dict[str, float]]] = []
+    actual_outcomes = np.array(
+        [
+            outcome_from_scores(row.home_score, row.away_score)
+            for row in completed.itertuples(index=False)
+        ]
+    )
+
+    # Goal parameters do not affect Elo updates or 1X2 classification. Tune the
+    # structural outcome model once, then use total-goals MAE to choose among
+    # the tied best outcome models and all requested goal parameter pairs.
+    for params in outcome_parameter_grid():
         rating_key = (params.start_year, params.k_factor, params.home_advantage)
         ratings = rating_cache.get(rating_key)
         if ratings is None:
             ratings = train_elo_ratings(historical, params)
             rating_cache[rating_key] = ratings
 
-        predictions = make_predictions(completed, ratings, params)
-        accuracy, exact_accuracy = evaluate_predictions(predictions)
-        if best_result is None or accuracy > best_result.accuracy:
-            best_result = EvaluationResult(
-                name="historical_only",
-                accuracy=accuracy,
-                exact_score_accuracy=exact_accuracy,
-                predictions=predictions,
-                params=params,
-                reached_target=accuracy >= target_accuracy,
-            )
+        features = rating_features(completed, ratings, params)
+        predicted_outcomes = np.array(
+            [
+                baseline_outcome_from_diff(row.elo_diff, params.draw_margin)
+                for row in features.itertuples(index=False)
+            ]
+        )
+        accuracy = float((predicted_outcomes == actual_outcomes).mean())
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_outcome_candidates = [(params, ratings)]
+        elif accuracy == best_accuracy:
+            best_outcome_candidates.append((params, ratings))
+
+    best_result: EvaluationResult | None = None
+    for base_params, ratings in best_outcome_candidates:
+        for goal_total in GOAL_TOTAL_GRID:
+            for goal_scale in GOAL_SCALE_GRID:
+                params = ModelParams(
+                    start_year=base_params.start_year,
+                    k_factor=base_params.k_factor,
+                    home_advantage=base_params.home_advantage,
+                    draw_margin=base_params.draw_margin,
+                    goal_total=goal_total,
+                    goal_scale=goal_scale,
+                )
+                predictions = make_predictions(completed, ratings, params)
+                accuracy, exact_accuracy = evaluate_predictions(predictions)
+                goals_mae = total_goals_mae(predictions)
+                result = EvaluationResult(
+                    name="historical_only",
+                    accuracy=accuracy,
+                    exact_score_accuracy=exact_accuracy,
+                    predictions=predictions,
+                    params=params,
+                    reached_target=accuracy >= target_accuracy,
+                    total_goals_mae=goals_mae,
+                )
+                if best_result is None or (
+                    result.accuracy,
+                    -result.total_goals_mae,
+                    result.exact_score_accuracy,
+                ) > (
+                    best_result.accuracy,
+                    -best_result.total_goals_mae,
+                    best_result.exact_score_accuracy,
+                ):
+                    best_result = result
 
     assert best_result is not None
     return best_result
@@ -1190,6 +1314,7 @@ def tune_calibrator(
                 predictions=predictions,
                 params=params,
                 reached_target=accuracy >= target_accuracy,
+                total_goals_mae=total_goals_mae(predictions),
             ),
             None,
         )
@@ -1224,6 +1349,7 @@ def tune_calibrator(
                 predictions=predictions,
                 params=params,
                 reached_target=accuracy >= target_accuracy,
+                total_goals_mae=total_goals_mae(predictions),
                 calibrator_depth=max_depth,
                 calibrator_min_leaf=min_leaf,
             )
@@ -1567,7 +1693,10 @@ def print_summary(
         f"start_year={baseline.params.start_year}, "
         f"k={baseline.params.k_factor:g}, "
         f"home_adv={baseline.params.home_advantage:g}, "
-        f"draw_margin={baseline.params.draw_margin:g}"
+        f"draw_margin={baseline.params.draw_margin:g}, "
+        f"goal_total={baseline.params.goal_total:g}, "
+        f"goal_scale={baseline.params.goal_scale:g}, "
+        f"total_goals_mae={baseline.total_goals_mae:.3f}"
     )
     print()
     print(

@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from world_cup_score_forecaster import ModelParams, score_forecast
+
 
 MATCH_POINTS = {
     "Group": {"label": "Groepsfase", "toto": 30, "exact": 45},
@@ -195,6 +197,41 @@ def match_points_for_round(round_name: object) -> dict[str, object]:
     return MATCH_POINTS.get(round_key(round_name), MATCH_POINTS["Round of 16"])
 
 
+def scorito_ev_score_from_xg(
+    home_xg: float,
+    away_xg: float,
+    forced_outcome: str,
+    points: dict[str, object],
+) -> tuple[int, int]:
+    """Use the core Scorito-EV selector while preserving the model's 1X2 pick."""
+    home_lambda = max(float(home_xg), 0.10)
+    away_lambda = max(float(away_xg), 0.10)
+    goal_scale = 650.0
+    goal_total = 2.0 * math.sqrt(home_lambda * away_lambda)
+    elo_diff = goal_scale / 2.0 * math.log(home_lambda / away_lambda)
+    params = ModelParams(
+        start_year=2026,
+        k_factor=0.0,
+        home_advantage=0.0,
+        draw_margin=0.0,
+        goal_total=goal_total,
+        goal_scale=goal_scale,
+    )
+    outcome_code = {
+        "home_win": "H",
+        "draw": "D",
+        "away_win": "A",
+    }[forced_outcome]
+    home_score, away_score, _, _ = score_forecast(
+        elo_diff,
+        params,
+        forced_outcome=outcome_code,
+        toto_pts=float(points["toto"]),
+        exact_pts=float(points["exact"]),
+    )
+    return home_score, away_score
+
+
 def build_match_advice(
     future_group: pd.DataFrame,
     knockout: pd.DataFrame,
@@ -219,7 +256,7 @@ def build_match_advice(
         away_team = getattr(row, "away_team", "")
         if not str(home_team).strip() or not str(away_team).strip():
             continue
-        predicted_home = int(
+        model_home = int(
             float(
                 getattr(
                     row,
@@ -228,7 +265,7 @@ def build_match_advice(
                 )
             )
         )
-        predicted_away = int(
+        model_away = int(
             float(
                 getattr(
                     row,
@@ -237,9 +274,18 @@ def build_match_advice(
                 )
             )
         )
-        home_xg = float(getattr(row, "home_xg", predicted_home + 0.3) or predicted_home + 0.3)
-        away_xg = float(getattr(row, "away_xg", predicted_away + 0.3) or predicted_away + 0.3)
+        home_xg = pd.to_numeric(getattr(row, "home_xg", np.nan), errors="coerce")
+        away_xg = pd.to_numeric(getattr(row, "away_xg", np.nan), errors="coerce")
+        home_xg = float(model_home + 0.3 if pd.isna(home_xg) else home_xg)
+        away_xg = float(model_away + 0.3 if pd.isna(away_xg) else away_xg)
         points = match_points_for_round(getattr(row, "round"))
+        model_outcome = outcome_from_score(model_home, model_away)
+        predicted_home, predicted_away = scorito_ev_score_from_xg(
+            home_xg,
+            away_xg,
+            model_outcome,
+            points,
+        )
         exact_prob, outcome_prob = score_probabilities(
             home_xg,
             away_xg,
@@ -259,6 +305,8 @@ def build_match_advice(
                 "home_team": home_team,
                 "away_team": away_team,
                 "recommended_score": f"{predicted_home}-{predicted_away}",
+                "scorito_ev_score": f"{predicted_home}-{predicted_away}",
+                "model_score": f"{model_home}-{model_away}",
                 "predicted_outcome": outcome_from_score(predicted_home, predicted_away),
                 "advancing_team_if_draw_or_win": getattr(row, "advancing_team", ""),
                 "toto_points": points["toto"],
@@ -266,6 +314,11 @@ def build_match_advice(
                 "estimated_exact_probability": exact_prob,
                 "estimated_toto_probability": outcome_prob,
                 "expected_match_points": expected_points,
+                "chasing_note": (
+                    "CONTRARIAN CANDIDATE"
+                    if 0.35 <= outcome_prob <= 0.60
+                    else ""
+                ),
                 "home_xg": home_xg,
                 "away_xg": away_xg,
                 "note": "Penalty shootouts ignored; score is modeled through 120 minutes.",
@@ -491,6 +544,11 @@ def build_master_sheet(
                     "advice": f"{row.home_team} - {row.away_team}: {row.recommended_score}",
                     "points_context": f"EV {row.expected_match_points:.1f}; exact {row.exact_points}; toto {row.toto_points}",
                     "reason": f"{row.round_scoring_label}, exact p~{row.estimated_exact_probability:.1%}, toto p~{row.estimated_toto_probability:.1%}",
+                    "chasing_note": (
+                        "CONTRARIAN CANDIDATE"
+                        if 0.35 <= float(row.estimated_toto_probability) <= 0.60
+                        else ""
+                    ),
                 }
             )
     if not top_advice.empty:
@@ -507,6 +565,7 @@ def build_master_sheet(
                     "advice": f"{row.player} ({row.team}, {row.scorito_position})",
                     "points_context": f"{row.points_per_goal} pnt/goal; EV {row.expected_round_points:.1f}",
                     "reason": f"{row.pick_style}; vs {row.opponent}; team xG {row.team_xg:.2f}",
+                    "chasing_note": "",
                 }
             )
     if not country_advice.empty:
@@ -518,6 +577,7 @@ def build_master_sheet(
                     "advice": f"{row.prediction_type}: {row.team}",
                     "points_context": f"{int(row.points)} pnt",
                     "reason": row.reason,
+                    "chasing_note": "",
                 }
             )
     return pd.DataFrame(rows).sort_values(["section", "priority"], ascending=[True, False])

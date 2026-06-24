@@ -612,6 +612,120 @@ def prediction_score_text(home: object, away: object) -> str:
     return f"{int(float(home))}-{int(float(away))}"
 
 
+SCORITO_MATCH_POINTS = {
+    "Group Stage": (30, 45),
+    "Round of 32": (60, 90),
+    "Round of 16": (90, 135),
+    "QF": (120, 180),
+    "SF": (150, 225),
+    "Third Place": (180, 270),
+    "Final": (180, 270),
+}
+
+
+def scorito_match_points(round_name: object) -> tuple[object, object]:
+    label = round_label(round_name)
+    return SCORITO_MATCH_POINTS.get(label, (pd.NA, pd.NA))
+
+
+def normalize_schedule_predictions(frame: pd.DataFrame) -> pd.DataFrame:
+    """Backfill Elo/Poisson and Scorito fields from older generated CSV schemas."""
+    normalized = frame.copy()
+    if normalized.empty:
+        return normalized
+
+    elo_score_fallbacks = {
+        "elo_poisson_predicted_home_score": "predicted_home_score",
+        "elo_poisson_predicted_away_score": "predicted_away_score",
+    }
+    for target, fallback in elo_score_fallbacks.items():
+        if target not in normalized:
+            normalized[target] = (
+                normalized[fallback] if fallback in normalized else np.nan
+            )
+        normalized[target] = pd.to_numeric(normalized[target], errors="coerce")
+
+    round_column = "group" if "group" in normalized else "round"
+    if round_column in normalized:
+        point_pairs = normalized[round_column].map(scorito_match_points)
+        normalized["scorito_toto_points"] = point_pairs.map(lambda pair: pair[0])
+        normalized["scorito_exact_points"] = point_pairs.map(lambda pair: pair[1])
+    else:
+        if "scorito_toto_points" not in normalized:
+            normalized["scorito_toto_points"] = pd.NA
+        if "scorito_exact_points" not in normalized:
+            normalized["scorito_exact_points"] = pd.NA
+
+    derived_columns = [
+        "actual_outcome",
+        "elo_poisson_exact_correct",
+        "elo_poisson_toto_correct",
+        "elo_poisson_scorito_points",
+        "elo_poisson_scorito_result",
+    ]
+    for column in derived_columns:
+        if column not in normalized:
+            normalized[column] = pd.NA
+
+    actual_home = pd.Series(np.nan, index=normalized.index, dtype=float)
+    actual_away = pd.Series(np.nan, index=normalized.index, dtype=float)
+    for column in ["actual_home_score", "home_score"]:
+        if column in normalized:
+            actual_home = actual_home.fillna(
+                pd.to_numeric(normalized[column], errors="coerce")
+            )
+    for column in ["actual_away_score", "away_score"]:
+        if column in normalized:
+            actual_away = actual_away.fillna(
+                pd.to_numeric(normalized[column], errors="coerce")
+            )
+
+    predicted_home = normalized["elo_poisson_predicted_home_score"]
+    predicted_away = normalized["elo_poisson_predicted_away_score"]
+    completed = (
+        actual_home.notna()
+        & actual_away.notna()
+        & predicted_home.notna()
+        & predicted_away.notna()
+    )
+    if not completed.any():
+        return normalized
+
+    actual_outcome = np.select(
+        [actual_home > actual_away, actual_home < actual_away],
+        ["home_win", "away_win"],
+        default="draw",
+    )
+    predicted_outcome = np.select(
+        [predicted_home > predicted_away, predicted_home < predicted_away],
+        ["home_win", "away_win"],
+        default="draw",
+    )
+    exact_correct = (actual_home == predicted_home) & (actual_away == predicted_away)
+    toto_correct = actual_outcome == predicted_outcome
+    points = np.where(
+        exact_correct,
+        pd.to_numeric(normalized["scorito_exact_points"], errors="coerce"),
+        np.where(
+            toto_correct,
+            pd.to_numeric(normalized["scorito_toto_points"], errors="coerce"),
+            0,
+        ),
+    )
+    result = np.select(
+        [exact_correct, toto_correct],
+        ["exact", "toto"],
+        default="miss",
+    )
+
+    normalized.loc[completed, "actual_outcome"] = actual_outcome[completed]
+    normalized.loc[completed, "elo_poisson_exact_correct"] = exact_correct[completed]
+    normalized.loc[completed, "elo_poisson_toto_correct"] = toto_correct[completed]
+    normalized.loc[completed, "elo_poisson_scorito_points"] = points[completed]
+    normalized.loc[completed, "elo_poisson_scorito_result"] = result[completed]
+    return normalized
+
+
 def use_elo_poisson_predictions(frame: pd.DataFrame) -> pd.DataFrame:
     operational = frame.copy()
     mappings = {
@@ -696,9 +810,9 @@ def fallback_schedule() -> pd.DataFrame:
 
 
 def add_schedule_model_predictions(schedule: pd.DataFrame) -> pd.DataFrame:
-    predictions = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    predictions = normalize_schedule_predictions(csv(SCHEDULE_MODEL_PREDICTIONS_PATH))
     if schedule.empty or predictions.empty or "match_no" not in predictions:
-        return schedule
+        return normalize_schedule_predictions(schedule)
 
     model_columns = [
         "exact_tree_predicted_home_score",
@@ -746,7 +860,7 @@ def add_schedule_model_predictions(schedule: pd.DataFrame) -> pd.DataFrame:
         merged[column] = merged[column].fillna(merged["match_no"].map(fallback[column]))
 
     merged["match_no"] = pd.to_numeric(merged["match_no"], errors="coerce").astype("Int64")
-    return merged
+    return normalize_schedule_predictions(merged)
 
 
 def read_results_cache() -> tuple[pd.DataFrame, datetime | None]:
@@ -1519,7 +1633,7 @@ def merged_match_predictions() -> pd.DataFrame:
 
 def page_matches() -> None:
     page_heading("Match Predictions & Goals")
-    completed = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    completed = normalize_schedule_predictions(csv(SCHEDULE_MODEL_PREDICTIONS_PATH))
     if not completed.empty:
         completed = completed[
             completed["actual_home_score"].notna()
@@ -1614,7 +1728,7 @@ def clean_strategy_team(value: object) -> str:
     return str(value).strip()
 
 
-def strategy_decision(row: pd.Series) -> pd.Series:
+def strategy_decision(row: pd.Series, chasing: bool = False) -> pd.Series:
     predicted_outcome = str(row.get("predicted_outcome", ""))
     abs_xg_edge = pd.to_numeric(row.get("abs_xg_edge"), errors="coerce")
     abs_elo_edge = pd.to_numeric(row.get("abs_elo_edge"), errors="coerce")
@@ -1623,66 +1737,87 @@ def strategy_decision(row: pd.Series) -> pd.Series:
     abs_elo_edge = 0.0 if pd.isna(abs_elo_edge) else float(abs_elo_edge)
     exact_points = 0.0 if pd.isna(exact_points) else float(exact_points)
 
-    if predicted_outcome == "draw":
-        if abs_xg_edge >= 0.55 or abs_elo_edge >= 145:
-            return pd.Series(
-                {
-                    "strategy_label": "Follow path",
-                    "strategy_kind": "model",
-                    "strategy_action": "Use the model's advancing team, but personalize the exact score.",
-                    "strategy_reason": "Projected draw, yet the underlying edge points to one side.",
-                }
+    def decision(
+        label: str,
+        kind: str,
+        action: str,
+        reason: str,
+    ) -> pd.Series:
+        if chasing:
+            action = (
+                f"{action} CHASE: consider unpopular scoreline or underdog — "
+                "pool position requires variance here."
             )
         return pd.Series(
             {
-                "strategy_label": "Gut zone",
-                "strategy_kind": "pick",
-                "strategy_action": "This is a valid place for a personal read or pool-position move.",
-                "strategy_reason": "Projected draw or penalties; tiny edges are fragile.",
+                "strategy_label": label,
+                "strategy_kind": kind,
+                "strategy_action": action,
+                "strategy_reason": reason,
             }
         )
 
-    if abs_xg_edge >= 0.60 or abs_elo_edge >= 160:
-        return pd.Series(
-            {
-                "strategy_label": "Follow data",
-                "strategy_kind": "model",
-                "strategy_action": "Take the winner and keep the model score unless you need variance.",
-                "strategy_reason": "The model, xG shape, and strength edge are aligned.",
-            }
+    if chasing and abs_xg_edge < 0.55:
+        return decision(
+            "Gut zone",
+            "pick",
+            "Treat this close match as a contrarian swing opportunity.",
+            "Chasing mode widens the gut zone because the xG edge is below 0.55.",
+        )
+
+    if predicted_outcome == "draw":
+        if abs_xg_edge >= 0.55 or abs_elo_edge >= 145:
+            return decision(
+                "Follow path",
+                "model",
+                "Use the model's advancing team, but personalize the exact score.",
+                "Projected draw, yet the underlying edge points to one side.",
+            )
+        return decision(
+            "Gut zone",
+            "pick",
+            "This is a valid place for a personal read or pool-position move.",
+            "Projected draw or penalties; tiny edges are fragile.",
+        )
+
+    follow_data_xg = 0.80 if chasing else 0.60
+    if abs_xg_edge >= follow_data_xg or abs_elo_edge >= 160:
+        return decision(
+            "Follow data",
+            "model",
+            "Take the winner and keep the model score unless you need variance.",
+            "The model, xG shape, and strength edge are aligned.",
         )
 
     if exact_points >= 180 and abs_xg_edge < 0.40:
-        return pd.Series(
-            {
-                "strategy_label": "Differential",
-                "strategy_kind": "pick",
-                "strategy_action": "Keep one late-round gut swing available here if chasing.",
-                "strategy_reason": "High points with a narrow edge; leverage beats tiny accuracy gains.",
-            }
+        return decision(
+            "Differential",
+            "pick",
+            "Keep one late-round gut swing available here if chasing.",
+            "High points with a narrow edge; leverage beats tiny accuracy gains.",
         )
 
     if abs_xg_edge <= 0.25 and abs_elo_edge <= 70:
-        return pd.Series(
-            {
-                "strategy_label": "Gut zone",
-                "strategy_kind": "pick",
-                "strategy_action": "Let your read decide, especially on exact score.",
-                "strategy_reason": "The model edge is too small to deserve blind obedience.",
-            }
+        return decision(
+            "Gut zone",
+            "pick",
+            "Let your read decide, especially on exact score.",
+            "The model edge is too small to deserve blind obedience.",
         )
 
-    return pd.Series(
-        {
-            "strategy_label": "Lean data",
-            "strategy_kind": "next",
-            "strategy_action": "Follow the model winner; allow small exact-score tweaks.",
-            "strategy_reason": "There is useful signal, but not enough to lock the whole pick.",
-        }
+    return decision(
+        "Lean data",
+        "next",
+        "Follow the model winner; allow small exact-score tweaks.",
+        (
+            "There is useful signal, but not enough to lock the whole pick."
+            if not chasing
+            else "The xG edge clears the 0.55 chasing threshold but not the 0.80 lock threshold."
+        ),
     )
 
 
-def knockout_strategy_frame() -> pd.DataFrame:
+def knockout_strategy_frame(chasing: bool = False) -> pd.DataFrame:
     bracket = csv(BEST_EXACT_KNOCKOUT_PATH)
     if bracket.empty:
         return pd.DataFrame()
@@ -1729,7 +1864,10 @@ def knockout_strategy_frame() -> pd.DataFrame:
             on=["date", "home_team", "away_team"],
         )
 
-    decisions = frame.apply(strategy_decision, axis=1)
+    decisions = frame.apply(
+        lambda row: strategy_decision(row, chasing=chasing),
+        axis=1,
+    )
     frame = pd.concat([frame, decisions], axis=1)
     return frame.sort_values(["round_order", "date", "match_no"], na_position="last").reset_index(drop=True)
 
@@ -1803,8 +1941,10 @@ def strategy_match_html(row: pd.Series) -> str:
 
 def page_strategy_guide() -> None:
     page_heading("Strategy Guide")
-    planner = knockout_strategy_frame()
-    schedule_predictions = csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    planner = knockout_strategy_frame(chasing=CHASING_MODE)
+    schedule_predictions = normalize_schedule_predictions(
+        csv(SCHEDULE_MODEL_PREDICTIONS_PATH)
+    )
 
     st.markdown(
         "<div class='strategy-note'>Group-stage picks are now context. The active decision space starts "
@@ -1812,6 +1952,11 @@ def page_strategy_guide() -> None:
         "the match is close.</div>",
         unsafe_allow_html=True,
     )
+    if CHASING_MODE:
+        st.warning(
+            "Chasing mode active - model locks tightened, gut zones widened. "
+            "Prioritise picks the rest of your pool is unlikely to make."
+        )
 
     metric_cols = st.columns(3)
     completed_elo = (
@@ -1842,7 +1987,7 @@ def page_strategy_guide() -> None:
         st.warning("No knockout strategy data found.")
         return
 
-    tabs = st.tabs(["Planner", "Playbook", "Audit"])
+    tabs = st.tabs(["Planner", "Fill-in Guide", "Playbook", "Audit"])
     with tabs[0]:
         st.markdown(
             "<div class='strategy-note'>Default plan: follow every data lock, lean with the model on medium edges, "
@@ -1856,6 +2001,72 @@ def page_strategy_guide() -> None:
                     st.markdown(strategy_match_html(row), unsafe_allow_html=True)
 
     with tabs[1]:
+        fill_in = planner.copy().sort_values(
+            ["round_order", "date", "match_no"],
+            na_position="last",
+        )
+        fill_in["Match"] = fill_in["match_no"].map(
+            lambda value: f"M{int(value)}" if not pd.isna(value) else "-"
+        )
+        fill_in["Date"] = fill_in["date"].map(strategy_date_text)
+        fill_in["Teams"] = fill_in["home_team"] + " - " + fill_in["away_team"]
+        fill_in["Model pick"] = fill_in.apply(
+            lambda row: f"{row['winner']} ({row['score']})",
+            axis=1,
+        )
+        if "expected_match_points" not in fill_in:
+            fill_in["expected_match_points"] = np.nan
+        fill_in["Scorito EV"] = pd.to_numeric(
+            fill_in["expected_match_points"],
+            errors="coerce",
+        ).round(1)
+        fill_in["Strategy"] = fill_in["strategy_label"]
+        fill_in["Action"] = fill_in["strategy_action"]
+        guide_columns = [
+            "Match",
+            "Date",
+            "Teams",
+            "Model pick",
+            "Scorito EV",
+            "Strategy",
+            "Action",
+        ]
+        guide = fill_in[guide_columns].reset_index(drop=True)
+
+        def highlight_strategy(row: pd.Series) -> list[str]:
+            color = ""
+            if row["Strategy"] == "Gut zone":
+                color = "background-color: rgba(246, 200, 95, 0.24)"
+            elif row["Strategy"] == "Follow data":
+                color = "background-color: rgba(104, 211, 145, 0.22)"
+            return [color] * len(row)
+
+        st.dataframe(
+            guide.style.apply(highlight_strategy, axis=1),
+            use_container_width=True,
+            hide_index=True,
+        )
+        st.download_button(
+            "Download knockout picks CSV",
+            data=guide.to_csv(index=False).encode("utf-8"),
+            file_name="mijn_knockout_picks.csv",
+            mime="text/csv",
+        )
+        guide_metrics = st.columns(3)
+        guide_metrics[0].metric(
+            "Data locks",
+            int(fill_in["strategy_label"].eq("Follow data").sum()),
+        )
+        guide_metrics[1].metric(
+            "Gut swings available",
+            int(fill_in["strategy_label"].eq("Gut zone").sum()),
+        )
+        guide_metrics[2].metric(
+            "Total bracket EV",
+            f"{pd.to_numeric(fill_in['expected_match_points'], errors='coerce').sum():.1f}",
+        )
+
+    with tabs[2]:
         st.dataframe(
             pd.DataFrame(
                 [
@@ -1888,7 +2099,7 @@ def page_strategy_guide() -> None:
             unsafe_allow_html=True,
         )
 
-    with tabs[2]:
+    with tabs[3]:
         audit = planner[
             [
                 "round",
@@ -2026,8 +2237,12 @@ def page_bracket() -> None:
                     continue
                 model_pick = str(row.get("advancing_team", "") or home)
                 options = [home, away]
-                current = str(overrides.get(str(match_no), model_pick))
-                if current not in options:
+                override_key = str(match_no)
+                if override_key in overrides:
+                    current = str(overrides[override_key])
+                    if current and current not in options:
+                        options.append(current)
+                else:
                     current = model_pick if model_pick in options else home
                 editable = bool(pd.isna(row.get("actual_home_score"))) and (
                     pd.isna(row["date"]) or pd.Timestamp(row["date"]).normalize() >= today
@@ -2049,8 +2264,8 @@ def page_bracket() -> None:
                     disabled=not editable,
                     label_visibility="collapsed",
                 )
-                if selected != overrides.get(str(match_no), model_pick):
-                    overrides[str(match_no)] = selected
+                if selected != overrides.get(override_key, model_pick):
+                    overrides[override_key] = selected
                     changed = True
 
     if changed:
@@ -2088,6 +2303,11 @@ pages = [
 
 refresh_status = ensure_model_outputs_current()
 st.sidebar.caption("WK 2026 Scorito")
+CHASING_MODE = st.sidebar.toggle(
+    "🔴 Chasing mode (last in pool)",
+    value=False,
+    key="chasing_mode",
+)
 if refresh_status.get("status") == "failed":
     st.sidebar.warning("Prediction refresh failed; showing last saved outputs.")
 else:
