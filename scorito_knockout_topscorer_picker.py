@@ -261,10 +261,8 @@ def is_own_goal_text(text: str) -> bool:
 
 def goal_count_from_item(goal_item, text: str) -> int:
     icons = goal_item.find_all("span", class_="fb-goal")
-    if icons:
-        return len(icons)
     minute_marks = re.findall(r"\b[0-9]+(?:\+[0-9]+)?'", text)
-    return max(1, len(minute_marks))
+    return max(1, len(icons), len(minute_marks))
 
 
 def parse_goal_items(

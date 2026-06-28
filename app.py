@@ -555,7 +555,7 @@ def save_prediction_state() -> None:
 
 
 @st.cache_data(show_spinner=False)
-def load_csv(path: str) -> pd.DataFrame:
+def load_csv(path: str, file_mtime_ns: int | None = None, file_size: int | None = None) -> pd.DataFrame:
     file_path = Path(path)
     if not file_path.exists():
         return pd.DataFrame()
@@ -567,7 +567,10 @@ def load_csv(path: str) -> pd.DataFrame:
 
 
 def csv(path: Path) -> pd.DataFrame:
-    return load_csv(str(path))
+    if not path.exists():
+        return load_csv(str(path), None, None)
+    stat = path.stat()
+    return load_csv(str(path), stat.st_mtime_ns, stat.st_size)
 
 
 def format_percent(value: object) -> str:
