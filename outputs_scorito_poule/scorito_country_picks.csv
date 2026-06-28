@@ -1,72 +1,72 @@
 category,prediction_type,team,group,prediction,points,confidence_proxy,reason
 Landen,Door groepsfase,Mexico,Group A,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,Mexico,Group A,1e in Group A,75,4.0,"Projected GD 4, goals for 4"
-Landen,Door groepsfase,South Korea,Group A,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,South Korea,Group A,2e in Group A,75,1.0,"Projected GD 1, goals for 3"
+Landen,Juiste groepspositie 1/2,Mexico,Group A,1e in Group A,75,6.0,"Projected GD 6, goals for 6"
+Landen,Door groepsfase,South Africa,Group A,qualifies for knockouts,50,4.0,"Projected position 2, points 4"
+Landen,Juiste groepspositie 1/2,South Africa,Group A,2e in Group A,75,-1.0,"Projected GD -1, goals for 2"
 Landen,Door groepsfase,Switzerland,Group B,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
-Landen,Juiste groepspositie 1/2,Switzerland,Group B,1e in Group B,75,4.0,"Projected GD 4, goals for 6"
+Landen,Juiste groepspositie 1/2,Switzerland,Group B,1e in Group B,75,4.0,"Projected GD 4, goals for 7"
 Landen,Door groepsfase,Canada,Group B,qualifies for knockouts,50,4.0,"Projected position 2, points 4"
-Landen,Juiste groepspositie 1/2,Canada,Group B,2e in Group B,75,5.0,"Projected GD 5, goals for 7"
-Landen,Door groepsfase,Qatar,Group B,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
+Landen,Juiste groepspositie 1/2,Canada,Group B,2e in Group B,75,5.0,"Projected GD 5, goals for 8"
+Landen,Door groepsfase,Bosnia and Herzegovina,Group B,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
 Landen,Door groepsfase,Brazil,Group C,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
-Landen,Juiste groepspositie 1/2,Brazil,Group C,1e in Group C,75,5.0,"Projected GD 5, goals for 6"
+Landen,Juiste groepspositie 1/2,Brazil,Group C,1e in Group C,75,6.0,"Projected GD 6, goals for 7"
 Landen,Door groepsfase,Morocco,Group C,qualifies for knockouts,50,7.0,"Projected position 2, points 7"
-Landen,Juiste groepspositie 1/2,Morocco,Group C,2e in Group C,75,3.0,"Projected GD 3, goals for 4"
-Landen,Door groepsfase,United States,Group D,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,United States,Group D,1e in Group D,75,6.0,"Projected GD 6, goals for 7"
-Landen,Door groepsfase,Paraguay,Group D,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,Paraguay,Group D,2e in Group D,75,-1.0,"Projected GD -1, goals for 3"
-Landen,Door groepsfase,Australia,Group D,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
-Landen,Door groepsfase,Germany,Group E,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,Germany,Group E,1e in Group E,75,8.0,"Projected GD 8, goals for 10"
+Landen,Juiste groepspositie 1/2,Morocco,Group C,2e in Group C,75,3.0,"Projected GD 3, goals for 6"
+Landen,Door groepsfase,United States,Group D,qualifies for knockouts,50,6.0,"Projected position 1, points 6"
+Landen,Juiste groepspositie 1/2,United States,Group D,1e in Group D,75,4.0,"Projected GD 4, goals for 8"
+Landen,Door groepsfase,Australia,Group D,qualifies for knockouts,50,4.0,"Projected position 2, points 4"
+Landen,Juiste groepspositie 1/2,Australia,Group D,2e in Group D,75,0.0,"Projected GD 0, goals for 2"
+Landen,Door groepsfase,Paraguay,Group D,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
+Landen,Door groepsfase,Germany,Group E,qualifies for knockouts,50,6.0,"Projected position 1, points 6"
+Landen,Juiste groepspositie 1/2,Germany,Group E,1e in Group E,75,6.0,"Projected GD 6, goals for 10"
 Landen,Door groepsfase,Ivory Coast,Group E,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,Ivory Coast,Group E,2e in Group E,75,1.0,"Projected GD 1, goals for 3"
+Landen,Juiste groepspositie 1/2,Ivory Coast,Group E,2e in Group E,75,2.0,"Projected GD 2, goals for 4"
+Landen,Door groepsfase,Ecuador,Group E,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
 Landen,Door groepsfase,Netherlands,Group F,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
-Landen,Juiste groepspositie 1/2,Netherlands,Group F,1e in Group F,75,6.0,"Projected GD 6, goals for 9"
-Landen,Door groepsfase,Japan,Group F,qualifies for knockouts,50,7.0,"Projected position 2, points 7"
-Landen,Juiste groepspositie 1/2,Japan,Group F,2e in Group F,75,5.0,"Projected GD 5, goals for 7"
-Landen,Door groepsfase,Sweden,Group F,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
-Landen,Door groepsfase,Egypt,Group G,qualifies for knockouts,50,5.0,"Projected position 1, points 5"
-Landen,Juiste groepspositie 1/2,Egypt,Group G,1e in Group G,75,2.0,"Projected GD 2, goals for 5"
-Landen,Door groepsfase,Belgium,Group G,qualifies for knockouts,50,5.0,"Projected position 2, points 5"
-Landen,Juiste groepspositie 1/2,Belgium,Group G,2e in Group G,75,1.0,"Projected GD 1, goals for 2"
-Landen,Door groepsfase,Iran,Group G,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
+Landen,Juiste groepspositie 1/2,Netherlands,Group F,1e in Group F,75,6.0,"Projected GD 6, goals for 10"
+Landen,Door groepsfase,Japan,Group F,qualifies for knockouts,50,5.0,"Projected position 2, points 5"
+Landen,Juiste groepspositie 1/2,Japan,Group F,2e in Group F,75,4.0,"Projected GD 4, goals for 7"
+Landen,Door groepsfase,Sweden,Group F,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
+Landen,Door groepsfase,Belgium,Group G,qualifies for knockouts,50,5.0,"Projected position 1, points 5"
+Landen,Juiste groepspositie 1/2,Belgium,Group G,1e in Group G,75,4.0,"Projected GD 4, goals for 6"
+Landen,Door groepsfase,Egypt,Group G,qualifies for knockouts,50,5.0,"Projected position 2, points 5"
+Landen,Juiste groepspositie 1/2,Egypt,Group G,2e in Group G,75,2.0,"Projected GD 2, goals for 5"
 Landen,Door groepsfase,Spain,Group H,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
 Landen,Juiste groepspositie 1/2,Spain,Group H,1e in Group H,75,5.0,"Projected GD 5, goals for 5"
-Landen,Door groepsfase,Cape Verde,Group H,qualifies for knockouts,50,5.0,"Projected position 2, points 5"
-Landen,Juiste groepspositie 1/2,Cape Verde,Group H,2e in Group H,75,1.0,"Projected GD 1, goals for 3"
+Landen,Door groepsfase,Cape Verde,Group H,qualifies for knockouts,50,3.0,"Projected position 2, points 3"
+Landen,Juiste groepspositie 1/2,Cape Verde,Group H,2e in Group H,75,0.0,"Projected GD 0, goals for 2"
 Landen,Door groepsfase,France,Group I,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,France,Group I,1e in Group I,75,5.0,"Projected GD 5, goals for 6"
+Landen,Juiste groepspositie 1/2,France,Group I,1e in Group I,75,8.0,"Projected GD 8, goals for 10"
 Landen,Door groepsfase,Norway,Group I,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,Norway,Group I,2e in Group I,75,3.0,"Projected GD 3, goals for 5"
+Landen,Juiste groepspositie 1/2,Norway,Group I,2e in Group I,75,1.0,"Projected GD 1, goals for 8"
 Landen,Door groepsfase,Senegal,Group I,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
 Landen,Door groepsfase,Argentina,Group J,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,Argentina,Group J,1e in Group J,75,6.0,"Projected GD 6, goals for 6"
-Landen,Door groepsfase,Algeria,Group J,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,Algeria,Group J,2e in Group J,75,-1.0,"Projected GD -1, goals for 2"
-Landen,Door groepsfase,Austria,Group J,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
+Landen,Juiste groepspositie 1/2,Argentina,Group J,1e in Group J,75,7.0,"Projected GD 7, goals for 8"
+Landen,Door groepsfase,Austria,Group J,qualifies for knockouts,50,4.0,"Projected position 2, points 4"
+Landen,Juiste groepspositie 1/2,Austria,Group J,2e in Group J,75,0.0,"Projected GD 0, goals for 6"
+Landen,Door groepsfase,Algeria,Group J,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
 Landen,Door groepsfase,Colombia,Group K,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
-Landen,Juiste groepspositie 1/2,Colombia,Group K,1e in Group K,75,3.0,"Projected GD 3, goals for 5"
+Landen,Juiste groepspositie 1/2,Colombia,Group K,1e in Group K,75,3.0,"Projected GD 3, goals for 4"
 Landen,Door groepsfase,Portugal,Group K,qualifies for knockouts,50,5.0,"Projected position 2, points 5"
-Landen,Juiste groepspositie 1/2,Portugal,Group K,2e in Group K,75,1.0,"Projected GD 1, goals for 3"
+Landen,Juiste groepspositie 1/2,Portugal,Group K,2e in Group K,75,5.0,"Projected GD 5, goals for 6"
 Landen,Door groepsfase,DR Congo,Group K,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
-Landen,Door groepsfase,England,Group L,qualifies for knockouts,50,9.0,"Projected position 1, points 9"
-Landen,Juiste groepspositie 1/2,England,Group L,1e in Group L,75,5.0,"Projected GD 5, goals for 7"
+Landen,Door groepsfase,England,Group L,qualifies for knockouts,50,7.0,"Projected position 1, points 7"
+Landen,Juiste groepspositie 1/2,England,Group L,1e in Group L,75,4.0,"Projected GD 4, goals for 6"
 Landen,Door groepsfase,Croatia,Group L,qualifies for knockouts,50,6.0,"Projected position 2, points 6"
-Landen,Juiste groepspositie 1/2,Croatia,Group L,2e in Group L,75,0.0,"Projected GD 0, goals for 4"
-Landen,Door groepsfase,Ghana,Group L,qualifies for knockouts,50,3.0,"Projected position 3, points 3"
-Landen,Door naar kwartfinale,Netherlands,,wins Round of 16,30,136.65,South Korea 0-1 Netherlands
-Landen,Door naar kwartfinale,France,,wins Round of 16,30,20.85,Germany 2-2 France
-Landen,Door naar kwartfinale,Brazil,,wins Round of 16,30,192.02,Brazil 3-0 Ivory Coast
-Landen,Door naar kwartfinale,England,,wins Round of 16,30,50.54,Mexico 0-1 England
-Landen,Door naar kwartfinale,Spain,,wins Round of 16,30,107.81,Portugal 0-1 Spain
-Landen,Door naar kwartfinale,United States,,wins Round of 16,30,37.16,United States 1-1 Egypt
-Landen,Door naar kwartfinale,Argentina,,wins Round of 16,30,144.46,Argentina 1-1 Belgium
-Landen,Door naar kwartfinale,Colombia,,wins Round of 16,30,87.31,Switzerland 0-1 Colombia
-Landen,Door naar halve finale,France,,wins Quarterfinals,60,23.37,France 1-1 Netherlands
-Landen,Door naar halve finale,Spain,,wins Quarterfinals,60,91.24,Spain 1-1 United States
-Landen,Door naar halve finale,Brazil,,wins Quarterfinals,60,27.54,Brazil 1-1 England
-Landen,Door naar halve finale,Argentina,,wins Quarterfinals,60,88.65,Argentina 1-1 Colombia
-Landen,Door naar finale,Spain,,wins Semifinals,120,17.33,France 2-2 Spain
-Landen,Door naar finale,Argentina,,wins Semifinals,120,26.05,Brazil 2-2 Argentina
-Landen,Wereldkampioen,Argentina,,world champion,250,18.57,Spain 2-2 Argentina
+Landen,Juiste groepspositie 1/2,Croatia,Group L,2e in Group L,75,0.0,"Projected GD 0, goals for 5"
+Landen,Door groepsfase,Ghana,Group L,qualifies for knockouts,50,4.0,"Projected position 3, points 4"
+Landen,Door naar kwartfinale,Netherlands,,wins Round of 16,30,173.01,South Africa 0-1 Netherlands
+Landen,Door naar kwartfinale,France,,wins Round of 16,30,176.77,Germany 0-1 France
+Landen,Door naar kwartfinale,Brazil,,wins Round of 16,30,180.59,Brazil 1-0 Ivory Coast
+Landen,Door naar kwartfinale,Mexico,,wins Round of 16,30,19.09,Mexico 1-0 England
+Landen,Door naar kwartfinale,Portugal,,wins Round of 16,30,88.38,Portugal 1-0 Spain
+Landen,Door naar kwartfinale,United States,,wins Round of 16,30,125.01,United States 2-1 Belgium
+Landen,Door naar kwartfinale,Argentina,,wins Round of 16,30,235.44,Argentina 1-0 Australia
+Landen,Door naar kwartfinale,Switzerland,,wins Round of 16,30,57.99,Switzerland 2-1 Colombia
+Landen,Door naar halve finale,France,,wins Quarterfinals,60,72.73,France 1-0 Netherlands
+Landen,Door naar halve finale,Portugal,,wins Quarterfinals,60,131.56,Portugal 1-0 United States
+Landen,Door naar halve finale,Brazil,,wins Quarterfinals,60,73.92,Brazil 1-0 Mexico
+Landen,Door naar halve finale,Argentina,,wins Quarterfinals,60,169.43,Argentina 1-0 Switzerland
+Landen,Door naar finale,France,,wins Semifinals,120,102.28,France 1-0 Portugal
+Landen,Door naar finale,Brazil,,wins Semifinals,120,29.55,Brazil 1-0 Argentina
+Landen,Wereldkampioen,France,,world champion,250,30.64,France 1-0 Brazil

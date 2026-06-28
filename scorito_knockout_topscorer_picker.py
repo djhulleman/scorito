@@ -42,6 +42,12 @@ from world_cup_score_forecaster import (
 )
 
 
+def configure_output_encoding() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 WIKI_BASE_URL = "https://en.wikipedia.org"
 
 TOURNAMENT_SOURCES = [
@@ -94,6 +100,12 @@ POSITION_SHARE_PRIOR = {
     "Aanvaller": 0.28,
 }
 
+POSITION_SHARE_CAP = {
+    "Keeper / Verdediger": 0.18,
+    "Middenvelder": 0.38,
+    "Aanvaller": 0.62,
+}
+
 ROUND_ORDER = {
     "Round of 32": 1,
     "Round of 16": 2,
@@ -104,6 +116,11 @@ ROUND_ORDER = {
     "Match for third place": 5,
     "Final": 6,
 }
+
+CURRENT_GROUP_LETTERS = "ABCDEFGHIJKL"
+EXPECTED_2026_GROUP_MATCHES = 72
+OPPONENT_DEFENSE_FACTOR_MIN = 0.90
+OPPONENT_DEFENSE_FACTOR_MAX = 1.10
 
 
 @dataclass(frozen=True)
@@ -122,6 +139,8 @@ def safe_filename(value: str) -> str:
 
 
 def cache_path_for_url(cache_dir: Path, url: str) -> Path:
+    if url.rstrip("/") == CURRENT_WORLD_CUP_URL.rstrip("/"):
+        return cache_dir / "2026_fifa_world_cup.html"
     parsed = urllib.parse.urlparse(url)
     name = safe_filename(parsed.path.strip("/") or parsed.netloc)
     return cache_dir / "topscorer_sources" / f"{name}.html"
@@ -151,6 +170,16 @@ def historical_urls_for_source(source: TournamentSource) -> list[tuple[str, str]
                 )
             )
     return urls
+
+
+def current_2026_group_urls() -> list[tuple[str, str]]:
+    return [
+        (
+            f"group_{letter}",
+            f"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_Group_{letter}",
+        )
+        for letter in CURRENT_GROUP_LETTERS
+    ]
 
 
 def wiki_url(path_or_url: object) -> str:
@@ -700,7 +729,43 @@ def ensure_exact_score_outputs(
 def load_current_2026_data(cache_dir: Path, refresh: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
     html = fetch_html(CURRENT_WORLD_CUP_URL, cache_dir, refresh=refresh)
     source = TournamentSource("FIFA World Cup", 2026, CURRENT_WORLD_CUP_URL)
-    return parse_tournament_page(html, source)
+    main_matches, main_goals = parse_tournament_page(html, source)
+    group_match_count = int(main_matches["stage_type"].eq("group").sum()) if not main_matches.empty else 0
+    if group_match_count >= EXPECTED_2026_GROUP_MATCHES:
+        return main_matches, main_goals
+
+    group_match_frames: list[pd.DataFrame] = []
+    group_goal_frames: list[pd.DataFrame] = []
+    for page_label, url in current_2026_group_urls():
+        try:
+            group_html = fetch_html(url, cache_dir, refresh=refresh)
+        except Exception as exc:
+            print(f"Warning: failed to load {url}; skipping group subpage. Reason: {exc}", file=sys.stderr)
+            continue
+        matches, goals = parse_tournament_page(group_html, source, page_label=page_label)
+        if not matches.empty:
+            group_match_frames.append(matches)
+        if not goals.empty:
+            group_goal_frames.append(goals)
+
+    if not group_match_frames:
+        return main_matches, main_goals
+
+    group_matches = pd.concat(group_match_frames, ignore_index=True)
+    group_goals = pd.concat(group_goal_frames, ignore_index=True) if group_goal_frames else pd.DataFrame()
+    non_group_matches = (
+        main_matches[~main_matches["stage_type"].eq("group")].copy()
+        if not main_matches.empty
+        else pd.DataFrame()
+    )
+    non_group_goals = (
+        main_goals[~main_goals["stage_type"].eq("group")].copy()
+        if not main_goals.empty
+        else pd.DataFrame()
+    )
+    all_matches = pd.concat([non_group_matches, group_matches], ignore_index=True)
+    all_goals = pd.concat([non_group_goals, group_goals], ignore_index=True)
+    return all_matches, all_goals
 
 
 def current_group_player_table(
@@ -725,6 +790,71 @@ def current_group_player_table(
     return players.merge(team_group, how="left", on="team").fillna(
         {"team_completed_group_goals": 0, "team_completed_group_matches": 0}
     )
+
+
+def current_group_defensive_profiles(current_matches: pd.DataFrame) -> pd.DataFrame:
+    played_group = current_matches[
+        current_matches["stage_type"].eq("group")
+        & current_matches["home_score"].notna()
+        & current_matches["away_score"].notna()
+    ].copy()
+    if played_group.empty:
+        return pd.DataFrame(
+            columns=[
+                "team",
+                "group_goals_against",
+                "group_defensive_matches",
+                "group_goals_against_per_match",
+                "group_clean_sheet_rate",
+                "opponent_defense_factor",
+            ]
+        )
+
+    rows: list[dict[str, object]] = []
+    for row in played_group.itertuples(index=False):
+        rows.append(
+            {
+                "team": row.home_team,
+                "goals_against": float(row.away_score),
+                "clean_sheet": 1.0 if float(row.away_score) == 0.0 else 0.0,
+            }
+        )
+        rows.append(
+            {
+                "team": row.away_team,
+                "goals_against": float(row.home_score),
+                "clean_sheet": 1.0 if float(row.home_score) == 0.0 else 0.0,
+            }
+        )
+
+    team_rows = pd.DataFrame(rows)
+    avg_goals_against = float(team_rows["goals_against"].mean())
+    avg_clean_sheet_rate = float(team_rows["clean_sheet"].mean())
+    profiles = team_rows.groupby("team", as_index=False).agg(
+        group_goals_against=("goals_against", "sum"),
+        group_defensive_matches=("goals_against", "size"),
+        group_clean_sheets=("clean_sheet", "sum"),
+    )
+    profiles["group_goals_against_per_match"] = (
+        profiles["group_goals_against"] / profiles["group_defensive_matches"]
+    )
+    profiles["group_clean_sheet_rate"] = (
+        profiles["group_clean_sheets"] / profiles["group_defensive_matches"]
+    )
+
+    shrink = profiles["group_defensive_matches"] / (profiles["group_defensive_matches"] + 2.0)
+    adjusted_goals_against = avg_goals_against + shrink * (
+        profiles["group_goals_against_per_match"] - avg_goals_against
+    )
+    adjusted_clean_sheet_rate = avg_clean_sheet_rate + shrink * (
+        profiles["group_clean_sheet_rate"] - avg_clean_sheet_rate
+    )
+    profiles["opponent_defense_factor"] = (
+        1.0
+        + 0.08 * (adjusted_goals_against - avg_goals_against)
+        - 0.05 * (adjusted_clean_sheet_rate - avg_clean_sheet_rate)
+    ).clip(OPPONENT_DEFENSE_FACTOR_MIN, OPPONENT_DEFENSE_FACTOR_MAX)
+    return profiles
 
 
 def first_knockout_round_name(knockout_predictions: pd.DataFrame) -> str:
@@ -779,6 +909,7 @@ def build_candidate_round_rows(
     positions: pd.DataFrame,
     path: pd.DataFrame,
     carryover_patterns: pd.DataFrame,
+    team_defense_profiles: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     if players.empty or path.empty:
         return pd.DataFrame()
@@ -798,21 +929,82 @@ def build_candidate_round_rows(
     candidates["position_share_prior"] = candidates["scorito_position"].map(POSITION_SHARE_PRIOR).fillna(
         POSITION_SHARE_PRIOR["Aanvaller"]
     )
+    candidates["position_share_cap"] = candidates["scorito_position"].map(POSITION_SHARE_CAP).fillna(
+        POSITION_SHARE_CAP["Aanvaller"]
+    )
     prior_strength = 2.0
-    candidates["player_goal_share"] = (
+    candidates["player_goal_share_uncapped"] = (
         candidates["group_goals"] + prior_strength * candidates["position_share_prior"]
     ) / (candidates["team_completed_group_goals"] + prior_strength)
-    candidates["player_goal_share"] = candidates["player_goal_share"].clip(0.015, 0.75)
+    candidates["player_goal_share"] = candidates["player_goal_share_uncapped"].clip(0.015)
+    candidates["player_goal_share"] = np.minimum(
+        candidates["player_goal_share"],
+        candidates["position_share_cap"],
+    )
     candidates["multi_match_scorer_boost"] = (
         1.0 + 0.10 * (candidates["group_goal_matches"].clip(lower=1) - 1)
     ).clip(1.0, 1.25)
+
+    if team_defense_profiles is None or team_defense_profiles.empty:
+        defense_lookup: dict[str, dict[str, object]] = {}
+        avg_goals_against_per_match = 0.0
+        avg_clean_sheet_rate = 0.0
+    else:
+        defense = team_defense_profiles.copy()
+        for column in [
+            "group_goals_against",
+            "group_defensive_matches",
+            "group_goals_against_per_match",
+            "group_clean_sheet_rate",
+            "opponent_defense_factor",
+        ]:
+            defense[column] = pd.to_numeric(defense[column], errors="coerce")
+        defensive_matches = defense["group_defensive_matches"].fillna(0.0)
+        if float(defensive_matches.sum()) > 0:
+            avg_goals_against_per_match = float(
+                defense["group_goals_against"].fillna(0.0).sum() / defensive_matches.sum()
+            )
+            avg_clean_sheet_rate = float(
+                (
+                    defense["group_clean_sheet_rate"].fillna(0.0)
+                    * defensive_matches
+                ).sum()
+                / defensive_matches.sum()
+            )
+        else:
+            avg_goals_against_per_match = 0.0
+            avg_clean_sheet_rate = 0.0
+        defense_lookup = defense.set_index("team").to_dict("index")
+
+    default_defense = {
+        "group_goals_against_per_match": avg_goals_against_per_match,
+        "group_clean_sheet_rate": avg_clean_sheet_rate,
+        "opponent_defense_factor": 1.0,
+    }
 
     rows: list[dict[str, object]] = []
     for candidate in candidates.itertuples(index=False):
         team_path = path[path["team"].eq(candidate.team)].sort_values("round_order")
         for path_row in team_path.itertuples(index=False):
+            raw_team_xg = float(path_row.team_xg)
+            team_elo_diff = float(path_row.team_elo_diff)
+            opponent_profile = defense_lookup.get(str(path_row.opponent), default_defense)
+            opponent_goals_against_per_match = float(
+                opponent_profile.get("group_goals_against_per_match", avg_goals_against_per_match)
+            )
+            opponent_clean_sheet_rate = float(
+                opponent_profile.get("group_clean_sheet_rate", avg_clean_sheet_rate)
+            )
+            opponent_defense_factor = float(opponent_profile.get("opponent_defense_factor", 1.0))
+            adjusted_team_xg = raw_team_xg * opponent_defense_factor
+            attacking_opportunity_score = (
+                adjusted_team_xg
+                + 0.0015 * team_elo_diff
+                + 0.10 * (opponent_goals_against_per_match - avg_goals_against_per_match)
+                - 0.05 * (opponent_clean_sheet_rate - avg_clean_sheet_rate)
+            )
             expected_goals = (
-                float(path_row.team_xg)
+                adjusted_team_xg
                 * float(candidate.player_goal_share)
                 * float(candidate.carryover_boost)
                 * float(candidate.multi_match_scorer_boost)
@@ -831,12 +1023,19 @@ def build_candidate_round_rows(
                     "round": path_row.round,
                     "round_order": path_row.round_order,
                     "opponent": path_row.opponent,
-                    "team_xg": path_row.team_xg,
+                    "team_xg": raw_team_xg,
+                    "adjusted_team_xg": adjusted_team_xg,
                     "opponent_xg": path_row.opponent_xg,
-                    "team_elo_diff": path_row.team_elo_diff,
+                    "team_elo_diff": team_elo_diff,
+                    "opponent_goals_against_per_match": opponent_goals_against_per_match,
+                    "opponent_clean_sheet_rate": opponent_clean_sheet_rate,
+                    "opponent_defense_factor": opponent_defense_factor,
+                    "attacking_opportunity_score": attacking_opportunity_score,
                     "group_goals": candidate.group_goals,
                     "group_goal_matches": candidate.group_goal_matches,
                     "team_completed_group_goals": candidate.team_completed_group_goals,
+                    "player_goal_share_uncapped": candidate.player_goal_share_uncapped,
+                    "position_share_cap": candidate.position_share_cap,
                     "player_goal_share": candidate.player_goal_share,
                     "carryover_boost": candidate.carryover_boost,
                     "multi_match_scorer_boost": candidate.multi_match_scorer_boost,
@@ -927,12 +1126,19 @@ def summarize_candidates(round_rows: pd.DataFrame, simulation: pd.DataFrame) -> 
         group_goals=("group_goals", "first"),
         group_goal_matches=("group_goal_matches", "first"),
         team_completed_group_goals=("team_completed_group_goals", "first"),
+        player_goal_share_uncapped=("player_goal_share_uncapped", "first"),
+        position_share_cap=("position_share_cap", "first"),
         player_goal_share=("player_goal_share", "first"),
         carryover_boost=("carryover_boost", "first"),
         projected_knockout_matches=("round", "nunique"),
         path_team_xg=("team_xg", "sum"),
-        avg_path_ease_xg=("team_xg", lambda values: float(values.mean())),
+        path_adjusted_team_xg=("adjusted_team_xg", "sum"),
+        avg_path_ease_xg=("adjusted_team_xg", lambda values: float(values.mean())),
         avg_path_elo_diff=("team_elo_diff", "mean"),
+        avg_opponent_goals_against_per_match=("opponent_goals_against_per_match", "mean"),
+        avg_opponent_clean_sheet_rate=("opponent_clean_sheet_rate", "mean"),
+        avg_opponent_defense_factor=("opponent_defense_factor", "mean"),
+        path_ease_score=("attacking_opportunity_score", "mean"),
         expected_scorito_points=("expected_round_points", "sum"),
         expected_knockout_goals=("expected_round_goals", "sum"),
     )
@@ -957,21 +1163,35 @@ def summarize_candidates(round_rows: pd.DataFrame, simulation: pd.DataFrame) -> 
         how="left",
         on=["player", "player_url", "team"],
     )
+    summary["_top5_probability_sort"] = summary["top5_scorito_probability"].round(3)
+    summary["_expected_points_sort"] = summary["expected_scorito_points"].round(3)
+    summary["_expected_goals_sort"] = summary["expected_knockout_goals"].round(3)
     summary = summary.sort_values(
-        ["top5_scorito_probability", "expected_scorito_points", "expected_knockout_goals"],
-        ascending=[False, False, False],
+        [
+            "_top5_probability_sort",
+            "_expected_points_sort",
+            "_expected_goals_sort",
+            "path_ease_score",
+            "avg_opponent_defense_factor",
+            "path_adjusted_team_xg",
+        ],
+        ascending=[False, False, False, False, False, False],
     ).reset_index(drop=True)
+    summary = summary.drop(
+        columns=["_top5_probability_sort", "_expected_points_sort", "_expected_goals_sort"]
+    )
     summary["recommended_rank"] = np.arange(1, len(summary) + 1)
     summary["selection_reason"] = summary.apply(selection_reason, axis=1)
     return summary
 
 
 def selection_reason(row: pd.Series) -> str:
+    path_xg = row.get("path_adjusted_team_xg", row.get("path_team_xg", 0.0))
     return (
         f"{int(row['group_goals'])} group goals, "
         f"{row['scorito_position']}, "
         f"{int(row['projected_knockout_matches'])} projected knockout matches, "
-        f"{row['path_team_xg']:.1f} team xG path"
+        f"{path_xg:.1f} adjusted team xG path"
     )
 
 
@@ -1014,6 +1234,7 @@ def write_outputs(
     recommendations: pd.DataFrame,
     round_rows: pd.DataFrame,
     current_group_scorers: pd.DataFrame,
+    current_team_defense: pd.DataFrame,
     historical_matches: pd.DataFrame,
     historical_goals: pd.DataFrame,
     carryover_patterns: pd.DataFrame,
@@ -1025,6 +1246,7 @@ def write_outputs(
         output_dir / "scorito_top_5_picks.csv",
         output_dir / "scorito_candidate_round_model.csv",
         output_dir / "current_group_scorers.csv",
+        output_dir / "current_team_defense_profiles.csv",
         output_dir / "historical_carryover_patterns.csv",
         output_dir / "historical_team_patterns.csv",
         output_dir / "historical_goal_events.csv",
@@ -1033,9 +1255,10 @@ def write_outputs(
     recommendations.head(5).to_csv(paths[1], index=False)
     round_rows.to_csv(paths[2], index=False)
     current_group_scorers.to_csv(paths[3], index=False)
-    carryover_patterns.to_csv(paths[4], index=False)
-    team_patterns.to_csv(paths[5], index=False)
-    historical_goals.to_csv(paths[6], index=False)
+    current_team_defense.to_csv(paths[4], index=False)
+    carryover_patterns.to_csv(paths[5], index=False)
+    team_patterns.to_csv(paths[6], index=False)
+    historical_goals.to_csv(paths[7], index=False)
     historical_matches.to_csv(output_dir / "historical_match_results.csv", index=False)
     figure_path = plot_recommendations(output_dir, recommendations)
     if figure_path is not None:
@@ -1087,6 +1310,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    configure_output_encoding()
     args = parse_args()
     refresh = not args.no_refresh
 
@@ -1104,6 +1328,7 @@ def main() -> int:
     current_group_scorers = current_group_player_table(current_goals, current_matches)
     if current_group_scorers.empty:
         raise RuntimeError("No current group-stage scorers were parsed from the World Cup page.")
+    current_team_defense = current_group_defensive_profiles(current_matches)
 
     historical_matches, historical_goals = load_historical_tournaments(
         args.cache_dir,
@@ -1127,6 +1352,7 @@ def main() -> int:
         positions,
         path,
         carryover_patterns,
+        current_team_defense,
     )
     if round_rows.empty:
         raise RuntimeError("No knockout candidate player-round rows could be built.")
@@ -1142,6 +1368,7 @@ def main() -> int:
         recommendations,
         round_rows,
         current_group_scorers,
+        current_team_defense,
         historical_matches,
         historical_goals,
         carryover_patterns,
@@ -1150,6 +1377,11 @@ def main() -> int:
 
     top5 = recommendations.head(5)
     print("Scorito knockout top-scorer picker complete")
+    print(
+        "Current group matches parsed: "
+        f"{int(current_matches['stage_type'].eq('group').sum())} "
+        f"({int((current_matches['stage_type'].eq('group') & current_matches['home_score'].notna() & current_matches['away_score'].notna()).sum())} with scores)"
+    )
     print(f"Current group scorers parsed: {len(current_group_scorers)}")
     print(f"Historical goal events parsed: {len(historical_goals)}")
     print(f"Candidate player-round rows: {len(round_rows)}")

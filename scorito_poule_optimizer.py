@@ -34,6 +34,12 @@ import pandas as pd
 from world_cup_score_forecaster import ModelParams, score_forecast
 
 
+def configure_output_encoding() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 MATCH_POINTS = {
     "Group": {"label": "Groepsfase", "toto": 30, "exact": 45},
     "Round of 32": {"label": "Laatste 32", "toto": 60, "exact": 90},
@@ -443,16 +449,51 @@ def select_phase_players(
     picks_per_phase: int,
     pool_size: str,
 ) -> pd.DataFrame:
-    ranked = phase_df.sort_values(
-        ["expected_round_points", "expected_round_goals"],
-        ascending=[False, False],
+    ranked = phase_df.copy()
+    defaults = {
+        "team_xg": 0.0,
+        "adjusted_team_xg": ranked["team_xg"] if "team_xg" in ranked else 0.0,
+        "team_elo_diff": 0.0,
+        "opponent_goals_against_per_match": 0.0,
+        "opponent_clean_sheet_rate": 0.0,
+        "opponent_defense_factor": 1.0,
+        "attacking_opportunity_score": ranked["team_xg"] if "team_xg" in ranked else 0.0,
+    }
+    for column, default in defaults.items():
+        if column not in ranked:
+            ranked[column] = default
+
+    numeric_columns = [
+        "expected_round_points",
+        "expected_round_goals",
+        "team_xg",
+        "adjusted_team_xg",
+        "team_elo_diff",
+        "opponent_goals_against_per_match",
+        "opponent_clean_sheet_rate",
+        "opponent_defense_factor",
+        "attacking_opportunity_score",
+    ]
+    for column in numeric_columns:
+        ranked[column] = pd.to_numeric(ranked[column], errors="coerce").fillna(defaults.get(column, 0.0))
+
+    ranked = ranked.sort_values(
+        [
+            "expected_round_points",
+            "expected_round_goals",
+            "attacking_opportunity_score",
+            "opponent_defense_factor",
+            "adjusted_team_xg",
+            "team_elo_diff",
+        ],
+        ascending=[False, False, False, False, False, False],
     ).reset_index(drop=True)
     ranked["pure_points_rank"] = np.arange(1, len(ranked) + 1)
     ranked["differential_score"] = ranked.apply(
         lambda row: row["expected_round_points"]
         * differential_multiplier(str(row["scorito_position"])),
         axis=1,
-    )
+    ) * ranked["opponent_defense_factor"].clip(0.95, 1.08)
 
     if pool_size == "small":
         selected_indexes = list(ranked.head(picks_per_phase).index)
@@ -519,6 +560,11 @@ def build_topscorer_phase_advice(
         "points_per_goal",
         "expected_round_points",
         "team_xg",
+        "adjusted_team_xg",
+        "opponent_goals_against_per_match",
+        "opponent_clean_sheet_rate",
+        "opponent_defense_factor",
+        "attacking_opportunity_score",
         "team_elo_diff",
         "pure_points_rank",
         "differential_score",
@@ -677,6 +723,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    configure_output_encoding()
     args = parse_args()
     ensure_source_outputs(args)
 

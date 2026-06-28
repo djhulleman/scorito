@@ -1544,7 +1544,10 @@ def page_topscorers() -> None:
         "expected_knockout_goals",
         "top5_scorito_probability",
         "expected_scorito_points",
+        "path_adjusted_team_xg",
+        "avg_opponent_defense_factor",
     ]
+    show_cols = [column for column in show_cols if column in display.columns]
     st.dataframe(
         display[show_cols]
         .head(25)
@@ -1558,6 +1561,8 @@ def page_topscorers() -> None:
                 "expected_knockout_goals": "Projected goals",
                 "top5_scorito_probability": "Top 5 probability",
                 "expected_scorito_points": "Scorito EV",
+                "path_adjusted_team_xg": "Adj path xG",
+                "avg_opponent_defense_factor": "Opp ease",
             }
         ),
         use_container_width=True,
@@ -1570,10 +1575,14 @@ def page_topscorers() -> None:
             "phase_pick_rank",
             "player",
             "team",
+            "opponent",
             "scorito_position",
             "expected_round_goals",
             "expected_round_points",
+            "adjusted_team_xg",
+            "opponent_defense_factor",
         ]
+        phase_cols = [column for column in phase_cols if column in phase.columns]
         st.dataframe(
             phase[phase_cols].rename(
                 columns={
@@ -1581,9 +1590,12 @@ def page_topscorers() -> None:
                     "phase_pick_rank": "Rank",
                     "player": "Player",
                     "team": "Team",
+                    "opponent": "Opponent",
                     "scorito_position": "Position",
                     "expected_round_goals": "Round goals",
                     "expected_round_points": "Round EV",
+                    "adjusted_team_xg": "Adj team xG",
+                    "opponent_defense_factor": "Opp ease",
                 }
             ),
             use_container_width=True,
